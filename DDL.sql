@@ -11,6 +11,14 @@ CREATE TABLE Units(
     PRIMARY KEY(unit_ID)
 );
 
+INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, ren_price, utility_providers, yearly_net_income, year)
+VALUES 
+    (1, 3, 2, 1800.00, 12, 1200, 5, 1560.00, 2022),
+    (1, 2, 1, 1100.00, 22, 1200, 5, 1320.00, 2021),
+    (1, 1, 1, 1000.00, 30, 1200, 5, 1200.00, 2022),
+    (0, 3, 2, 1200.00, 40, 1200, 5, 0.00,  2021);
+
+
 CREATE TABLE UtilityProviders(
     provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     name varchar(50) NOT NULL,
@@ -85,13 +93,6 @@ CREATE TABLE RequestAssignments(
     FOREIGN KEY (maintenence_request_ID) REFERENCES MaintenceRequests(maintenence_request_ID)
 );
 
-
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, ren_price, utility_providers, yearly_net_income, year)
-VALUES 
-    (1, 3, 2, 1800.00, 12, 1200, 5, 1560.00, 2022),
-    (1, 2, 1, 1100.00, 22, 1200, 5, 1320.00, 2021),
-    (1, 1, 1, 1000.00, 30, 1200, 5, 1200.00, 2022),
-    (0, 3, 2, 1200.00, 40, 1200, 5, 0.00,  2021);
 
 
 INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rental_balance, security_deposit)
