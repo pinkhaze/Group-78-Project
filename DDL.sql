@@ -96,14 +96,21 @@ VALUES
 
 INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rental_balance, security_deposit)
 VALUES
-    (12, 12, 2021-09-01, 2022-08-31, 9300.00, 1000.00),
-    (33, 33, 2021-01-12, 2022-01-11, 9500.00, 1200.00),
-    (22, 22, 2022-08-23, 2023-08-22, 7000.00, 1200.00),
-    (5, 5, , 1, 1200, );
+    (12, 12, "2021-09-01", "2022-08-31", 9300.00, 1000.00),
+    (33, 33, "2021-01-12", "2022-01-11", 9500.00, 1200.00),
+    (22, 22, "2022-08-23", "2023-08-22", 7000.00, 1200.00),
+    (5, 5, , "2022-05-22", "2023-05-01", 800.00, 1300.00);
     
 
 INSERT INTO Tenants (first_name, last_name, phone_number, email, rental_balance, rental_agreement_id)
 VALUES ('Victoria', 'Jones', '123-456-7890', 'victoriajones@yahoo.com', 5000.00, 1),
-       ('Emma', 'Mathis', '555-555-5555', 'emmamathis@hotmail.com', 6000.00, 10)
-       ('John', 'Carey', '312-723-7777', 'john.carey@gmail.com', 4500.00, 33)
+       ('Emma', 'Mathis', '555-555-5555', 'emmamathis@hotmail.com', 6000.00, 10),
+       ('John', 'Carey', '312-723-7777', 'john.carey@gmail.com', 4500.00, 33),
        ('Eric', 'Williams', '312-838-8548', 'eric222@gmail.com', 5200.00, 22);
+
+INSERT INTO MaintenanceRequests (unit_id, tenant_id, description, date_submitted, time_to_complete, repair_cost, is_closed)
+VALUES 
+    (202, 12, "Leaky faucet in bathroom", "2023-08-10", 2, 50.00, 0),
+    (33, 16, 'Broken window in bathroom', "2022-10-12", 3, 75.00, 0),
+    (45, 18, 'Heating system blowing cold air', "2023-10-15", 6, 200.00, 1),
+    (66, 78, 'Garbage disposal backing up', "2023-10-18", 4, 150.00, 1);
