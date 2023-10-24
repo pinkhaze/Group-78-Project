@@ -5,13 +5,13 @@ DROP TABLE IF EXISTS Units;
 CREATE TABLE Units(
     unit_ID int AUTO_INCREMENT NOT NULL,
     is_available BOOLEAN DEFAULT 1 NOT NULL,
-    num_bedrooms INT not NULL,
-    num_bathrooms INT not NULL,
-    square_feet INT not NULL,
-    unit_number INT UNIQUE NOT NULL,
+    num_bedrooms int not NULL,
+    num_bathrooms int not NULL,
+    square_feet int not NULL,
+    unit_number int UNIQUE NOT NULL,
     rent_price DECIMAL(6,2) not NULL,
-    previous_year_income DECIMAL(8,2) NOT NULL,
-    year INT NOT NULL,
+    yearly_net_income DECIMAL(8,2) NOT NULL,
+    year int NOT NULL,
     PRIMARY KEY(unit_ID)
 );
 
@@ -143,3 +143,4 @@ VALUES
 ((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Jane' and last_name= 'Brown'), 2),
 ((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Robert' and last_name= 'Miller'), 3),
 ((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Sarah' and last_name= 'Jones'), 4);
+
