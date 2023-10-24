@@ -11,12 +11,6 @@ CREATE TABLE Units(
     PRIMARY KEY(unit_ID)
 );
 
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, yearly_net_income, year)
-VALUES (1, 3, 2, 1800.00, 12, 1200, 1560.00, 2022),
-(1, 2, 1, 1100.00, 22, 1200, 5, 1320.00, 2021),
-(1, 1, 1, 1000.00, 30, 1200, 5, 1200.00, 2022),
-(0, 3, 2, 1200.00, 40, 1200, 5, 0.00,  2021);
-
 INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, yearly_net_income, year) 
 VALUES (1, 2, 2, 1200, 101, 1600.00, 19200.00, 2022),
 (1, 1, 1, 800, 1020, 1200.00, 14400.00, 2022),
