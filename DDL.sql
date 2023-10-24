@@ -1,52 +1,60 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS Units;
 
 CREATE TABLE Units(
     unit_ID int AUTO_INCREMENT NOT NULL,
     is_available BOOLEAN DEFAULT 1 NOT NULL,
-    num_bedrooms int not NULL,
-    num_bathrooms int not NULL,
-    square_feet int not NULL,
-    unit_number int UNIQUE NOT NULL,
+    num_bedrooms INT not NULL,
+    num_bathrooms INT not NULL,
+    square_feet INT not NULL,
+    unit_number INT UNIQUE NOT NULL,
     rent_price DECIMAL(6,2) not NULL,
-    yearly_net_income DECIMAL(8,2) NOT NULL,
-    year int NOT NULL,
+    previous_year_income DECIMAL(8,2) NOT NULL,
+    year INT NOT NULL,
     PRIMARY KEY(unit_ID)
 );
 
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, yearly_net_income, year)
+INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year)
 VALUES (1, 3, 2, 1480, 12, 1200.00, 1560.00, 2022),
        (1, 2, 1, 1000, 22, 1200, 1320.00, 2021),
        (1, 1, 1, 1000, 30, 1200, 1200.00, 2022),
        (0, 3, 2, 1200, 40, 1200, 0.00,  2021);
 
--- CREATE TABLE UtilityProviders(
---     provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
---     name varchar(50) NOT NULL,
---     service_type VARCHAR(25) NOT NULL,
---     utility_cost DECIMAL(5,2) NOT NULL,
---     PRIMARY KEY(provider_ID)
--- );
+DROP TABLE IF EXISTS UtilityProviders;
 
--- INSERT INTO UtilityProviders (name, service_type, utility_cost) 
--- VALUES ('Electric Company', 'Electricity', 120.00),
--- ('American Water', 'Water', 54.00),
--- ('Nicor Gas', 'Natural Gas', 75.00),
--- ('Comcast', 'Internet', 80.00);
+CREATE TABLE UtilityProviders(
+    provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
+    name varchar(50) NOT NULL,
+    service_type VARCHAR(25) NOT NULL,
+    utility_cost DECIMAL(5,2) NOT NULL,
+    PRIMARY KEY(provider_ID)
+);
 
--- CREATE TABLE UtilityProvidedBY(
---     utility_ID int AUTO_INCREMENT UNIQUE NOT NULL, 
---     unit_ID int NOT NULL,
---     provider_ID int NOT NULL,
---     PRIMARY KEY (utility_ID),
---     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
---     FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID)
--- );
+INSERT INTO UtilityProviders (name, service_type, utility_cost) 
+VALUES ('Electric Company', 'Electricity', 120.00),
+       ('American Water', 'Water', 54.00),
+       ('Nicor Gas', 'Natural Gas', 75.00),
+       ('Comcast', 'Internet', 80.00);
 
--- INSERT INTO UtilityProvidedBY (unit_ID, provider_ID) 
--- VALUES (1, 9),
--- (46, 2),
--- (33, 3),
--- (20, 4);
+DROP TABLE IF EXISTS UtilityProvidedBy;
+
+CREATE TABLE UtilityProvidedBy(
+    utility_ID int AUTO_INCREMENT UNIQUE NOT NULL, 
+    unit_ID int NOT NULL,
+    provider_ID int NOT NULL,
+    PRIMARY KEY (utility_ID),
+    FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
+    FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID) ON DELETE CASCADE
+);
+
+INSERT INTO UtilityProvidedBy (unit_ID, provider_ID) 
+VALUES (12, 1),
+       (22, 2),
+       (30, 3),
+       (40, 4);
+
+-- DROP TABLE IF EXISTS Tenants;
 
 -- CREATE TABLE Tenants(
 --     tenant_ID int AUTO_INCREMENT UNIQUE NOT NULL,
@@ -64,6 +72,8 @@ VALUES (1, 3, 2, 1480, 12, 1200.00, 1560.00, 2022),
 --        ('John', 'Carey', '312-723-7777', 'john.carey@gmail.com', 4500.00, 33),
 --        ('Eric', 'Williams', '312-838-8548', 'eric222@gmail.com', 5200.00, 22);
 
+-- DROP TABLE IF EXISTS RentalAgreements;
+
 -- CREATE TABLE RentalAgreements(
 --     rental_ID int AUTO_INCREMENT UNIQUE NOT NULL,
 --     unit_ID int NOT NULL,
@@ -79,10 +89,10 @@ VALUES (1, 3, 2, 1480, 12, 1200.00, 1560.00, 2022),
 
 -- INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rental_balance, security_deposit)
 -- VALUES
---     (12, 12, "2021-09-01", "2022-08-31", 9300.00, 1000.00),
---     (33, 33, "2021-01-12", "2022-01-11", 9500.00, 1200.00),
---     (22, 22, "2022-08-23", "2023-08-22", 7000.00, 1200.00),
---     (5, 5, , "2022-05-22", "2023-05-01", 800.00, 1300.00);
+--     (12, 12, "20210901", "20220831", 9300.00, 1000.00),
+--     (33, 33, "20210112", "20220111", 9500.00, 1200.00),
+--     (22, 22, "20220823", "20230822", 7000.00, 1200.00),
+--     (5, 5, , "20220522", "20230501", 800.00, 1300.00);
     
 
 -- CREATE TABLE MaintenceWorkers(
