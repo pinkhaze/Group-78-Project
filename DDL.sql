@@ -10,16 +10,16 @@ CREATE TABLE Units(
     square_feet int not NULL,
     unit_number int UNIQUE NOT NULL,
     rent_price DECIMAL(6,2) not NULL,
-    yearly_net_income DECIMAL(8,2) NOT NULL,
+    previous_year_income DECIMAL(8,2) NOT NULL,
     year int NOT NULL,
     PRIMARY KEY(unit_ID)
 );
 
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, yearly_net_income, year) 
-VALUES (1, 2, 2, 1200, 101, 1600.00, 19200.00, 2022),
-(1, 1, 1, 800, 1020, 1200.00, 14400.00, 2022),
-(0, 3, 2, 1500, 2010, 2000.00, 24000.00, 2021),
-(1, 2, 2, 1100, 1030, 1700.00, 20400.00, 2022);
+INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year) 
+VALUES (1, 2, 2, 1200, 1, 1600.00, 19200.00, 2022),
+(1, 1, 1, 800, 2, 1200.00, 14400.00, 2022),
+(0, 3, 2, 1500, 3, 2000.00, 24000.00, 2021),
+(1, 2, 2, 1100, 4, 1700.00, 20400.00, 2022);
 
 CREATE TABLE UtilityProviders(
     provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
@@ -46,10 +46,10 @@ CREATE TABLE UtilityProvidedBY(
 
 INSERT INTO UtilityProvidedBY (unit_ID, provider_ID) 
 VALUES 
-((SELECT unit_ID FROM Units WHERE unit_number = 101), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
-((SELECT unit_ID FROM Units WHERE unit_number = 1020), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
-((SELECT unit_ID FROM Units WHERE unit_number = 2010), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Comcast')),
-((SELECT unit_ID FROM Units WHERE unit_number = 1030), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company'))
+((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
+((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
+((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Comcast')),
+((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company'))
 ;
 
 CREATE TABLE Tenants(
@@ -63,8 +63,8 @@ CREATE TABLE Tenants(
 );
 
 INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
-VALUES ('Victoria', 'Jones', '1234567890', 'victoriajones@yahoo.com', 5000.00),
-       ('Emma', 'Mathis', '5555555555', 'emmamathis@hotmail.com', 6000.00),
+VALUES ('Victoria', 'Jones', '123-456-7890', 'victoriajones@yahoo.com', 5000.00),
+       ('Emma', 'Mathis', '555-555-5555', 'emmamathis@hotmail.com', 6000.00),
        ('John', 'Carey', '3127237777', 'john.carey@gmail.com', 4500.00),
        ('Eric', 'Williams', '3128388548', 'eric222@gmail.com', 5200.00);
 
@@ -83,10 +83,10 @@ CREATE TABLE RentalAgreements(
 
 INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
 VALUES
-    ((SELECT unit_ID FROM Units WHERE unit_number = 101), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name = 'Jones'), "20210901", "20220831", 9300.00, 1000.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 2010), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), "20210112", "20220111", 9500.00, 1200.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 1020), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), "20220823", "20230822", 7000.00, 1200.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 1030), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), "20220522", "20230501", 800.00, 1300.00);
+    ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name = 'Jones'), "20210901", "20220831", 9300.00, 1000.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), "20210112", "20220111", 9500.00, 1200.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), "20220823", "20230822", 7000.00, 1200.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), "20220522", "20230501", 800.00, 1300.00);
     
 
 CREATE TABLE MaintenanceWorkers(
@@ -121,10 +121,10 @@ CREATE TABLE MaintenanceRequests(
 );
 
 INSERT INTO MaintenanceRequests (unit_id, tenant_id, description, date_submitted, time_to_complete, repair_cost, is_closed)
-VALUES ((SELECT unit_ID FROM Units WHERE unit_number = 101), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name= 'Jones'), "Leaky faucet in bathroom", "20230810", 2, 50.00, 0),
-((SELECT unit_ID FROM Units WHERE unit_number = 2010), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), 'Broken window in bathroom', "20221012", 3, 75.00, 0),
-((SELECT unit_ID FROM Units WHERE unit_number = 1020), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), 'Heating system blowing cold air', "202310-5", 6, 200.00, 1),
-((SELECT unit_ID FROM Units WHERE unit_number = 1030), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), 'Garbage disposal backing up', "20231018", 4, 150.00, 1);
+VALUES ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name= 'Jones'), "Leaky faucet in bathroom", "20230810", 2, 50.00, 0),
+((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), 'Broken window in bathroom', "20221012", 3, 75.00, 0),
+((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), 'Heating system blowing cold air', "202310-5", 6, 200.00, 1),
+((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), 'Garbage disposal backing up', "20231018", 4, 150.00, 1);
 
 
 CREATE TABLE RequestAssignments(
