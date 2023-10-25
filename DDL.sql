@@ -131,7 +131,7 @@ CREATE TABLE RequestAssignments(
     assignment_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     worker_ID int not NULL,
     maintenance_request_ID int NOT NULL,
-    PRIMARY KEY(assignmnet_ID),
+    PRIMARY KEY(assignment_ID),
     FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID),
     FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID)
 );
