@@ -128,7 +128,7 @@ VALUES ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FRO
 
 
 CREATE TABLE RequestAssignments(
-    assignmnet_ID int AUTO_INCREMENT UNIQUE NOT NULL,
+    assignment_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     worker_ID int not NULL,
     maintenance_request_ID int NOT NULL,
     PRIMARY KEY(assignmnet_ID),
