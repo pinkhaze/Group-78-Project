@@ -35,7 +35,7 @@ VALUES ('Electric Company', 'Electricity', 120.00),
 ('Nicor Gas', 'Natural Gas', 75.00),
 ('Comcast', 'Internet', 80.00);
 
-CREATE TABLE UtilityProvidedBY(
+CREATE TABLE UtilityProvidedBy(
     utility_ID int AUTO_INCREMENT UNIQUE NOT NULL, 
     unit_ID int NOT NULL,
     provider_ID int NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE UtilityProvidedBY(
     FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID)
 );
 
-INSERT INTO UtilityProvidedBY (unit_ID, provider_ID) 
+INSERT INTO UtilityProvidedBy (unit_ID, provider_ID) 
 VALUES 
 ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
 ((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
