@@ -137,10 +137,21 @@ CREATE TABLE RequestAssignments(
 );
 
 
-INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID) 
-VALUES 
-((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'John' and last_name= 'Anderson'), 1),
-((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Jane' and last_name= 'Brown'), 2),
-((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Robert' and last_name= 'Miller'), 3),
-((SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Sarah' and last_name= 'Jones'), 4);
+INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID)
+SELECT
+    (SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'John' AND last_name = 'Anderson'), 
+    (SELECT maintenance_request_ID FROM MaintenanceRequests WHERE unit_id = (SELECT unit_ID FROM Units WHERE unit_number = 1) AND tenant_id = (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name = 'Jones'))
+UNION ALL
+SELECT
+    (SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Jane' AND last_name = 'Brown'),
+    (SELECT maintenance_request_ID FROM MaintenanceRequests WHERE unit_id = (SELECT unit_ID FROM Units WHERE unit_number = 2) AND tenant_id = (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name = 'Mathis'))
+UNION ALL
+SELECT
+    (SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Robert' AND last_name = 'Miller'),
+    (SELECT maintenance_request_ID FROM MaintenanceRequests WHERE unit_id = (SELECT unit_ID FROM Units WHERE unit_number = 3) AND tenant_id = (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name = 'Carey'))
+UNION ALL
+SELECT
+    (SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Sarah' AND last_name = 'Jones'),
+    (SELECT maintenance_request_ID FROM MaintenanceRequests WHERE unit_id = (SELECT unit_ID FROM Units WHERE unit_number = 4) AND tenant_id = (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name = 'Williams'));
+
 
