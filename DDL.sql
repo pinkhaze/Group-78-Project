@@ -15,12 +15,6 @@ CREATE TABLE Units(
     PRIMARY KEY(unit_ID)
 );
 
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year) 
-VALUES (1, 2, 2, 1200, 1, 1600.00, 19200.00, 2022),
-(1, 1, 1, 800, 2, 1200.00, 14400.00, 2022),
-(0, 3, 2, 1500, 3, 2000.00, 24000.00, 2021),
-(1, 2, 2, 1100, 4, 1700.00, 20400.00, 2022);
-
 CREATE TABLE UtilityProviders(
     provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     name varchar(50) NOT NULL,
@@ -28,12 +22,6 @@ CREATE TABLE UtilityProviders(
     utility_cost DECIMAL(5,2) NOT NULL,
     PRIMARY KEY(provider_ID)
 );
-
-INSERT INTO UtilityProviders (name, service_type, utility_cost) 
-VALUES ('Electric Company', 'Electricity', 120.00),
-('American Water', 'Water', 54.00),
-('Nicor Gas', 'Natural Gas', 75.00),
-('Comcast', 'Internet', 80.00);
 
 CREATE TABLE ProvidedUtilities(
     utility_ID int AUTO_INCREMENT UNIQUE NOT NULL, 
@@ -44,14 +32,6 @@ CREATE TABLE ProvidedUtilities(
     FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID)
 );
 
-INSERT INTO ProvidedUtilities(unit_ID, provider_ID) 
-VALUES 
-((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
-((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
-((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Comcast')),
-((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company'))
-;
-
 CREATE TABLE Tenants(
     tenant_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     first_name varchar(50) NOT NULL,
@@ -61,12 +41,6 @@ CREATE TABLE Tenants(
     rent_balance DECIMAL(7,2) not NULL,
     PRIMARY KEY (tenant_ID)
 );
-
-INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
-VALUES ('Victoria', 'Jones', '123-456-7890', 'victoriajones@yahoo.com', 5000.00),
-       ('Emma', 'Mathis', '555-555-5555', 'emmamathis@hotmail.com', 6000.00),
-       ('John', 'Carey', '3127237777', 'john.carey@gmail.com', 4500.00),
-       ('Eric', 'Williams', '3128388548', 'eric222@gmail.com', 5200.00);
 
 CREATE TABLE RentalAgreements(
     rental_ID int AUTO_INCREMENT UNIQUE NOT NULL,
@@ -81,14 +55,6 @@ CREATE TABLE RentalAgreements(
     FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID)
 );
 
-INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
-VALUES
-    ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name = 'Jones'), "20210901", "20220831", 9300.00, 1000.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), "20210112", "20220111", 9500.00, 1200.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), "20220823", "20230822", 7000.00, 1200.00),
-    ((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), "20220522", "20230501", 800.00, 1300.00);
-    
-
 CREATE TABLE MaintenanceWorkers(
     worker_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
@@ -99,12 +65,6 @@ CREATE TABLE MaintenanceWorkers(
     hours_worked DECIMAL(5,2) DEFAULT 0,
     PRIMARY KEY (worker_ID)
 );
-
-INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualifications, hours_worked) 
-VALUES ('John', 'Anderson', '3221234567', 20.50, 'Electrician', 40.25),
-('Jane', 'Brown', '3229876543', 18.75, 'Plumber', 37.50),
-('Robert', 'Miller', '3222345678', 28.00, 'HVAC service technician', 10.00),
-('Sarah', 'Jones', '3228765432', 29.25, 'Elevator mechanic', 30.75);
 
 CREATE TABLE MaintenanceRequests(
     maintenance_request_ID int AUTO_INCREMENT UNIQUE NOT NULL,
@@ -120,13 +80,6 @@ CREATE TABLE MaintenanceRequests(
     FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID)
 );
 
-INSERT INTO MaintenanceRequests (unit_id, tenant_id, description, date_submitted, time_to_complete, repair_cost, is_closed)
-VALUES ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name= 'Jones'), "Leaky faucet in bathroom", "20230810", 2, 50.00, 0),
-((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), 'Broken window in bathroom', "20221012", 3, 75.00, 0),
-((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), 'Heating system blowing cold air', "202310-5", 6, 200.00, 1),
-((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), 'Garbage disposal backing up', "20231018", 4, 150.00, 1);
-
-
 CREATE TABLE RequestAssignments(
     assignment_ID int AUTO_INCREMENT UNIQUE NOT NULL,
     worker_ID int not NULL,
@@ -136,6 +89,50 @@ CREATE TABLE RequestAssignments(
     FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID)
 );
 
+INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year) 
+VALUES (1, 2, 2, 1200, 1, 1600.00, 19200.00, 2022),
+(1, 1, 1, 800, 2, 1200.00, 14400.00, 2022),
+(0, 3, 2, 1500, 3, 2000.00, 24000.00, 2021),
+(1, 2, 2, 1100, 4, 1700.00, 20400.00, 2022);
+
+INSERT INTO UtilityProviders (name, service_type, utility_cost) 
+VALUES ('Electric Company', 'Electricity', 120.00),
+('American Water', 'Water', 54.00),
+('Nicor Gas', 'Natural Gas', 75.00),
+('Comcast', 'Internet', 80.00);
+
+INSERT INTO ProvidedUtilities(unit_ID, provider_ID) 
+VALUES 
+((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
+((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
+((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Comcast')),
+((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company'))
+;
+
+INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
+VALUES ('Victoria', 'Jones', '123-456-7890', 'victoriajones@yahoo.com', 5000.00),
+       ('Emma', 'Mathis', '555-555-5555', 'emmamathis@hotmail.com', 6000.00),
+       ('John', 'Carey', '3127237777', 'john.carey@gmail.com', 4500.00),
+       ('Eric', 'Williams', '3128388548', 'eric222@gmail.com', 5200.00);
+
+INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
+VALUES
+    ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name = 'Jones'), "20210901", "20220831", 9300.00, 1000.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), "20210112", "20220111", 9500.00, 1200.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), "20220823", "20230822", 7000.00, 1200.00),
+    ((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), "20220522", "20230501", 800.00, 1300.00);
+
+INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualifications, hours_worked) 
+VALUES ('John', 'Anderson', '3221234567', 20.50, 'Electrician', 40.25),
+('Jane', 'Brown', '3229876543', 18.75, 'Plumber', 37.50),
+('Robert', 'Miller', '3222345678', 28.00, 'HVAC service technician', 10.00),
+('Sarah', 'Jones', '3228765432', 29.25, 'Elevator mechanic', 30.75);
+
+INSERT INTO MaintenanceRequests (unit_id, tenant_id, description, date_submitted, time_to_complete, repair_cost, is_closed)
+VALUES ((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Victoria' AND last_name= 'Jones'), "Leaky faucet in bathroom", "20230810", 2, 50.00, 0),
+((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Emma' AND last_name= 'Mathis'), 'Broken window in bathroom', "20221012", 3, 75.00, 0),
+((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT tenant_ID FROM Tenants WHERE first_name = 'John' AND last_name= 'Carey'), 'Heating system blowing cold air', "202310-5", 6, 200.00, 1),
+((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), 'Garbage disposal backing up', "20231018", 4, 150.00, 1);
 
 INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID)
 SELECT
