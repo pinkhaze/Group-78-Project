@@ -1,22 +1,26 @@
+-- Group 78 Project Step 2 Draft
+-- Parker Sargeant
+-- Monika Racia
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Units;
 
 CREATE TABLE Units(
-    unit_ID int AUTO_INCREMENT NOT NULL,
+    unit_ID INT AUTO_INCREMENT NOT NULL,
     is_available BOOLEAN DEFAULT 1 NOT NULL,
-    num_bedrooms int not NULL,
-    num_bathrooms int not NULL,
-    square_feet int not NULL,
-    unit_number int UNIQUE NOT NULL,
+    num_bedrooms INT NOT NULL,
+    num_bathrooms INT NOT NULL,
+    square_feet INT NOT NULL,
+    unit_number INT UNIQUE NOT NULL,
     rent_price DECIMAL(6,2) not NULL,
     previous_year_income DECIMAL(8,2) NOT NULL,
-    year int NOT NULL,
+    year INT NOT NULL,
     PRIMARY KEY(unit_ID)
 );
 
 CREATE TABLE UtilityProviders(
-    provider_ID int AUTO_INCREMENT UNIQUE NOT NULL,
+    provider_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
     name varchar(50) NOT NULL,
     service_type VARCHAR(25) NOT NULL,
     utility_cost DECIMAL(5,2) NOT NULL,
@@ -24,39 +28,39 @@ CREATE TABLE UtilityProviders(
 );
 
 CREATE TABLE ProvidedUtilities(
-    utility_ID int AUTO_INCREMENT UNIQUE NOT NULL, 
-    unit_ID int NOT NULL,
-    provider_ID int NOT NULL,
+    utility_ID INT AUTO_INCREMENT UNIQUE NOT NULL, 
+    unit_ID INT NOT NULL,
+    provider_ID INT NOT NULL,
     PRIMARY KEY (utility_ID),
     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
     FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID)
 );
 
 CREATE TABLE Tenants(
-    tenant_ID int AUTO_INCREMENT UNIQUE NOT NULL,
-    first_name varchar(50) NOT NULL,
-    last_name varchar(50) NOT NULL,
-    phone_number varchar(15) not NULL,
-    email varchar(50) NOT NULL,
-    rent_balance DECIMAL(7,2) not NULL,
+    tenant_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(15) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    rent_balance DECIMAL(7,2) NOT NULL,
     PRIMARY KEY (tenant_ID)
 );
 
 CREATE TABLE RentalAgreements(
-    rental_ID int AUTO_INCREMENT UNIQUE NOT NULL,
-    unit_ID int NOT NULL,
+    rental_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    unit_ID INT NOT NULL,
     tenant_ID int NOT NULL,
-    start_date DATE not NULL,
-    end_date DATE not NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     total_rent_balance DECIMAL(7,2) NOT NULL,
-    security_deposit DECIMAL(7,2) not NULL,
+    security_deposit DECIMAL(7,2) NOT NULL,
     PRIMARY KEY (rental_ID),
     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
     FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID)
 );
 
 CREATE TABLE MaintenanceWorkers(
-    worker_ID int AUTO_INCREMENT UNIQUE NOT NULL,
+    worker_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     phone varchar(15) NOT NULL,
@@ -67,12 +71,12 @@ CREATE TABLE MaintenanceWorkers(
 );
 
 CREATE TABLE MaintenanceRequests(
-    maintenance_request_ID int AUTO_INCREMENT UNIQUE NOT NULL,
-    unit_ID int NOT NULL,
-    tenant_ID int not NULL,
+    maintenance_request_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    unit_ID INT NOT NULL,
+    tenant_ID INT NOT NULL,
     description TEXT NOT NULL,
     date_submitted DATE NOT NULL,
-    time_to_complete int NOT NULL,
+    time_to_complete INT NOT NULL,
     repair_cost DECIMAL(7,2) NOT NULL,
     is_closed BOOLEAN NOT NULL,
     PRIMARY KEY (maintenance_request_ID),
@@ -81,9 +85,9 @@ CREATE TABLE MaintenanceRequests(
 );
 
 CREATE TABLE RequestAssignments(
-    assignment_ID int AUTO_INCREMENT UNIQUE NOT NULL,
-    worker_ID int not NULL,
-    maintenance_request_ID int NOT NULL,
+    assignment_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    worker_ID INT not NULL,
+    maintenance_request_ID INT NOT NULL,
     PRIMARY KEY(assignment_ID),
     FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID),
     FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID)
