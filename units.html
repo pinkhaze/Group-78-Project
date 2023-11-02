@@ -23,7 +23,7 @@
   </div>
   <div class="container">
     <table class="table is-bordered is-striped">
-      <h1>UNITS</h1>
+      <h1><strong>UNITS</strong></h1>
       <thead>
         <tr>
           <th>unit_ID</th>
@@ -127,47 +127,56 @@
       </tbody>
     </table>
   </div>
+  <p>&nbsp;</p>
   <div class="container">
-    <!-- Create new unit form -->
+    <div id="insert" style="display: block">
+      <form id="addUnit">
+        <legend><strong>Add Unit</strong></legend>
+          <fieldset class="fields">
+            <label for="isavailable">is_available</label>
+            <select name="isavailable" id="isavailable">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            <label>num_bedrooms</label> <input type="number" name="numbedrooms">
+            <label>num_bathrooms</label> <input type="number" name="numbathrooms">
+            <label>square_feet</label> <input type="text" name="squarefeet">
+            <p>&nbsp;</p>
+            <label>unit_number</label> <input type="number" name="rentprice">
+            <label>rent_price</label> <input type="text" name="language">
+            <label>previous_year_income</label> <input type="text" name="prevyearincome">
+            <label>year</label> <input type="number" name="year">
+          </fieldset>
+          <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="addPlanet" value="Add Unit">
+          <input class="button is-black" type="button" value="Cancel">
+      </form>
+    </div>
+    <p>&nbsp;</p>
     <div id="update" style="display: block">
       <form id="updateUnit">
-        <legend>UPDATE UNIT</legend>
-        <fieldset class="fields">
-          <label for="unit_id">Unit ID</label>
-          <input type="number" name="unit_id" id="unit_id" required>
-  
-              <label for="is_available">Is Available</label>
-              <input type="checkbox" name="is_available" id="is_available">
-  
-              <label for="num_bedrooms">Number of Bedrooms</label>
-              <input type="number" name="num_bedrooms" id="num_bedrooms" required>
-  
-              <label for="num_bathrooms">Number of Bathrooms</label>
-              <input type="number" name="num_bathrooms" id="num_bathrooms" required>
-  
-              <label for="square_feet">Square Feet</label>
-              <input type="number" name="square_feet" id="square_feet" required>
-  
-              <label for="unit_number">Unit Number</label>
-              <input type="number" name="unit_number" id="unit_number" required>
-  
-              <label for="rent_price">Rent Price</label>
-              <input type="number" name="rent_price" id="rent_price" step="0.01" required>
-  
-              <label for="previous_year_income">Previous Year Income</label>
-              <input type="number" name="previous_year_income" id="previous_year_income" step="0.01" required>
-  
-              <label for="year">Year</label>
-              <input type="number" name="year" id="year" required>
+        <legend><strong>Update Unit</strong></legend>
+          <fieldset class="fields">
+            <label for="isavailable">is_available</label>
+            <select name="isavailable" id="isavailable">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            <label>num_bedrooms</label> <input type="number"  name="numbedrooms" value="">
+            <label>num_bathrooms</label> <input type="number" name="numbathrooms" value="">
+            <label>square_feet</label> <input type="text" name="squarefeet" value="">
+            <p>&nbsp;</p>
+            <label>unit_number</label> <input type="number" name="unitnum">
+            <label>rent_price</label> <input type="text" name="rentprice">
+            <label>previous_year_income</label> <input type="text" name="prevyearincome">
+            <label>year</label> <input type="number" name="year">
           </fieldset>
-          <input class="btn" type="submit" value="Update Unit">
-          <input class="btn" type="button" value="Cancel">
-      </form>
-  </div>
-  
-  </div>
-  <div>
-    <!-- Update unit form -->
+          <p>&nbsp;</p>
+          </fieldset>
+          <input class="button is-black" type="submit" id="UpdateUnit" value="Save Unit">
+          <input class="button is-black" type="button" value="Cancel" >
+      </form> 
+    </div>
   </div>
 </body>
 </html>

@@ -102,8 +102,36 @@
       </tbody>
     </table>
   </div> 
-  <div>
-    <!-- Create new utility provider form -->
+  <div class="container">
+    <div id="insert" style="display: block">
+      <p>&nbsp;</p>
+      <form id="addUtilityProvider">
+        <legend><strong>Add Utility Provider</strong></legend>
+          <fieldset class="fields">
+            <label>name</label> <input type="text" name="name">
+            <label>service_type</label> <input type="text" name="servicetype">
+            <label>utility_cost</label> <input type="text" name="utilitycost">
+          </fieldset>
+          <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="addUtilityProvider" value="Add UtilityProvider">
+          <input class="button is-black" type="button" value="Cancel">
+      </form>
+    </div>
+    <p>&nbsp;</p>
+    <div id="update" style="display: block">
+      <form id="updateUtilityProvider">
+        <legend><strong>Update Utility Provider</strong></legend>
+          <fieldset class="fields">
+            <label>name</label> <input type="text" value="" name="name">
+            <label>service_type</label> <input type="number"  name="servicetype" value="">
+            <label>utility_cost</label> <input type="text" name="utilitycost" value="">
+          </fieldset>
+          <p>&nbsp;</p>
+          </fieldset>
+          <input class="button is-black" type="submit" id="UpdateUtilityProvider" value="Save UtilityProvider">
+          <input class="button is-black" type="button" value="Cancel" >
+      </form> 
+    </div> 
   </div>
 </body>
 </html>
