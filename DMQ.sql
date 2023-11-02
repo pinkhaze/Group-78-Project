@@ -32,9 +32,14 @@ SELECT * FROM RequestAssignments;
 
 -------------------------- INSERT Queries --------------------------
 
---- Insert into Units (in progress)
+--- Insert into Units
+-- Insert a new unit into the Units table
+INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year)
+VALUES (:isAvailableInput, :numBedroomsInput, :numBathroomsInput, :squareFeetInput, :unitNumberInput, :rentPriceInput, :previousYearIncomeInput, :yearInput);
 
---- Insert into Tenants (in progress)
+--- Insert into Tenants
+INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
+VALUES (:firstNameInput, :lastNameInput, :phoneNumberInput, :emailInput, :rentBalanceInput);
 
 --- Insert into RentalAgreements
 
@@ -46,14 +51,42 @@ VALUES (:providerNameInput, :serviceTypeInput, :utilityCostInput);
 
 --- Insert into MaintenanceWorkers
 
--- Insert into ProvidedUtilities
+--- Insert into ProvidedUtilities
 
---Insert into RequestAssignments
+--- Insert into RequestAssignments
 
 
 -------------------------- UPDATE Queries --------------------------
---- Update Unit (in progress)
---- Update Tenant (in progress)
+--- Update Unit
+UPDATE Units
+SET 
+    is_available = :updatedIsAvailableInput,
+    num_bedrooms = :updatedNumBedroomsInput,
+    num_bathrooms = :updatedNumBathroomsInput,
+    square_feet = :updatedSquareFeetInput,
+    unit_number = :updatedUnitNumberInput,
+    rent_price = :updatedRentPriceInput,
+    previous_year_income = :updatedPreviousYearIncomeInput,
+    year = :updatedYearInput
+WHERE unit_ID = :unitIDInput;
+
+--- Update Tenant
+UPDATE Tenants
+SET 
+    first_name = :updatedFirstNameInput,
+    last_name = :updatedLastNameInput,
+    phone_number = :updatedPhoneNumberInput,
+    email = :updatedEmailInput,
+    rent_balance = :updatedRentBalanceInput
+WHERE tenant_ID = :tenantIDInput;
+
+--- Update UtilityProvider
+UPDATE UtilityProviders
+SET name = :updatedProviderNameInput, 
+    service_type = :updatedServiceTypeInput,
+    utility_cost = :updatedUtilityCostInput
+WHERE provider_ID = :providerIDInput;
+
 
 -------------------------- DELETE Queries --------------------------
 --- Delete Tenant (in progress)
