@@ -7,17 +7,19 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'> 
 </head>
 <body>
-    <div class="tabs is-large">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="units.html">Units</a></li>
-          <li><a href="tenants.html">Tenants</a></li>
-          <li class="is-active"><a>Rental Agreements</a></li>
-          <li><a href="utility_providers.html">Utility Providers</a></li>
-          <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
-          <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
-        </ul>
-    </div> 
+  <div class="tabs is-large">
+    <ul>
+      <li class="is-active"><a>Home</a></li>
+      <li><a href="units.html">Units</a></li>
+      <li><a href="tenants.html">Tenants</a></li>
+      <li><a href="rental_agreements.html">Rental Agreements</a></li>
+      <li><a href="utility_providers.html">Utility Providers</a></li>
+      <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
+      <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
+      <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
+      <li><a href="RequestAssignments.html">Request Request Assignments</a></li>
+    </ul>
+  </div>
     <table class="table is-bordered is-striped">
         <thead>
           <tr>
@@ -69,5 +71,22 @@
           </tr>
         </tbody>
       </table>
+      <form>
+        <label for="rental_ID">rental_ID:</label>
+        <input type="number" id="rental_ID">
+        <label for="unit_ID">unit_ID:</label>
+        <input type="number" id="unit_ID">
+        <label for="tenant_ID">tenant_ID:</label>
+        <input type="number" id="tenant_ID">
+        <label for="start_date">start_date:</label>
+        <input type="date" id="start_date">
+        <label for="end_date">end_date:</label>
+        <input type="date" id="end_date">
+        <label for="total_rent_balance">total_rent_balance:</label>
+        <input type="number" id="total_rent_balance">
+        <label for="security_deposit">security_deposit:</label>
+        <input type="number" id="security_deposit">
+        <input type="submit" value="Submit">
+      </form>
 </body>
 </html>
