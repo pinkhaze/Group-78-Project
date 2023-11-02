@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'> 
+</head>
+<body>
+  <div class="tabs is-medium">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="units.html">Units</a></li>
+      <li><a href="tenants.html">Tenants</a></li>
+      <li><a href="rental_agreements.html">Rental Agreements</a></li>
+      <li><a href="utility_providers.html">Utility Providers</a></li>
+      <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
+      <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
+      <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
+      <li class="is-active"><a>Request Assignments</a></li>
+    </ul>
+  </div>
+    <table class="table is-bordered is-striped">
+        <thead>
+          <tr>
+            <th>assignment_ID</th>
+            <th>worker_ID</th>
+            <th>maintenance_request_ID</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>4</td>
+                <td>4</td>
+            </tr>
+        </tbody>
+      </table>
+        <form>
+          <label for="assignment_ID">assignment_ID</label>
+          <input type="number" id="assignment_ID">
+          <label for="worker_ID">worker_ID</label>
+          <input type="number" id="worker_ID">
+          <label for="maintenance_request_ID">maintenance_request_ID</label>
+          <input type="number" id="maintenance_request_ID">
+          <input type="submit" value="Submit">
+        </form>
+</body>
+</html>
