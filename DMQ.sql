@@ -48,8 +48,12 @@ INSERT INTO UtilityProviders (name, service_type, utility_cost)
 VALUES (:providerNameInput, :serviceTypeInput, :utilityCostInput);
 
 --- Insert into MaintenanceRequests
+INSERT INTO MaintenanceRequests (description, time_to_complete, repair_cost, is_closed)
+VALUES;
 
 --- Insert into MaintenanceWorkers
+INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualifications, hours_worked)
+VALUES (:workerFirstNameInput, :workerLastNameInput, :phoneInput, :payRateInput, :qualificationsInput, :hoursWorkedInput)
 
 --- Insert into ProvidedUtilities
 
