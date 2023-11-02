@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
 <body>
-  <div class="tabs is-large">
+  <div class="tabs is-medium">
     <ul>
       <li><a href="index.html">Home</a></li>
       <li class="is-active"><a>Units</a></li>
@@ -18,7 +18,7 @@
       <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
       <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
       <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
-      <li><a href="RequestAssignments.html">Request Request Assignments</a></li>
+      <li><a href="RequestAssignments.html">Request Assignments</a></li>
     </ul>
   </div>
   <div class="container">
@@ -127,8 +127,44 @@
       </tbody>
     </table>
   </div>
-  <div>
+  <div class="container">
     <!-- Create new unit form -->
+    <div id="update" style="display: block">
+      <form id="updateUnit">
+        <legend>UPDATE UNIT</legend>
+        <fieldset class="fields">
+          <label for="unit_id">Unit ID</label>
+          <input type="number" name="unit_id" id="unit_id" required>
+  
+              <label for="is_available">Is Available</label>
+              <input type="checkbox" name="is_available" id="is_available">
+  
+              <label for="num_bedrooms">Number of Bedrooms</label>
+              <input type="number" name="num_bedrooms" id="num_bedrooms" required>
+  
+              <label for="num_bathrooms">Number of Bathrooms</label>
+              <input type="number" name="num_bathrooms" id="num_bathrooms" required>
+  
+              <label for="square_feet">Square Feet</label>
+              <input type="number" name="square_feet" id="square_feet" required>
+  
+              <label for="unit_number">Unit Number</label>
+              <input type="number" name="unit_number" id="unit_number" required>
+  
+              <label for="rent_price">Rent Price</label>
+              <input type="number" name="rent_price" id="rent_price" step="0.01" required>
+  
+              <label for="previous_year_income">Previous Year Income</label>
+              <input type="number" name="previous_year_income" id="previous_year_income" step="0.01" required>
+  
+              <label for="year">Year</label>
+              <input type="number" name="year" id="year" required>
+          </fieldset>
+          <input class="btn" type="submit" value="Update Unit">
+          <input class="btn" type="button" value="Cancel">
+      </form>
+  </div>
+  
   </div>
   <div>
     <!-- Update unit form -->
