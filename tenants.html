@@ -1,68 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tenants</title>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
 <body>
-    <div class="tabs is-large">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="units.html">Units</a></li>
-          <li class="is-active"><a>Tenants</a></li>
-          <li><a href="rental_agreements.html">Rental Agreements</a></li>
-          <li><a href="utility_providers.html">Utility Providers</a></li>
-          <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
-          <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
-        </ul>
-    </div>
+  <div class="tabs is-large">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="units.html">Units</a></li>
+      <li class="is-active"><a>Tenants</a></li>
+      <li><a href="rental_agreements.html">Rental Agreements</a></li>
+      <li><a href="utility_providers.html">Utility Providers</a></li>
+      <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
+      <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
+    </ul>
+  </div>
+  <div class="container">
     <table class="table is-bordered is-striped">
-        <thead>
-          <tr>
-            <th>tenant_id</th>
-            <th>first_name</th>
-            <th>last_name</th>
-            <th>phone_number</th>
-            <th>email</th>
-            <th>rent_balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Victoria</td>
-            <td>Jones</td>
-            <td>123-456-7890</td>
-            <td>victoriajones@yahoo.com</td>
-            <td>5000.00</td>
-          </tr>
-          <tr>
-            <th>2</th>
-            <td>Emma</td>
-            <td>Mathis</td>
-            <td>555-555-5555</td>
-            <td>emmamathis@hotmail.com</td>
-            <td>6000.00</td>
-          </tr>
-          <tr>
-            <th>3</th>
-            <td>John</td>
-            <td>Carey</td>
-            <td>31272377777</td>
-            <td>john.carey@gmail.com</td>
-            <td>4500.00</td>
-          </tr>
-          <tr>
-            <th>4</th>
-            <td>Eric</td>
-            <td>Williams</td>
-            <td>3128388548</td>
-            <td>eric222@gmail.com</td>
-            <td>5200.00</td>
-          </tr>
-        </tbody>
-      </table>
+      <h1>TENANTS</h1>
+      <thead>
+        <tr>
+          <th>tenant_id</th>
+          <th>first_name</th>
+          <th>last_name</th>
+          <th>phone_number</th>
+          <th>email</th>
+          <th>rent_balance</th>
+          <th class="table-col-button"></th>
+          <th class="table-col-button"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Victoria</td>
+          <td>Jones</td>
+          <td>123-456-7890</td>
+          <td>victoriajones@yahoo.com</td>
+          <td>5000.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>Emma</td>
+          <td>Mathis</td>
+          <td>555-555-5555</td>
+          <td>emmamathis@hotmail.com</td>
+          <td>6000.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>John</td>
+          <td>Carey</td>
+          <td>31272377777</td>
+          <td>john.carey@gmail.com</td>
+          <td>4500.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>Eric</td>
+          <td>Williams</td>
+          <td>3128388548</td>
+          <td>eric222@gmail.com</td>
+          <td>5200.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <!-- Create new tenant form -->
+  </div>
+  <div>
+    <!-- Update tenant form -->
+  </div>
 </body>
 </html>
