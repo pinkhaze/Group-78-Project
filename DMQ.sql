@@ -2,16 +2,27 @@
 
 --- Select all Units (in progress)
 SELECT * FROM Units;
+
 --- Select all Tenants (in progress)
 SELECT * FROM Tenants;
+
 --- Select all RentalAgreements
+SELECT * FROM RentalAgreements;
 
 --- Select all UtilityProviders
 SELECT * FROM UtilityProviders;
 
---- Select all MaintenanceRequests ---
+--- Select all MaintenanceRequests
+SELECT * FROM MaintenanceRequests;
 
---- Select all MaintenanceWorkers ---
+--- Select all MaintenanceWorkers
+SELECT * FROM MaintenanceWorkers;
+
+--Select all ProvidedUtilities
+SELECT * FROM ProvidedUtilities;
+
+--Select all RequestAssignments
+SELECT * FROM RequestAssignments;
 
 -------------------------- INSERT Queries --------------------------
 
@@ -28,6 +39,10 @@ VALUES (:providerNameInput, :serviceTypeInput, :utilityCostInput);
 --- Insert into MaintenanceRequests
 
 --- Insert into MaintenanceWorkers
+
+-- Insert into ProvidedUtilities
+
+--Insert into RequestAssignments
 
 
 -------------------------- UPDATE Queries --------------------------
