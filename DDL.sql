@@ -71,7 +71,7 @@ CREATE TABLE MaintenanceWorkers(
     last_name VARCHAR(50) NOT NULL,
     phone varchar(15) NOT NULL,
     pay_rate DECIMAL(5,2) NOT NULL,
-    qualifications TEXT,
+    qualification TEXT,
     hours_worked DECIMAL(5,2) DEFAULT 0,
     PRIMARY KEY (worker_ID)
 );
