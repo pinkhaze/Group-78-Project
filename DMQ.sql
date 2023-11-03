@@ -33,7 +33,6 @@ SELECT * FROM RequestAssignments;
 -------------------------- INSERT Queries --------------------------
 
 --- Insert into Units
--- Insert a new unit into the Units table
 INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year)
 VALUES (:isAvailableInput, :numBedroomsInput, :numBathroomsInput, :squareFeetInput, :unitNumberInput, :rentPriceInput, :previousYearIncomeInput, :yearInput);
 
@@ -42,6 +41,9 @@ INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
 VALUES (:firstNameInput, :lastNameInput, :phoneNumberInput, :emailInput, :rentBalanceInput);
 
 --- Insert into RentalAgreements
+-- Insert a new rental agreement into the RentalAgreements table
+INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
+VALUES (:unitIDInput, :tenantIDInput, :startDateInput, :endDateInput, :totalRentBalanceInput, :securityDepositInput);
 
 --- Insert into UtilityProviders
 INSERT INTO UtilityProviders (name, service_type, utility_cost)
@@ -56,11 +58,15 @@ INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualific
 VALUES (:workerFirstNameInput, :workerLastNameInput, :phoneInput, :payRateInput, :qualificationsInput, :hoursWorkedInput)
 
 --- Insert into ProvidedUtilities
+INSERT INTO ProvidedUtilities (unit_ID, provider_ID)
+VALUES (:unitIDInput, :providerIDInput);
 
 --- Insert into RequestAssignments
-
+INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID)
+VALUES (:workerIDInput, :maintenanceRequestIDInput);
 
 -------------------------- UPDATE Queries --------------------------
+
 --- Update Unit
 UPDATE Units
 SET 
@@ -93,4 +99,7 @@ WHERE provider_ID = :providerIDInput;
 
 
 -------------------------- DELETE Queries --------------------------
---- Delete Tenant (in progress)
+--- Delete Tenant
+DELETE FROM Tenants
+WHERE tenant_ID = :tenantIDInput;
+
