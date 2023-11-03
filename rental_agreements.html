@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'> 
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>  
 </head>
 <body>
   <div class="tabs is-medium">
@@ -73,22 +74,30 @@
         </tr>
       </tbody>
     </table>
-    <div>
-      <form>
-        <label for="rental_ID">rental_ID:</label>
-        <input type="number" id="rental_ID">
-        <label for="unit_ID">unit_ID:</label>
-        <input type="number" id="unit_ID">
-        <label for="tenant_ID">tenant_ID:</label>
-        <input type="number" id="tenant_ID">
-        <label for="start_date">start_date:</label>
-        <input type="date" id="start_date">
-        <label for="end_date">end_date:</label>
-        <input type="date" id="end_date">
-        <label for="total_rent_balance">total_rent_balance:</label>
-        <input type="number" id="total_rent_balance">
-        <label for="security_deposit">security_deposit:</label>
-        <input type="number" id="security_deposit">
+  </div>
+  <p>&nbsp;</p>
+  <div class="container">
+    <div class="container">
+      <div id="insert" style="display: block">
+    <form id="addRentalAgreement">
+      <legend><strong>Add Rental Agreement</strong></legend>
+        <fieldset class="fields">
+          <label for="rental_ID">rental_ID:</label>
+          <input type="number" id="rental_ID">
+          <label for="unit_ID">unit_ID:</label>
+          <input type="number" id="unit_ID">
+          <label for="tenant_ID">tenant_ID:</label>
+          <input type="number" id="tenant_ID">
+          <label for="start_date">start_date:</label>
+          <input type="date" id="start_date">
+          <label for="end_date">end_date:</label>
+          <input type="date" id="end_date">
+          <label for="total_rent_balance">total_rent_balance:</label>
+          <input type="number" id="total_rent_balance">
+          <label for="security_deposit">security_deposit:</label>
+          <input type="number" id="security_deposit">
+        </fieldset>
+        <p>&nbsp;</p>
         <input class="button is-black" type="submit" id="addRentalAgreement" value="Add Rental Agreement">
         <input class="button is-black" type="button" value="Cancel">
       </form>

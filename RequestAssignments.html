@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'> 
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>  
 </head>
 <body>
   <div class="tabs is-medium">
@@ -52,16 +53,26 @@
             </tr>
         </tbody>
       </table>
-        <form>
-          <label for="assignment_ID">assignment_ID</label>
-          <input type="number" id="assignment_ID">
-          <label for="worker_ID">worker_ID</label>
-          <input type="number" id="worker_ID">
-          <label for="maintenance_request_ID">maintenance_request_ID</label>
-          <input type="number" id="maintenance_request_ID">
+    </div>
+    <p>&nbsp;</p>
+    <div class="container">
+      <div class="container">
+        <div id="insert" style="display: block">
+      <form id="AddRequestAssignment">
+        <legend><strong>Add Request Assignment</strong></legend>
+          <fieldset class="fields">
+            <label for="assignment_ID">assignment_ID</label>
+            <input type="number" id="assignment_ID">
+            <label for="worker_ID">worker_ID</label>
+            <input type="number" id="worker_ID">
+            <label for="maintenance_request_ID">maintenance_request_ID</label>
+            <input type="number" id="maintenance_request_ID">
+          </fieldset>
+          <p>&nbsp;</p>
           <input class="button is-black" type="submit" id="AddRequestAssignments" value="Add Request Assignment">
         <input class="button is-black" type="button" value="Cancel">
         </form>
       </div>
+    </div>
 </body>
 </html>
