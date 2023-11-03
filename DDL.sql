@@ -140,7 +140,7 @@ VALUES
     ((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name= 'Williams'), "20230522", "20240501", 13600.00, 1300.00);
 
 -- Inserts sample data into MaintenanceWorkers Table
-INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualifications, hours_worked) 
+INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualification, hours_worked) 
 VALUES ('John', 'Anderson', '322-123-4567', 20.50, 'Electrician', 40.25),
        ('Jane', 'Brown', '322-987-6543', 18.75, 'Plumber', 37.50),
        ('Robert', 'Miller', '3222345678', 28.00, 'HVAC service technician', 10.00),
