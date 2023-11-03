@@ -8,21 +8,21 @@ DROP TABLE IF EXISTS Units;
 
 -- Creates the Units Table
 CREATE TABLE Units(
-    unit_ID INT AUTO_INCREMENT NOT NULL,
+    unit_ID int(11) AUTO_INCREMENT NOT NULL,
     is_available BOOLEAN DEFAULT 1 NOT NULL,
-    num_bedrooms INT NOT NULL,
-    num_bathrooms INT NOT NULL,
-    square_feet INT NOT NULL,
-    unit_number INT UNIQUE NOT NULL,
+    num_bedroom int(11) NOT NULL,
+    num_bathroom int(11) NOT NULL,
+    square_feet int(11) NOT NULL,
+    unit_number int(11) UNIQUE NOT NULL,
     rent_price DECIMAL(6,2) not NULL,
     previous_year_income DECIMAL(8,2) NOT NULL,
-    year INT NOT NULL,
+    year int(11) NOT NULL,
     PRIMARY KEY(unit_ID)
 );
 
 -- Creates the UtilityProviders Table
 CREATE TABLE UtilityProviders(
-    provider_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    provider_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
     name varchar(50) NOT NULL,
     service_type VARCHAR(25) NOT NULL,
     utility_cost DECIMAL(5,2) NOT NULL,
@@ -31,9 +31,9 @@ CREATE TABLE UtilityProviders(
 
 -- Creates the ProvidedUtilities Table
 CREATE TABLE ProvidedUtilities(
-    utility_ID INT AUTO_INCREMENT UNIQUE NOT NULL, 
-    unit_ID INT NOT NULL,
-    provider_ID INT NOT NULL,
+    utility_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL, 
+    unit_ID int(11) NOT NULL,
+    provider_ID int(11) NOT NULL,
     PRIMARY KEY (utility_ID),
     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
     FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID)
@@ -41,7 +41,7 @@ CREATE TABLE ProvidedUtilities(
 
 -- Creates the Tenants Table
 CREATE TABLE Tenants(
-    tenant_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    tenant_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     phone_number VARCHAR(15) NOT NULL,
@@ -52,9 +52,9 @@ CREATE TABLE Tenants(
 
 -- Creates the RentalAgreements Table
 CREATE TABLE RentalAgreements(
-    rental_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
-    unit_ID INT NOT NULL,
-    tenant_ID int NOT NULL,
+    rental_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
+    unit_ID int(11) NOT NULL,
+    tenant_ID int(11) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     total_rent_balance DECIMAL(7,2) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE RentalAgreements(
 
 -- Creates the MaintenanceWorkers Table
 CREATE TABLE MaintenanceWorkers(
-    worker_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    worker_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     phone varchar(15) NOT NULL,
@@ -78,12 +78,12 @@ CREATE TABLE MaintenanceWorkers(
 
 -- Creates the MaintenanceRequests Table
 CREATE TABLE MaintenanceRequests(
-    maintenance_request_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
-    unit_ID INT NOT NULL,
-    tenant_ID INT NOT NULL,
+    maintenance_request_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
+    unit_ID int(11) NOT NULL,
+    tenant_ID int(11) NOT NULL,
     description TEXT NOT NULL,
     date_submitted DATE NOT NULL,
-    time_to_complete INT NOT NULL,
+    time_to_complete int(11) NOT NULL,
     repair_cost DECIMAL(7,2) NOT NULL,
     is_closed BOOLEAN NOT NULL,
     PRIMARY KEY (maintenance_request_ID),
@@ -93,16 +93,16 @@ CREATE TABLE MaintenanceRequests(
 
 -- Creates the RequestAssignments Table
 CREATE TABLE RequestAssignments(
-    assignment_ID INT AUTO_INCREMENT UNIQUE NOT NULL,
-    worker_ID INT NOT NULL,
-    maintenance_request_ID INT NOT NULL,
+    assignment_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
+    worker_ID int(11) NOT NULL,
+    maintenance_request_ID int(11) NOT NULL,
     PRIMARY KEY(assignment_ID),
     FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID),
     FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID)
 );
 
 -- Inserts sample data into Units Table
-INSERT INTO Units (is_available, num_bedrooms, num_bathrooms, square_feet, unit_number, rent_price, previous_year_income, year) 
+INSERT INTO Units (is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year) 
 VALUES (1, 2, 2, 1200, 1, 1600.00, 19200.00, 2022),
        (1, 1, 1, 800, 2, 1200.00, 14400.00, 2022),
        (0, 3, 2, 1500, 3, 2000.00, 24000.00, 2021),
