@@ -3,10 +3,10 @@
 -- Monika Racia
 ------------------------- SELECT Queries --------------------------
 
---- Select all Units (in progress)
+--- Select all Units
 SELECT * FROM Units;
 
---- Select all Tenants (in progress)
+--- Select all Tenants
 SELECT * FROM Tenants;
 
 --- Select all RentalAgreements
