@@ -1,3 +1,6 @@
+-- Group 78 Project Step 3 Final
+-- Parker Sargeant
+-- Monika Racia
 ------------------------- SELECT Queries --------------------------
 
 --- Select all Units (in progress)

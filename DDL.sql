@@ -1,4 +1,4 @@
--- Group 78 Project Step 2 Draft
+-- Group 78 Project Step 3 Final
 -- Parker Sargeant
 -- Monika Racia
 
