@@ -106,3 +106,7 @@ WHERE provider_ID = :providerIDInput;
 DELETE FROM Tenants
 WHERE tenant_ID = :tenantIDInput;
 
+--Delete ProvidedUtilities
+DELETE FROM ProvidedUtilities
+WHERE provider_ID = (SELECT provider_ID FROM UtilityProviders WHERE name = :name);
+
