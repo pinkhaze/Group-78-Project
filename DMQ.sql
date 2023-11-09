@@ -16,7 +16,6 @@ SELECT
     year
 FROM Units;
 
-
 --- Select all Tenants
 SELECT
     tenant_ID,
@@ -26,7 +25,6 @@ SELECT
     email,
     rent_balance
 FROM Tenants;
-
 
 --- Select all RentalAgreements
 SELECT RentalAgreements.rental_ID, Tenants.first_name, Tenants.last_name, Units.unit_number, RentalAgreements.start_date, RentalAgreements.end_date, RentalAgreements.total_rent_balance, RentalAgreements.security_deposit
@@ -41,7 +39,6 @@ SELECT
     service_type,
     utility_cost
 FROM UtilityProviders;
-
 
 --- Select all MaintenanceRequests
 SELECT MaintenanceRequests.maintenance_request_ID, Units.unit_number, Tenants.first_name, Tenants.last_name, MaintenanceRequests.description, MaintenanceRequests.date_submitted, MaintenanceRequests.time_to_complete, MaintenanceRequests.repair_cost, MaintenanceRequests.is_closed
@@ -60,7 +57,6 @@ SELECT
     hours_worked
 FROM MaintenanceWorkers;
 
-
 --Select all ProvidedUtilities
 SELECT
     ProvidedUtilities.utility_ID,
@@ -77,7 +73,6 @@ FROM ProvidedUtilities
 JOIN Units ON ProvidedUtilities.unit_ID = Units.unit_ID
 JOIN UtilityProviders ON ProvidedUtilities.provider_ID = UtilityProviders.provider_ID;
 
-
 --Select all RequestAssignments
 SELECT
     RequestAssignments.assignment_ID,
@@ -90,7 +85,6 @@ SELECT
 FROM RequestAssignments
 JOIN MaintenanceWorkers ON RequestAssignments.worker_ID = MaintenanceWorkers.worker_ID
 JOIN MaintenanceRequests ON RequestAssignments.maintenance_request_ID = MaintenanceRequests.maintenance_request_ID;
-
 
 -------------------------- INSERT Queries --------------------------
 
@@ -169,7 +163,6 @@ SET name = :updatedFirstNameInput,
     hours_worked = :updatedhoursworkedInput,
 WHERE worker_ID = :workerIDInput
 
-
 -------------------------- DELETE Queries --------------------------
 --- Delete Tenant
 DELETE FROM Tenants
@@ -178,4 +171,3 @@ WHERE tenant_ID = :tenantIDInput;
 --Delete ProvidedUtilities
 DELETE FROM ProvidedUtilities
 WHERE provider_ID = (SELECT provider_ID FROM UtilityProviders WHERE name = :name);
-
