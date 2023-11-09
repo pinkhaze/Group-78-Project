@@ -4,10 +4,29 @@
 ------------------------- SELECT Queries --------------------------
 
 --- Select all Units
-SELECT * FROM Units;
+SELECT
+    unit_ID,
+    is_available,
+    num_bedroom,
+    num_bathroom,
+    square_feet,
+    unit_number,
+    rent_price,
+    previous_year_income,
+    year
+FROM Units;
+
 
 --- Select all Tenants
-SELECT * FROM Tenants;
+SELECT
+    tenant_ID,
+    first_name,
+    last_name,
+    phone_number,
+    email,
+    rent_balance
+FROM Tenants;
+
 
 --- Select all RentalAgreements
 SELECT RentalAgreements.rental_ID, Tenants.first_name, Tenants.last_name, Units.unit_number, RentalAgreements.start_date, RentalAgreements.end_date, RentalAgreements.total_rent_balance, RentalAgreements.security_deposit
@@ -16,7 +35,13 @@ JOIN Tenants ON RentalAgreements.tenant_ID = Tenants.tenant_ID
 JOIN Units ON RentalAgreements.unit_ID = Units.unit_ID;
 
 --- Select all UtilityProviders
-SELECT * FROM UtilityProviders;
+SELECT
+    provider_ID,
+    name,
+    service_type,
+    utility_cost
+FROM UtilityProviders;
+
 
 --- Select all MaintenanceRequests
 SELECT MaintenanceRequests.maintenance_request_ID, Units.unit_number, Tenants.first_name, Tenants.last_name, MaintenanceRequests.description, MaintenanceRequests.date_submitted, MaintenanceRequests.time_to_complete, MaintenanceRequests.repair_cost, MaintenanceRequests.is_closed
@@ -25,13 +50,47 @@ JOIN Units ON MaintenanceRequests.unit_ID = Units.unit_ID
 JOIN Tenants ON MaintenanceRequests.tenant_ID = Tenants.tenant_ID;
 
 --- Select all MaintenanceWorkers
-SELECT * FROM MaintenanceWorkers;
+SELECT
+    worker_ID,
+    first_name,
+    last_name,
+    phone,
+    pay_rate,
+    qualification,
+    hours_worked
+FROM MaintenanceWorkers;
+
 
 --Select all ProvidedUtilities
-SELECT * FROM ProvidedUtilities;
+SELECT
+    ProvidedUtilities.utility_ID,
+    Units.unit_number,
+    Units.is_available,
+    Units.num_bedroom,
+    Units.num_bathroom,
+    Units.square_feet,
+    Units.rent_price,
+    UtilityProviders.name AS utility_provider_name,
+    UtilityProviders.service_type,
+    UtilityProviders.utility_cost
+FROM ProvidedUtilities
+JOIN Units ON ProvidedUtilities.unit_ID = Units.unit_ID
+JOIN UtilityProviders ON ProvidedUtilities.provider_ID = UtilityProviders.provider_ID;
+
 
 --Select all RequestAssignments
-SELECT * FROM RequestAssignments;
+SELECT
+    RequestAssignments.assignment_ID,
+    MaintenanceWorkers.first_name,
+    MaintenanceWorkers.last_name,
+    MaintenanceWorkers.phone,
+    MaintenanceRequests.description,
+    MaintenanceRequests.date_submitted,
+    MaintenanceRequests.time_to_complete
+FROM RequestAssignments
+JOIN MaintenanceWorkers ON RequestAssignments.worker_ID = MaintenanceWorkers.worker_ID
+JOIN MaintenanceRequests ON RequestAssignments.maintenance_request_ID = MaintenanceRequests.maintenance_request_ID;
+
 
 -------------------------- INSERT Queries --------------------------
 
