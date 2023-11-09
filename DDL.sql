@@ -94,7 +94,7 @@ CREATE TABLE MaintenanceRequests(
 -- Creates the RequestAssignments Table
 CREATE TABLE RequestAssignments(
     assignment_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
-    worker_ID int(11) NOT NULL,
+    worker_ID int(11),
     maintenance_request_ID int(11) NOT NULL,
     PRIMARY KEY(assignment_ID),
     FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID),

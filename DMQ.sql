@@ -100,6 +100,16 @@ SET name = :updatedProviderNameInput,
     utility_cost = :updatedUtilityCostInput
 WHERE provider_ID = :providerIDInput;
 
+--Update MaintenanceWorkers
+UPDATE MaintenanceWorkers
+SET name = :updatedFirstNameInput,
+    last_name = :updatedLastNameInput,
+    phone = :updatedPhoneInput,
+    pay_rate = :updatedpay_rateInput,
+    qualification = :updatedqualificationInput,
+    hours_worked = :updatedhoursworkedInput,
+WHERE worker_ID = :workerIDInput
+
 
 -------------------------- DELETE Queries --------------------------
 --- Delete Tenant
