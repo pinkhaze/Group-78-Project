@@ -97,8 +97,8 @@ CREATE TABLE RequestAssignments(
     worker_ID int(11),
     maintenance_request_ID int(11) NOT NULL,
     PRIMARY KEY(assignment_ID),
-    FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID),
-    FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID)
+    FOREIGN KEY(worker_ID) REFERENCES MaintenanceWorkers(worker_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (maintenance_request_ID) REFERENCES MaintenanceRequests(maintenance_request_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Inserts sample data into Units Table
@@ -170,5 +170,3 @@ UNION ALL
 SELECT
     (SELECT worker_ID FROM MaintenanceWorkers WHERE first_name = 'Sarah' AND last_name = 'Jones'),
     (SELECT maintenance_request_ID FROM MaintenanceRequests WHERE unit_id = (SELECT unit_ID FROM Units WHERE unit_number = 4) AND tenant_id = (SELECT tenant_ID FROM Tenants WHERE first_name = 'Eric' AND last_name = 'Williams'));
-
-
