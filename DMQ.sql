@@ -123,7 +123,7 @@ VALUES (:workerIDInput, :maintenanceRequestIDInput);
 
 -------------------------- UPDATE Queries --------------------------
 
---- Update Unit
+--- Update Units
 UPDATE Units
 SET 
     is_available = :updatedIsAvailableInput,
@@ -136,7 +136,7 @@ SET
     year = :updatedYearInput
 WHERE unit_ID = :unitIDInput;
 
---- Update Tenant
+--- Update Tenants
 UPDATE Tenants
 SET 
     first_name = :updatedFirstNameInput,
@@ -146,14 +146,32 @@ SET
     rent_balance = :updatedRentBalanceInput
 WHERE tenant_ID = :tenantIDInput;
 
---- Update UtilityProvider
+--- Update UtilityProviders
 UPDATE UtilityProviders
 SET name = :updatedProviderNameInput, 
     service_type = :updatedServiceTypeInput,
     utility_cost = :updatedUtilityCostInput
 WHERE provider_ID = :providerIDInput;
 
---Update MaintenanceWorkers
+--- Update ProvidedUtilities
+UPDATE ProvidedUtilities
+SET 
+    unit_ID = :updatedUnitIDInput,
+    provider_ID = :updatedProviderIDInput
+WHERE utility_ID = :utilityIDInput;
+
+--- Update RentalAgreements
+UPDATE RentalAgreements
+SET 
+    unit_ID = :updatedUnitIDInput,
+    tenant_ID = :updatedTenantIDInput,
+    start_date = :updatedStartDateInput,
+    end_date = :updatedEndDateInput,
+    total_rent_balance = :updatedTotalRentBalanceInput,
+    security_deposit = :updatedSecurityDepositInput
+WHERE rental_ID = :rentalIDInput;
+
+--- Update MaintenanceWorkers
 UPDATE MaintenanceWorkers
 SET name = :updatedFirstNameInput,
     last_name = :updatedLastNameInput,
@@ -163,11 +181,54 @@ SET name = :updatedFirstNameInput,
     hours_worked = :updatedhoursworkedInput,
 WHERE worker_ID = :workerIDInput
 
+--- Update MaintenanceRequests
+UPDATE MaintenanceRequests
+SET 
+    unit_ID = :updatedUnitIDInput,
+    tenant_ID = :updatedTenantIDInput,
+    description = :updatedDescriptionInput,
+    date_submitted = :updatedDateSubmittedInput,
+    time_to_complete = :updatedTimeToCompleteInput,
+    repair_cost = :updatedRepairCostInput,
+    is_closed = :updatedIsClosedInput
+WHERE maintenance_request_ID = :maintenanceRequestIDInput;
+
+--- Update RequestAssignments
+UPDATE RequestAssignments
+SET 
+    worker_ID = :updatedWorkerIDInput,
+    maintenance_request_ID = :updatedMaintenanceRequestIDInput
+WHERE assignment_ID = :assignmentIDInput;=
+
 -------------------------- DELETE Queries --------------------------
---- Delete Tenant
+--- Delete a record from Units
+DELETE FROM Units
+WHERE unit_ID = :unitIDInput;
+
+--- Delete a record from UtilityProviders
+DELETE FROM UtilityProviders
+WHERE provider_ID = :providerIDInput;
+
+--- Delete a record from ProvidedUtilities
+DELETE FROM ProvidedUtilities
+WHERE utility_ID = :utilityIDInput;
+
+--- Delete a record from Tenants
 DELETE FROM Tenants
 WHERE tenant_ID = :tenantIDInput;
 
---Delete ProvidedUtilities
-DELETE FROM ProvidedUtilities
-WHERE provider_ID = (SELECT provider_ID FROM UtilityProviders WHERE name = :name);
+--- Delete a record from RentalAgreements
+DELETE FROM RentalAgreements
+WHERE rental_ID = :rentalIDInput;
+
+--- Delete a record from MaintenanceWorkers
+DELETE FROM MaintenanceWorkers
+WHERE worker_ID = :workerIDInput;
+
+--- Delete a record from MaintenanceRequests
+DELETE FROM MaintenanceRequests
+WHERE maintenance_request_ID = :maintenanceRequestIDInput;
+
+--- Delete a record from RequestAssignments
+DELETE FROM RequestAssignments
+WHERE assignment_ID = :assignmentIDInput;
