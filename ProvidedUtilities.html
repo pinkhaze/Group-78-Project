@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/> 
 </head>
 <body>
-  <div class="tabs is-medium">
+  <div class="tabs is-centered">
     <ul>
       <li><a href="index.html">Index</a></li>
       <li><a href="units.html">Units</a></li>
@@ -22,13 +22,14 @@
     </ul>
   </div>
   <div class="container">
-    <table class="table is-bordered is-striped">
+    <table class="table is-bordered is-striped is-fullwidth">
       <h1><strong>ProvidedUtilities</strong></h1>
       <thead>
         <tr>
           <th>utility_ID</th>
           <th>unit_ID</th>
           <th>provider_ID</th>
+          <th class="table-col-button"></th>
           <th class="table-col-button"></th>
         </tr>
       </thead>
@@ -42,6 +43,11 @@
               <i class="fa-sharp fa-regular fa-trash-can"></i>
             </button>
           </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
         </tr>
         <tr>
           <td>2</td>
@@ -50,6 +56,11 @@
           <td>
             <button>
               <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
             </button>
           </td>
         </tr>
@@ -62,6 +73,11 @@
               <i class="fa-sharp fa-regular fa-trash-can"></i>
             </button>
           </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
         </tr>
         <tr>
           <td>4</td>
@@ -70,6 +86,11 @@
           <td>
             <button>
               <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
             </button>
           </td>
         </tr>
@@ -82,6 +103,21 @@
       <form id="addProvidedUtilities">
         <legend><strong>Add Provided Utilities</strong></legend>
           <fieldset class="fields">
+        <label for="unit_ID">unit_ID</label>
+        <input type="number" id="unit_ID">
+        <label for="provider_ID">provider_ID</label>
+        <input type="number" id="provider_ID">
+      </fieldset>
+      <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="addProvidedUtilities" value="Add Provided Utilities">
+        <input class="button is-black" type="button" value="Cancel">
+      </form>
+    </div>
+    <p>&nbsp;</p>
+    <div id="update" style="display: block">
+      <form id="updateProvidedUtilities">
+        <legend><strong>Update Provided Utilities</strong></legend>
+          <fieldset class="fields">
         <label for="utility_ID">utility_ID</label>
         <input type="number" id="utility_ID">
         <label for="unit_ID">unit_ID</label>
@@ -90,9 +126,25 @@
         <input type="number" id="provider_ID">
       </fieldset>
       <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="addProvidedUtilities" value="Add Provided Utility">
+        <input class="button is-black" type="submit" id="addProvidedUtilities" value="Update Provided Utilities">
         <input class="button is-black" type="button" value="Cancel">
       </form>
+    </div>
+    <p>&nbsp;</p>
+    <div id="delete" style="display: block">
+      <form method="POST" id="deleteProvidedUtility">
+        <legend><strong>Delete Request Assignment</strong></legend>
+          <fieldset class="fields">
+          <p>Do you want to delete these Provided Utilities?</p>
+          <p>&nbsp;</p>
+          <input type="hidden" name="utilityID" id="deleteutilityID" value="1">
+          <label><strong>Utility ID:</strong></label> 1
+          <label> <strong>Unit ID:</strong> </label> 1
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="DeleteProvidedUtility" value="Delete Provided Utilities">
+        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+      </form> 
     </div>
   </div>
 </body>

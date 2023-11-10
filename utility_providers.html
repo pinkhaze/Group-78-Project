@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
 <body>
-  <div class="tabs is-medium">
+  <div class="tabs is-centered">
     <ul>
       <li><a href="index.html">Index</a></li>
       <li><a href="units.html">Units</a></li>
@@ -22,8 +22,8 @@
     </ul>
   </div>
   <div class="container">
-    <table class="table is-bordered is-striped">
-      <h1>UTILITY PROVIDERS</h1>
+    <table class="table is-bordered is-striped is-fullwidth">
+      <h1><strong>UTILITY PROVIDERS</strong></h1>
       <thead>
         <tr>
           <th>provider_id</th>
@@ -108,13 +108,12 @@
       <form id="addUtilityProvider">
         <legend><strong>Add Utility Provider</strong></legend>
           <fieldset class="fields">
-            <label>provider_id</label> <input type="text" name="providerid">
             <label>name</label> <input type="text" name="name">
             <label>service_type</label> <input type="text" name="servicetype">
             <label>utility_cost</label> <input type="text" name="utilitycost">
           </fieldset>
           <p>&nbsp;</p>
-          <input class="button is-black" type="submit" id="addUtilityProvider" value="Add UtilityProvider">
+          <input class="button is-black" type="submit" id="addUtilityProvider" value="Add Utility Provider">
           <input class="button is-black" type="button" value="Cancel">
       </form>
     </div>
@@ -123,17 +122,36 @@
       <form id="updateUtilityProvider">
         <legend><strong>Update Utility Provider</strong></legend>
           <fieldset class="fields">
-            <label>provider_id</label> <input type="text" name="providerid">
+            <label>provider_id</label> 
+            <input type="text" name="providerid">
             <label>name</label> <input type="text" value="" name="name">
-            <label>service_type</label> <input type="number"  name="servicetype" value="">
-            <label>utility_cost</label> <input type="text" name="utilitycost" value="">
+            <label>service_type</label> 
+            <input type="number"  name="servicetype" value="">
+            <label>utility_cost</label> 
+            <input type="text" name="utilitycost" value="">
           </fieldset>
           <p>&nbsp;</p>
           </fieldset>
-          <input class="button is-black" type="submit" id="UpdateUtilityProvider" value="Update UtilityProvider">
+          <input class="button is-black" type="submit" id="UpdateUtilityProvider" value="Update Utility Provider">
           <input class="button is-black" type="button" value="Cancel" >
       </form> 
     </div> 
+    <p>&nbsp;</p>
+    <div id="delete" style="display: block">
+      <form method="POST" id="deleteRequestAssignment">
+        <legend><strong>Delete Request Assignment</strong></legend>
+          <fieldset class="fields">
+          <p>Do you want to delete this unit?</p>
+          <p>&nbsp;</p>
+          <input type="hidden" name="providerID" id="deleteproviderID" value="1">
+          <label><strong>Provider ID:</strong></label> 1
+          <label> <strong>Name:</strong> </label> Electric Company  
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="DeleteUtilityProvider" value="Delete Utility Provider">
+        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+      </form> 
+    </div>
   </div>
 </body>
 </html>

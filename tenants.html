@@ -8,21 +8,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
 <body>
-  <div class="tabs is-medium">
+  <div class="tabs is-centered">
     <ul>
       <li><a href="index.html">Index</a></li>
       <li><a href="units.html">Units</a></li>
       <li class="is-active"><a>Tenants</a></li>
       <li><a href="rental_agreements.html">Rental Agreements</a></li>
       <li><a href="utility_providers.html">Utility Providers</a></li>
+      <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
       <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
       <li><a href="maintenance_workers.html">Maintenance Workers</a></li>
-      <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
       <li><a href="RequestAssignments.html">Request Assignments</a></li>
     </ul>
   </div>
   <div class="container">
-    <table class="table is-bordered is-striped">
+    <table class="table is-bordered is-striped is-fullwidth">
       <h1><strong>TENANTS</strong></h1>
       <thead>
         <tr>
@@ -133,7 +133,7 @@
         </form>
       </div>
       <p>&nbsp;</p>
-      <div id="insert" style="display: block">
+      <div id="update" style="display: block">
         <form id="updateTenant">
           <legend><strong>Update Tenant</strong></legend>
             <fieldset class="fields">
@@ -150,7 +150,23 @@
             <input class="button is-black" type="button" value="Cancel">
         </form>
       </div>
+      <p>&nbsp;</p>
+    <div id="delete" style="display: block">
+      <form method="POST" id="deleteTenant">
+        <legend><strong>Delete Tenant</strong></legend>
+          <fieldset class="fields">
+          <p>Do you want to delete this tenant?</p>
+          <p>&nbsp;</p>
+          <input type="hidden" name="unitID" id="deleteunitID" value="1">
+          <label><strong>Tenant ID:</strong></label> 3
+          <label> <strong>Name:</strong> </label> John Carey
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="DeleteTenant" value="Delete Tenant">
+        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+      </form> 
     </div>
+      
   </div>
 </body>
 </html>

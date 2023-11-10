@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/> 
 </head>
 <body>
-    <div class="tabs is-medium">
+    <div class="tabs is-centered">
         <ul>
           <li><a href="index.html">Index</a></li>
           <li><a href="units.html">Units</a></li>
           <li><a href="tenants.html">Tenants</a></li>
           <li><a href="rental_agreements.html">Rental Agreements</a></li>
           <li><a href="utility_providers.html">Utility Providers</a></li>
+          <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
           <li><a href="maintenance_requests.html">Maintenance Requests</a></li>
           <li class="is-active"><a>Maintenance Workers</a></li>
-          <li><a href="ProvidedUtilities.html">Provided Utilities</a></li>
           <li><a href="RequestAssignments.html">Request Assignments</a></li>
         </ul>
       </div>
     <div class="container">
-    <table class="table is-bordered is-striped">
+    <table class="table is-bordered is-striped is-fullwidth">
         <thead>
           <tr>
             <th>worker_ID</th>
@@ -32,6 +32,8 @@
             <th>pay_rate</th>
             <th>qualification</th>
             <th>hours_worked</th>
+            <th class="table-col-button"></th>
+            <th class="table-col-button"></th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +45,16 @@
                 <td>20.50</td>
                 <td>Electrician</td>
                 <td>40.25</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
             </tr>
             <tr>
                 <td>2</td>
@@ -52,6 +64,16 @@
                 <td>18.75</td>
                 <td>Plumber</td>
                 <td>37.50</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
             </tr>
             <tr>
                 <td>3</td>
@@ -61,6 +83,16 @@
                 <td>28.00</td>
                 <td>HVAC service technician</td>
                 <td>10.00</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
             </tr>
             <tr>
                 <td>4</td>
@@ -70,6 +102,16 @@
                 <td>29.25</td>
                 <td>Elevator mechanic</td>
                 <td>30.75</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
             </tr>
         </tbody>
       </table>
@@ -81,8 +123,6 @@
       <form id="addMaintenanceWorker">
         <legend><strong>Add Maintenance Worker</strong></legend>
           <fieldset class="fields">
-            <label for="worker_ID">worker_ID:</label>
-            <input type="number" id="worker_ID">
             <label for="first_name">first_name:</label>
             <input type="text" id="first_name">
             <label for="last_name">last_name:</label>
@@ -90,6 +130,7 @@
             <label for="phone">phone:</label>
             <input type="tel" id="phone">
             <label for="pay_rate">pay_rate:</label>
+            <p>&nbsp;</p>
             <input type="number" id="pay_rate">
             <label for="qualification">qualification:</label>
             <input type="text" id="qualification">
@@ -102,8 +143,8 @@
       </form>
     </div>
     <p>&nbsp;</p>
-      <div id="insert" style="display: block">
-        <form id="updateTenant">
+      <div id="update" style="display: block">
+        <form id="updateMaintenanceWorker">
           <legend><strong>Update Maintenance Worker</strong></legend>
             <fieldset class="fields">
               <label>worker_ID</label> <input type="number" name="workerID">
@@ -120,7 +161,22 @@
             <input class="button is-black" type="button" value="Cancel">
         </form>
       </div>
-    </div>
+      <p>&nbsp;</p>
+      <div id="delete" style="display: block">
+        <form method="POST" id="deleteUnit">
+          <legend><strong>Delete Unit</strong></legend>
+            <fieldset class="fields">
+            <p>Do you want to delete this Maintenance Worker?</p>
+            <p>&nbsp;</p>
+            <input type="hidden" name="maintenanceworkerID" id="deletemaintenanceworkerID" value="1">
+            <label><strong>Maintenance Worker ID:</strong></label> 2
+            <label> <strong>Name:</strong> </label> Robert Miller
+          </fieldset>
+          <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="DeleteMaintenanceWorker" value="Delete Maintenance Worker">
+          <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+        </form> 
+      </div>
   </div>
 </body>
 </html>
