@@ -36,7 +36,7 @@ CREATE TABLE ProvidedUtilities(
     provider_ID int(11) NOT NULL,
     PRIMARY KEY (utility_ID),
     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
-    FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID) On Delete CASCADE
+    FOREIGN KEY (provider_ID) REFERENCES UtilityProviders(provider_ID) On DELETE CASCADE
 );
 
 -- Creates the Tenants Table
