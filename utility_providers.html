@@ -119,21 +119,19 @@
     </div>
     <p>&nbsp;</p>
     <div id="update" style="display: block">
-      <form id="updateUtilityProvider">
+      <form method="PUT" id="updateUtilityProviderForm">
         <legend><strong>Update Utility Provider</strong></legend>
-          <fieldset class="fields">
-            <label>provider_id</label> 
-            <input type="text" name="providerid">
-            <label>name</label> <input type="text" value="" name="name">
-            <label>service_type</label> 
-            <input type="number"  name="servicetype" value="">
-            <label>utility_cost</label> 
-            <input type="text" name="utilitycost" value="">
-          </fieldset>
-          <p>&nbsp;</p>
-          </fieldset>
-          <input class="button is-black" type="submit" id="UpdateUtilityProvider" value="Update Utility Provider">
-          <input class="button is-black" type="button" value="Cancel" >
+        <fieldset class="fields">
+          <label for="providerID">Provider ID:</label>
+          <select id="providerID" name="providerID"></select>
+          <label>service_type</label> 
+          <input type="number"  name="servicetype" value="">
+          <label>utility_cost</label> 
+          <input type="text" name="utilitycost" value="">
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="updateUtilityProvider" value="Update Utility Provider" onclick="updateUtilityProvider()">
+        <input class="button is-black" type="button" value="Cancel" onclick="resetForm()">
       </form> 
     </div> 
     <p>&nbsp;</p>

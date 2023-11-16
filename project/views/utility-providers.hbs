@@ -78,35 +78,42 @@
 
 {{!-- Update data  --}}
 <div class="container p-2">
-     <div id="update" style="display: block">
-        <form id="update-utility-provider">
-        <legend><strong>Update Utility Provider</strong></legend>
-        <fieldset class="fields p-2">
-        <label for="provider-id">Provider ID:</label>
-        <input type="text" name="provider-id" id="provider-id">
+    <div id="update" style="display: block">
+        <form id="updateUtilityProviderForm" method="PUT" action="/update-utility-provider">
+            <legend><strong>Update Utility Provider</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="provider-id">Provider ID:</label>
+                <select class="select" name="provider-id" id="provider-id">
+                    {{#each data}}
+                        <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
 
-        <label for="name">Provider Name:</label>
-        <input type="text" name="name" id="name">
+                <label for="name">Provider Name:</label>
+                <input type="text" name="name" id="name">
 
-        <label for="service-type">Service Type:</label>
-        <select class="select" name="service-type" id="service-type" required>
-            <option value="blank"></option>
-            <option value="Electricity">Electricity</option>
-            <option value="Natural Gas">Natural Gas</option>
-            <option value="Water">Water</option>
-            <option value="Cable TV">Cable TV</option>
-            <option value="Internet">Internet</option>
-            <option value="Waste Disposal">Waste Disposal</option>
-            <option value="Sewer">Sewer</option>
-            <option value="Other">Other</option>
-        </select>
-        <label for="utility-cost">Utility Cost:</label>
-        <input type="number" name="utility-cost" id="utility-cost">
-    </fieldset>
-    <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Utility Provider">
-    <input class="button is-black is-small" type="button" value="Cancel">
-</form>
+                <label for="service-type">Service Type:</label>
+                <select class="select" name="service-type" id="service-type" required>
+                    <option value="blank"></option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Natural Gas">Natural Gas</option>
+                    <option value="Water">Water</option>
+                    <option value="Cable TV">Cable TV</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Waste Disposal">Waste Disposal</option>
+                    <option value="Sewer">Sewer</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="utility-cost">Utility Cost:</label>
+                <input type="number" name="utility-cost" id="utility-cost">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Utility Provider" onclick="updateUtilityProvider()">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
     </div> 
 </div>
+
    
 <script src="./js/delete_utility_provider.js"></script>
+<script src="./js/update_utility_provider.js"></script>

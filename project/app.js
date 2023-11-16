@@ -43,14 +43,35 @@ app.post('/add-utility-provider-form', function(req, res) {
     });
 }); 
 
+// GET ROUTE for rendering the update form
+app.get('/load-utility-provider/:id', function(req, res) {
+    let providerID = parseInt(req.params.id);
+
+    // Fetch all provider IDs from the database
+    let providerIDsQuery = "SELECT provider_ID FROM UtilityProviders;";
+    db.pool.query(providerIDsQuery, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to fetch provider IDs.'); 
+        } else {
+            // Render the form with the fetched provider IDs
+            res.render('update-utility-provider-form', { providerIDs: rows, selectedProviderID: providerID });
+        }
+    });
+});
+
 // PUT ROUTE for updating a utility provider by id
 app.put('/update-utility-provider/:id', function(req, res) {
     let data = req.body;
     let providerID = parseInt(req.params.id);
 
-    let updateQuery = "UPDATE UtilityProviders SET provider_name = ?, service_type = ?, utility_cost = ? WHERE provider_ID = ?";
+    let updateQuery = `UPDATE UtilityProviders 
+                       SET provider_name = '${data['name']}', 
+                           service_type = '${data['service-type']}', 
+                           utility_cost = '${data['utility-cost']}' 
+                       WHERE provider_ID = ${providerID}`;
 
-    db.pool.query(updateQuery, [data['input-provider-name'], data['input-service-type'], data['input-utility-cost'], providerID], function(error, rows, fields) {
+    db.pool.query(updateQuery, function(error, rows, fields) {
         if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error: Unable to update utility provider.'); 
