@@ -41,7 +41,25 @@ app.post('/add-utility-provider-form', function(req, res) {
             res.redirect('utility-providers');
         }
     });
-});  
+}); 
+
+// PUT ROUTE for updating a utility provider by id
+app.put('/update-utility-provider/:id', function(req, res) {
+    let data = req.body;
+    let providerID = parseInt(req.params.id);
+
+    let updateQuery = "UPDATE UtilityProviders SET provider_name = ?, service_type = ?, utility_cost = ? WHERE provider_ID = ?";
+
+    db.pool.query(updateQuery, [data['input-provider-name'], data['input-service-type'], data['input-utility-cost'], providerID], function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update utility provider.'); 
+        } else {
+            res.sendStatus(204); // No Content (successful update)
+        }
+    });
+});
+
 
 // DELETE ROUTE for deleting a utility provider by id
 app.delete('/delete-utility-provider-ajax', function(req, res) {
