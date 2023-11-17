@@ -28,6 +28,20 @@ app.get('/utility-providers', function(req, res) {
     });
 });
 
+app.get('/providersID', function(req, res){
+    let query = "SELECT provider_name, service_type, utility_cost FROM UtilityProviders WHERE provider_ID = ?";
+    let providerID = parseInt(req.query.id)
+   db.pool.query(query, [providerID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+                res.json(results);
+        }
+    });
+});
+
+
 // POST ROUTE for adding utility provider
 app.post('/add-utility-provider-form', function(req, res) {
     let data = req.body;

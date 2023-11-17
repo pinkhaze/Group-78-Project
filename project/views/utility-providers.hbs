@@ -84,17 +84,21 @@
             <fieldset class="fields p-2">
                 <label for="provider-id">Provider ID:</label>
                 <select class="select" name="provider-id" id="provider-id">
+                    <option value=""></option>
                     {{#each data}}
-                        <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
                     {{/each}}
                 </select>
-
                 <label for="name">Provider Name:</label>
-                <input type="text" name="name" id="name">
-
+                <input type="text" name="name" id="name" value="{{updatedData.provider_name}}">
                 <label for="service-type">Service Type:</label>
                 <select class="select" name="service-type" id="service-type" required>
-                    <option value="blank"></option>
+                    <option value=""></option>
+                    {{#each updatedData}}
+                    <option value="{{this}}" {{#if (eq updatedData.service_type this)}} selected {{/if}}>
+                        {{this}}
+                    </option>
+                    {{/each}}
                     <option value="Electricity">Electricity</option>
                     <option value="Natural Gas">Natural Gas</option>
                     <option value="Water">Water</option>
@@ -104,15 +108,16 @@
                     <option value="Sewer">Sewer</option>
                     <option value="Other">Other</option>
                 </select>
-
                 <label for="utility-cost">Utility Cost:</label>
-                <input type="number" name="utility-cost" id="utility-cost">
+                <input type="number" name="utility-cost" id="utility-cost" value="{{updatedData.utility_cost}}">
             </fieldset>
             <input class="button is-black is-small" type="submit" id="update-utility-provider">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
-    </div> 
+    </div>
 </div>
+
+
 
    
 <script src="./js/delete_utility_provider.js"></script>
