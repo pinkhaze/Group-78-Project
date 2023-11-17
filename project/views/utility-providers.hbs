@@ -16,8 +16,8 @@
                     {{@key}}
                 </th>
                 {{/each}}
-                <th></th>
-                <th></th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         {{!-- Table body --}}
@@ -31,14 +31,13 @@
                 <td>${{this.utility_cost}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button class="editButton" onclick="deleteUtilityProvider({{this.provider_ID}})">
-                         <i class="fa-sharp fa-regular fa-trash-can"></i>
-                    </button>
-
-                </td>
-                <td>
                     <button onClick="update({{this.provider_ID}})">
                         <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteUtilityProvider({{this.provider_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
                     </button>
                 </td>
             </tr>

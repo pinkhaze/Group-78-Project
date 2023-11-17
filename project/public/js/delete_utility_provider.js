@@ -24,5 +24,6 @@ function deleteUtilityProvider(providerID) {
               break;
          }
       }
+      location.reload();
   };
   
