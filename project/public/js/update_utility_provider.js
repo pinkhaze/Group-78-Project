@@ -3,20 +3,26 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event listener for the change event on the provider-id select element
     document.getElementById("provider-id").addEventListener("change", function () {
         let selectedProviderId = document.getElementById("provider-id").value;
-        if (selectedProviderId === null) {
-            return null;}
+        if (selectedProviderId === "") {
+            location.reload();
+            return;}
         // Fetch data for the selected provider
         fetch(`/providersID?id=${selectedProviderId}`)
-            .then((response) => response.json())
-            .then((updatedData) => {
-                document.getElementById("name").value = updatedData.provider_name;
-                document.getElementById("service-type").value = updatedData.service_type || '';
-                document.getElementById("utility-cost").value = parseInt(updatedData.utility_cost);
-            })
-            .catch((error) => {
-                console.error("Error fetching utility provider data", error);
-            });
-    });
+        .then((response) => response.json())
+        .then((updatedDataArray) => {
+        if (updatedDataArray.length > 0) {
+            const updatedData = updatedDataArray[0];
+            console.log(updatedData.provider_name);
+            document.getElementById("name").value = updatedData.provider_name;
+            document.getElementById("service-type").value = updatedData.service_type || '';
+            document.getElementById("utility-cost").value = parseInt(updatedData.utility_cost);
+        } else {
+            console.error("Empty or invalid response array");
+        }
+    })
+    .catch((error) => {
+        console.error("Error fetching utility provider data", error);
+    });})
 });
 
 // Get the form element
