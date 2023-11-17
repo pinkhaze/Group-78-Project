@@ -31,11 +31,9 @@ function update(provider_ID) {
             if (updatedDataArray.length > 0) {
                 const updatedData = updatedDataArray[0];
                 
-                
                 let selectedProviderID = provider_ID; 
                 let providerIdDropdown = document.getElementById("provider-id");
                 providerIdDropdown.value = selectedProviderID;
-
 
                 document.getElementById("name").value = updatedData.provider_name;
                 document.getElementById("service-type").value = updatedData.service_type || '';
