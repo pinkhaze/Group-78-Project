@@ -1,23 +1,6 @@
-function populateForm() {
-    let selectedProviderID = $("#providerID").val();
-    
-    $.ajax({
-      url: '/load-utility-provider/:' + selectedProviderID, 
-      type: 'GET',
-      success: function(data) {
-        $("#name").val(data.name);
-        $("#servicetype").val(data.service_type);
-        $("#utilitycost").val(data.utility_cost);
-      },
-      error: function(error) {
-        console.error("Error fetching utility provider data:", error);
-      }
-    });
-  };
-
-  function updateUtilityProvider(providerID) {
+function updateUtilityProvider(providerID) {
     console.log('Clicked update button');
-    let link = '/update-utility-provider-ajax/:' + providerID;
+    let link = `/update-utility-provider-ajax/${providerID}`;
 
     let formData = {
         name: document.getElementById('name').value,
@@ -38,6 +21,7 @@ function populateForm() {
         }
     });
 };
+
 
 function updateRow(providerID, updatedData) {
     let table = document.getElementById("utility-providers-table");
