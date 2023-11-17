@@ -42,7 +42,7 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4) {
             if (xhttp.status == 200) {
                 // Update the table row with the new data
-                updateRow(xhttp.response, providerIdValue);
+                location.reload();
             } else {
                 console.error("There was an error with the input.");
             }
@@ -56,9 +56,6 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
 providerIdSelect.addEventListener("change", function () {
     // Get the selected providerId
     let selectedProviderId = providerIdSelect.value;
-
-    // Fetch data for the selected providerId using AJAX
-    // Replace the following code with your actual AJAX call to get data from the server
     var dataRequest = new XMLHttpRequest();
     dataRequest.open("GET", `/utility-providers?id=${selectedProviderId}`, true);
     dataRequest.onreadystatechange = function () {
