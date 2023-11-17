@@ -18,7 +18,7 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
     let serviceTypeValue = serviceTypeSelect.value;
     let utilityCostValue = utilityCostInput.value;
 
-    // Check for NULL values
+    // Check for NULL or empty values
     if (!providerIdValue || !providerNameValue || serviceTypeValue === "blank" || !utilityCostValue) {
         console.log("Please fill in all fields.");
         return;
@@ -44,7 +44,7 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
                 // Update the table row with the new data
                 updateRow(xhttp.response, providerIdValue);
             } else {
-                console.log("There was an error with the input.");
+                console.error("There was an error with the input.");
             }
         }
     };
@@ -53,30 +53,56 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(data));
 });
 
+providerIdSelect.addEventListener("change", function () {
+    // Get the selected providerId
+    let selectedProviderId = providerIdSelect.value;
+
+    // Fetch data for the selected providerId using AJAX
+    // Replace the following code with your actual AJAX call to get data from the server
+    var dataRequest = new XMLHttpRequest();
+    dataRequest.open("GET", `/utility-providers?id=${selectedProviderId}`, true);
+    dataRequest.onreadystatechange = function () {
+        if (dataRequest.readyState == 4 && dataRequest.status == 200) {
+            let data = JSON.parse(dataRequest.responseText);
+
+            // Prepopulate the form fields with fetched data
+            providerNameInput.value = data.providerName;
+            serviceTypeSelect.value = data.serviceType;
+            utilityCostInput.value = data.utilityCost;
+        }
+    };
+    dataRequest.send();
+});
+
+
 // Function to update the table row
 function updateRow(data, providerId) {
-    let parsedData = JSON.parse(data);
-    let table = document.getElementById("utility-provider-table");
+    try {
+        let parsedData = JSON.parse(data);
+        let table = document.getElementById("utility-provider-table");
 
-    for (let i = 0, row; row = table.rows[i]; i++) {
-        if (table.rows[i].getAttribute("data-value") == providerId) {
-            let updateRowIndex = table.getElementsByTagName("tr")[i];
-            // Assuming the structure of your table, adjust the index accordingly
-            let tdName = updateRowIndex.getElementsByTagName("td")[1];
-            let tdServiceType = updateRowIndex.getElementsByTagName("td")[2];
-            let tdUtilityCost = updateRowIndex.getElementsByTagName("td")[3];
+        for (let i = 0, row; row = table.rows[i]; i++) {
+            if (row.getAttribute("data-value") == providerId) {
+                let tdName = row.getElementsByTagName("td")[1];
+                let tdServiceType = row.getElementsByTagName("td")[2];
+                let tdUtilityCost = row.getElementsByTagName("td")[3];
 
-            // Update table cells with new data
-            tdName.innerHTML = parsedData.providerName;
-            tdServiceType.innerHTML = parsedData.serviceType;
-            tdUtilityCost.innerHTML = parsedData.utilityCost;
+                // Update table cells with new data
+                tdName.innerHTML = parsedData.providerName;
+                tdServiceType.innerHTML = parsedData.serviceType;
+                tdUtilityCost.innerHTML = parsedData.utilityCost;
+
+                // Optionally, reset the form after successful update
+                updateUtilityProviderForm.reset();
+            }
         }
+    } catch (error) {
+        console.error("Error updating table row:", error);
     }
-};
+}
 
 // Function to reset the form
 function resetForm() {
     // Implement the reset logic here if needed
     console.log("Form reset functionality goes here.");
-};
-  
+}
