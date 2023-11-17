@@ -43,26 +43,47 @@ app.post('/add-utility-provider-form', function(req, res) {
     });
 }); 
 
+
 // PUT ROUTE for updating a utility provider by id
-app.put('/update-utility-provider/:id', function(req, res) {
+app.put('/update-utility-provider', function(req, res) {
     let data = req.body;
-    let providerID = parseInt(req.params.id);
 
+    let providerID = parseInt(data.providerId);
+    let providerName = data.providerName;
+    let serviceType = data.serviceType;
+    let utilityCost = parseInt(data.utilityCost);
+
+    if (isNaN(providerID) || isNaN(utilityCost)) {
+        res.status(400).send(`Invalid entry`);
+        return;
+    }
+
+    let selectUtilityProvider = 'SELECT * FROM UtilityProviders WHERE provider_ID = ?';
     let updateQuery = `UPDATE UtilityProviders 
-                       SET provider_name = '${data['name']}', 
-                           service_type = '${data['service-type']}', 
-                           utility_cost = '${data['utility-cost']}' 
-                       WHERE provider_ID = ${providerID}`;
+                   SET provider_name = ?, 
+                       service_type = ?, 
+                       utility_cost = ? 
+                   WHERE provider_ID = ?`;
 
-    db.pool.query(updateQuery, function(error, rows, fields) {
+    let updateValues = [providerName, serviceType, isNaN(utilityCost) ? null : utilityCost, providerID];
+
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error: Unable to update utility provider.'); 
         } else {
-            res.sendStatus(204); // No Content (successful update)
+            db.pool.query(selectUtilityProvider, [providerID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
         }
     });
 });
+
 
 
 // DELETE ROUTE for deleting a utility provider by id

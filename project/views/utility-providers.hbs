@@ -79,7 +79,7 @@
 {{!-- Update data  --}}
 <div class="container p-2">
     <div id="update" style="display: block">
-        <form id="updateUtilityProviderForm" method="POST" action="/update-utility-provider">
+        <form id="updateUtilityProviderForm">
             <legend><strong>Update Utility Provider</strong></legend>
             <fieldset class="fields p-2">
                 <label for="provider-id">Provider ID:</label>
@@ -108,7 +108,7 @@
                 <label for="utility-cost">Utility Cost:</label>
                 <input type="number" name="utility-cost" id="utility-cost">
             </fieldset>
-            <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Utility Provider" onclick="updateUtilityProvider()">
+            <input class="button is-black is-small" type="submit" id="update-utility-provider">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
     </div> 
