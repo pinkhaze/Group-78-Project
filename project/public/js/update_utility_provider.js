@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event listener for the change event on the provider-id select element
     document.getElementById("provider-id").addEventListener("change", function () {
         let selectedProviderId = document.getElementById("provider-id").value;
-        if (selectedProviderId === "") {
-            location.reload();
+        if (selectedProviderId == "") {
+            location.reload()
             return;}
         // Fetch data for the selected provider
         fetch(`/providersID?id=${selectedProviderId}`)
@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((updatedDataArray) => {
         if (updatedDataArray.length > 0) {
             const updatedData = updatedDataArray[0];
-            console.log(updatedData.provider_name);
             document.getElementById("name").value = updatedData.provider_name;
             document.getElementById("service-type").value = updatedData.service_type || '';
             document.getElementById("utility-cost").value = parseInt(updatedData.utility_cost);
@@ -24,6 +23,32 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error fetching utility provider data", error);
     });})
 });
+
+function update(provider_ID) {
+    fetch(`/providersID?id=${provider_ID}`)
+        .then((response) => response.json())
+        .then((updatedDataArray) => {
+            if (updatedDataArray.length > 0) {
+                const updatedData = updatedDataArray[0];
+                
+                
+                let selectedProviderID = provider_ID; 
+                let providerIdDropdown = document.getElementById("provider-id");
+                providerIdDropdown.value = selectedProviderID;
+
+
+                document.getElementById("name").value = updatedData.provider_name;
+                document.getElementById("service-type").value = updatedData.service_type || '';
+                document.getElementById("utility-cost").value = parseInt(updatedData.utility_cost);
+            } else {
+                console.error("Empty or invalid response array");
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching utility provider data", error);
+        });
+}
+
 
 // Get the form element
 let updateUtilityProviderForm = document.getElementById('updateUtilityProviderForm');

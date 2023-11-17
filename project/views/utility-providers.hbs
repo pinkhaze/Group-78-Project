@@ -31,12 +31,13 @@
                 <td>${{this.utility_cost}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button onclick="deleteUtilityProvider({{this.provider_ID}})">
-                        <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    <button class="editButton" onclick="deleteUtilityProvider({{this.provider_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
                     </button>
+
                 </td>
                 <td>
-                    <button class="edit">
+                    <button onClick="update({{this.provider_ID}})">
                         <i class="fa-sharp fa-solid fa-pen-to-square"></i>
                     </button>
                 </td>
@@ -116,9 +117,5 @@
         </form>
     </div>
 </div>
-
-
-
-   
 <script src="./js/delete_utility_provider.js"></script>
 <script src="./js/update_utility_provider.js"></script>
