@@ -2,35 +2,34 @@
     SETUP
 */
 
-// Express
-var express = require('express');   // We are using the express library for the web server
-var app     = express();            // We need to instantiate an express object to interact with the server in our code
-// app.js - SETUP section
-
+// Import express module
+const express = require('express'); 
 const path = require('path');
+// Import express-handlebars module
+const { engine } = require('express-handlebars');
+const exphbs = require('express-handlebars'); 
+// Import database
+const db = require('./database/db-connector')
 
+// Instantiate an express object to interact with the server
+const app = express();            
+// Set a port number
+PORT = 3011; 
 
+// Middleware 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'assets')));
-PORT = 3011;                 // Set a port number at the top so it's easy to change in the future
-
-// Database
-var db = require('./database/db-connector')
-
-
-const { engine } = require('express-handlebars');
-var exphbs = require('express-handlebars');     // Import express-handlebars
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
-
-
+              
+// Create an instance of the handlebars engine to process templates
+app.engine('.hbs', engine({extname: ".hbs"})); 
+// Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+app.set('view engine', '.hbs'); 
 
 /*
     ROUTES
 */
-// app.js
 
 // GET ROUTE for displaying index page
 app.get('/', function(req, res)
@@ -59,7 +58,6 @@ app.get('/providersID', function(req, res){
     });
 });
 
-
 // POST ROUTE for adding utility provider
 app.post('/add-utility-provider-form', function(req, res) {
     let data = req.body;
@@ -87,7 +85,6 @@ app.post('/add-utility-provider-form', function(req, res) {
         }
     });
 });
-
 
 // PUT ROUTE for updating a utility provider by id
 app.put('/update-utility-provider', function(req, res) {
@@ -129,8 +126,6 @@ app.put('/update-utility-provider', function(req, res) {
     });
 });
 
-
-
 // DELETE ROUTE for deleting a utility provider by id
 app.delete('/delete-utility-provider-ajax', function(req, res) {
     let data = req.body;
@@ -146,6 +141,41 @@ app.delete('/delete-utility-provider-ajax', function(req, res) {
             res.sendStatus(204); 
         }
     });
+});
+
+// GET ROUTE for displaying Tenants page
+app.get('/tenants', function(req, res) {
+    res.render('tenants');
+});
+
+// GET ROUTE for displaying Units page
+app.get('/units', function(req, res) {
+    res.render('units');
+});
+
+// GET ROUTE for displaying Rental Agreements page
+app.get('/rental-agreements', function(req, res) {
+    res.render('rental-agreements');
+});
+
+// GET ROUTE for displaying Provided Utilities page
+app.get('/provided-utilities', function(req, res) {
+    res.render('provided-utilities');
+});
+
+// GET ROUTE for displaying Maintenance Requests page
+app.get('/maintenance-requests', function(req, res) {
+    res.render('maintenance-requests');
+});
+
+// GET ROUTE for displaying Maintenance Workers page
+app.get('/maintenance-workers', function(req, res) {
+    res.render('maintenance-workers');
+});
+
+// GET ROUTE for displaying Request Assignments page
+app.get('/request-assignments', function(req, res) {
+    res.render('request-assignments');
 });
 
 app.listen(PORT, function(){     

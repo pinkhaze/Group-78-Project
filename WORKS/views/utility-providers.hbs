@@ -9,7 +9,7 @@
     <table id="utility-providers-table" class="table is-bordered is-striped is-fullwidth">
         {{!-- Table header --}}
         <thead>
-            {{!-- For just the first row, print each key of the row object as a header cell --}}
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
             <tr>
                 {{#each data.[0]}}
                 <th>
@@ -22,6 +22,11 @@
         </thead>
         {{!-- Table body --}}
         <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
             {{!-- For each row, print the provider_ID, provider_name, service_type, and utility_cost --}}
             {{#each data}}
             <tr data-value={{this.provider_ID}}>
