@@ -132,10 +132,10 @@ VALUES ('Electric Company', 'Electricity', 120.00),
 -- Inserts sample data into ProvidedUtilities Table
 INSERT INTO ProvidedUtilities(unit_ID, provider_ID) 
 VALUES 
-((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE provider_name = 'Electric Company')),
-((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE provider_name = 'American Water')),
-((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT provider_ID FROM UtilityProviders WHERE provider_name = 'Comcast')),
-((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT provider_ID FROM UtilityProviders WHERE provider_name = 'Electric Company'))
+((SELECT unit_ID FROM Units WHERE unit_number = 1), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company')),
+((SELECT unit_ID FROM Units WHERE unit_number = 2), (SELECT provider_ID FROM UtilityProviders WHERE name = 'American Water')),
+((SELECT unit_ID FROM Units WHERE unit_number = 3), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Comcast')),
+((SELECT unit_ID FROM Units WHERE unit_number = 4), (SELECT provider_ID FROM UtilityProviders WHERE name = 'Electric Company'))
 ;
 
 -- Inserts sample data into Tenants Table

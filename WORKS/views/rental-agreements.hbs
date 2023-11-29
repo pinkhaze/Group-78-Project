@@ -1,185 +1,97 @@
-  <div class="container">
-    <table class="table is-bordered is-striped is-fullwidth">
-      <h1><strong>RENTAL AGREEMENTS</strong></h1>
-      <thead>
-        <tr>
-          <th>rental_ID</th>
-          <th>unit_ID</th>
-          <th>tenant_ID</th>
-          <th>start_date</th>
-          <th>end_date</th>
-          <th>total_rent_balance</th>
-          <th>security_deposit</th>
-          <th class="table-col-button"></th>
-          <th class="table-col-button"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
-          <td>2022-08-18</td>
-          <td>2023-08-17</td>
-          <td>$0.00</td>
-          <td>$1000.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>2</td>
-          <td>2</td>
-          <td>2023-01-12</td>
-          <td>2024-01-11</td>
-          <td>$3600.00</td>
-          <td>$1200.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>3</td>
-          <td>3</td>
-          <td>2023-08-23</td>
-          <td>2024-08-22</td>
-          <td>$20000.00</td>
-          <td>$1200.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>4</td>
-          <td>4</td>
-          <td>2023-05-22</td>
-          <td>2024-05-01</td>
-          <td>$13600.00</td>
-          <td>$1300.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <p>&nbsp;</p>
-  <div class="container">
-    <div class="container">
-    <div id="insert" style="display: block">
-    <form id="addRentalAgreement">
-      <legend><strong>Add Rental Agreement</strong></legend>
-        <fieldset class="fields">
-          <label for="unit_ID">unit_ID:</label>
-          <select name="unit_ID" id="unit_ID">
-              <option value="1">Unit 1</option>
-              <option value="2">Unit 2</option>
-              <option value="1">Unit 3</option>
-              <option value="2">Unit 4</option>
-          </select>
-          <label for="tenant_ID">tenant_ID:</label>
-            <select name="tenant_ID" id="tenant_ID">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="1">3</option>
-              <option value="2">4</option>
-            </select>
-          <label for="start_date">start_date:</label>
-          <input type="date" id="start_date">
-          <label for="end_date">end_date:</label>
-          <input type="date" id="end_date">
-          <p>&nbsp;</p>
-          <label for="total_rent_balance">total_rent_balance:</label>
-          <input type="number" id="total_rent_balance">
-          <label for="security_deposit">security_deposit:</label>
-          <input type="number" id="security_deposit">
-        </fieldset>
-        <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="addRentalAgreement" value="Add Rental Agreement">
-        <input class="button is-black" type="button" value="Cancel">
-      </form>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>RENTAL AGREEMENTS</h3>
     </div>
-    <p>&nbsp;</p>
-    <div id="update" style="display: block">
-      <form id="updateRentalAgreement">
-        <legend><strong>Update Rental Agreement</strong></legend>
-          <fieldset class="fields">
-            <label for="rental_ID">rental_ID:</label>
-            <input type="number" id="rental_ID">
-            <label for="unit_ID">unit_ID:</label>
-              <select name="unit_ID" id="unit_ID">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="1">3</option>
-                <option value="2">4</option>
-              </select>
-            <label for="tenant_ID">tenant_ID:</label>
-              <select name="unit_ID" id="unit_ID">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="1">3</option>
-                <option value="2">4</option>
-              </select>
-            <label for="start_date">start_date:</label>
-            <input type="date" id="start_date">
-            <label for="end_date">end_date:</label>
-            <input type="date" id="end_date">
-            <p>&nbsp;</p>
-            <label for="total_rent_balance">total_rent_balance:</label>
-            <input type="number" id="total_rent_balance">
-            <label for="security_deposit">security_deposit:</label>
-            <input type="number" id="security_deposit">
-          </fieldset>
-          <p>&nbsp;</p>
-          <input class="button is-black" type="submit" id="updateRentalAgreement" value="Update Rental Agreement">
-          <input class="button is-black" type="button" value="Cancel">
+    {{!-- Create table --}}
+    <table id="rental-agreements-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print the current key in the header cell --}}
+            <tr>
+                {{!-- {{#each rentalAgreements.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}} --}}
+                <th>ID</th>
+                <th>Unit</th>
+                <th>Tenant</th>
+                <th>Lease Start</th>
+                <th>Lease End</th>
+                <th>Total Rent Balance</th>
+                <th>Security Deposit</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- For each row, print the rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, and security_deposit --}}
+            {{#each rentalAgreements}}
+            <tr data-value={{this.rental_ID}}>
+                <td>{{this.rental_ID}}</td>
+                <td>{{this.unit_number}}</td>
+                <td>{{this.tenant_name}}</td>
+                <td>{{this.start_date}}</td>
+                <td>{{this.end_date}}</td>
+                <td>${{this.total_rent_balance}}</td>
+                <td>${{this.security_deposit}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.rental_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="deleteRentalAgreement({{this.rental_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new rental agreement --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a rental agreement --}}
+        <form id="add-rental-agreement-form">
+            <legend><strong>Add Rental Agreement</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit-id">Unit: </label>
+                <select name="input-unit-id" id="input-unit-id">
+                    <option value="">Select a Unit</option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-tenant-id">Tenant: </label>
+                <select name="input-tenant-id" id="input-tenant-id">
+                    <option value="">Select a Tenant</option>
+                        {{#each tenants}}
+                            <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                </select>
+                <label for="input-start-date">Start Date: </label>
+                <input type="date" name="input-start-date" id="input-start-date">
+                <label for="input-end-date">End Date: </label>
+                <input type="date" name="input-end-date" id="input-end-date">
+                <label for="input-total-rent-balance">Total Rent Balance: </label>
+                <input type="number" name="input-total-rent-balance" id="input-total-rent-balance">
+                <label for="input-security-deposit">Security Deposit: </label>
+                <input type="number" name="input-security-deposit" id="input-security-deposit">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addRentalAgreement" value="Add Rental Agreement">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
         </form>
-      </div>
-      <p>&nbsp;</p>
-      <div id="delete" style="display: block">
-        <form method="POST" id="deleteRentalAgreement">
-          <legend><strong>Delete Rental Agreement</strong></legend>
-            <fieldset class="fields">
-            <p>Do you want to delete this Rental Agreement?</p>
-            <p>&nbsp;</p>
-            <input type="hidden" name="rentalagreementID" id="deleterentalagreementID" value="1">
-            <label><strong>Rental Agreement ID:</strong></label> 1
-            <label> <strong>Unit ID:</strong> </label> 1  
-          </fieldset>
-          <p>&nbsp;</p>
-          <input class="button is-black" type="submit" id="DeleteRentalAgreement" value="Delete Rental Agreement">
-          <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
-        </form> 
-      </div>
-  </div>
+    </div>
+</div>
+
+<script src="../js/add_rental_agreement.js"></script>
+<script src="../js/update_rental_agreement.js"></script>
+<script src="../js/delete_rental_agreement.js"></script>

@@ -153,10 +153,38 @@ app.get('/units', function(req, res) {
     res.render('units');
 });
 
-// GET ROUTE for displaying Rental Agreements page
-app.get('/rental-agreements', function(req, res) {
-    res.render('rental-agreements');
-});
+/****************************************** RENTAL AGREEMENTS ************************************************/
+
+app.get('/rental-agreements', function (req, res) {
+    let query1 = 
+        `SELECT 
+            RentalAgreements.rental_ID, 
+            Units.unit_number, 
+            CONCAT(Tenants.first_name, ' ', Tenants.last_name) AS tenant_name,
+            RentalAgreements.start_date, 
+            RentalAgreements.end_date, 
+            RentalAgreements.total_rent_balance, 
+            RentalAgreements.security_deposit
+            FROM RentalAgreements
+        LEFT JOIN Units ON RentalAgreements.unit_ID = Units.unit_ID
+        LEFT JOIN Tenants ON RentalAgreements.tenant_ID = Tenants.tenant_ID;`;
+  
+    let query2 = `SELECT * FROM Units;`;
+  
+    let query3 = `SELECT * FROM Tenants;`;
+  
+    db.pool.query(query1, function (error, rentalAgreements, fields) {
+      db.pool.query(query2, function (error, units, fields) {
+        db.pool.query(query3, function (error, tenants, fields) {
+            res.render('rental-agreements', {
+              rentalAgreements: rentalAgreements,
+              units: units,
+              tenants: tenants,
+            });
+        });
+      });
+    });
+  });
 
 // GET ROUTE for displaying Provided Utilities page
 app.get('/provided-utilities', function(req, res) {
