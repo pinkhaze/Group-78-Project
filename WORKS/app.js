@@ -38,6 +38,9 @@ app.get('/', function(req, res)
         res.render('index', { title: pageTitle });
     });
 
+
+/****************************************** Utility Providers ************************************************/
+
 // GET ROUTE for displaying all utility providers
 app.get('/utility-providers', function(req, res) {
     let query = "SELECT * FROM UtilityProviders;";
