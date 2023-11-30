@@ -14,7 +14,7 @@ const db = require('./database/db-connector')
 // Instantiate an express object to interact with the server
 const app = express();            
 // Set a port number
-PORT = 3011; 
+PORT = 3999; 
 
 // Middleware 
 app.use(express.json())
@@ -34,14 +34,16 @@ app.set('view engine', '.hbs');
 // GET ROUTE for displaying index page
 app.get('/', function(req, res)
     {
-        res.render('index');
+        const pageTitle = "Metropolis Property Management";
+        res.render('index', { title: pageTitle });
     });
 
 // GET ROUTE for displaying all utility providers
 app.get('/utility-providers', function(req, res) {
     let query = "SELECT * FROM UtilityProviders;";
     db.pool.query(query, function(error, rows, fields) {
-        res.render('utility-providers', { data: rows });
+        const pageTitle = "Utility Providers";
+        res.render('utility-providers', { data: rows, title: pageTitle });
     });
 });
 
@@ -145,12 +147,14 @@ app.delete('/delete-utility-provider-ajax', function(req, res) {
 
 // GET ROUTE for displaying Tenants page
 app.get('/tenants', function(req, res) {
-    res.render('tenants');
+    const pageTitle = "Tenants";
+    res.render('tenants', { title: pageTitle });
 });
 
 // GET ROUTE for displaying Units page
 app.get('/units', function(req, res) {
-    res.render('units');
+    const pageTitle = "Units";
+    res.render('units', { title: pageTitle });
 });
 
 /****************************************** RENTAL AGREEMENTS ************************************************/
@@ -176,10 +180,13 @@ app.get('/rental-agreements', function (req, res) {
     db.pool.query(query1, function (error, rentalAgreements, fields) {
       db.pool.query(query2, function (error, units, fields) {
         db.pool.query(query3, function (error, tenants, fields) {
+
+            const pageTitle = "Rental Agreements";
             res.render('rental-agreements', {
               rentalAgreements: rentalAgreements,
               units: units,
               tenants: tenants,
+              title: pageTitle
             });
         });
       });
@@ -188,22 +195,26 @@ app.get('/rental-agreements', function (req, res) {
 
 // GET ROUTE for displaying Provided Utilities page
 app.get('/provided-utilities', function(req, res) {
-    res.render('provided-utilities');
+    const pageTitle = "Provided Utilities";
+    res.render('provided-utilities', { title: pageTitle });
 });
 
 // GET ROUTE for displaying Maintenance Requests page
 app.get('/maintenance-requests', function(req, res) {
-    res.render('maintenance-requests');
+    const pageTitle = "Maintenance Requests";
+    res.render('maintenance-requests', { title: pageTitle });
 });
 
 // GET ROUTE for displaying Maintenance Workers page
 app.get('/maintenance-workers', function(req, res) {
-    res.render('maintenance-workers');
+    const pageTitle = "Maintenance Workers";
+    res.render('maintenance-workers', { title: pageTitle });
 });
 
 // GET ROUTE for displaying Request Assignments page
 app.get('/request-assignments', function(req, res) {
-    res.render('request-assignments');
+    const pageTitle = "Request Assignments";
+    res.render('request-assignments', { title: pageTitle });
 });
 
 app.listen(PORT, function(){     
