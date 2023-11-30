@@ -269,6 +269,57 @@ app.get('/rental-agreements', function (req, res) {
     });
 });
 
+// POST ROUTE for adding a rental agreement
+app.post('/add-rental-agreement-form', function(req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values if necessary
+    let unitID = parseInt(data.unit_ID);
+    let tenantID = parseInt(data.tenant_ID);
+    let startDate = data.start_date;
+    let endDate = data.end_date;
+    let totalRentBalance = parseFloat(data.total_rent_balance);
+    let securityDeposit = parseFloat(data.security_deposit);
+
+    // Ensure that numeric values are valid; set to null if not
+    unitID = isNaN(unitID) ? null : unitID;
+    tenantID = isNaN(tenantID) ? null : tenantID;
+    totalRentBalance = isNaN(totalRentBalance) ? null : totalRentBalance;
+    securityDeposit = isNaN(securityDeposit) ? null : securityDeposit;
+
+    // Create the query to insert a new rental agreement into the RentalAgreements table
+    const query = `
+        INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
+        VALUES (?, ?, ?, ?, ?, ?);
+    `;
+
+    // Execute the query on the database
+    db.pool.query(query, [unitID, tenantID, startDate, endDate, totalRentBalance, securityDeposit], function(error, rows, fields) {
+        // Check for errors
+        if (error) {
+            console.error("Error adding rental agreement:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        // If successful, perform a SELECT * on RentalAgreements to get updated data
+        const selectQuery = `SELECT * FROM RentalAgreements;`;
+
+        db.pool.query(selectQuery, function(error, rows, fields) {
+            // Check for errors in the second query
+            if (error) {
+                console.error("Error fetching rental agreements:", error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            // Send the updated list of rental agreements as the response
+            res.send(rows);
+        });
+    });
+});
+
 // DELETE ROUTE for deleting a rental agreement by id
 app.delete('/delete-rental-agreement-ajax', function(req, res) {
     let data = req.body;

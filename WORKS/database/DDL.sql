@@ -62,14 +62,14 @@ DROP TABLE IF EXISTS RentalAgreements;
 CREATE TABLE RentalAgreements(
     rental_ID int(11) AUTO_INCREMENT UNIQUE NOT NULL,
     unit_ID int(11) NOT NULL,
-    tenant_ID int(11) NOT NULL,
+    tenant_ID int(11),
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     total_rent_balance DECIMAL(7,2) NOT NULL,
     security_deposit DECIMAL(7,2) NOT NULL,
     PRIMARY KEY (rental_ID),
     FOREIGN KEY (unit_ID) REFERENCES Units(unit_ID),
-    FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID)
+    FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS MaintenanceWorkers;
@@ -100,7 +100,7 @@ CREATE TABLE MaintenanceRequests(
     is_closed BOOLEAN NOT NULL,
     PRIMARY KEY (maintenance_request_ID),
     FOREIGN KEY(unit_ID) REFERENCES Units(unit_ID),
-    FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID)
+    FOREIGN KEY (tenant_ID) REFERENCES Tenants(tenant_ID) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS RequestAssignments;
