@@ -1,4 +1,4 @@
-// Assuming addUtilityProviderForm is the form id for adding a new utility provider
+// addUtilityProviderForm is the form id for adding a new utility provider
 var addUtilityProviderForm = document.getElementById("add-utility-provider-form");
 
 addUtilityProviderForm.addEventListener("submit", function (e) {
