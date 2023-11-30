@@ -1,146 +1,113 @@
-<div class="container">
-    <table class="table is-bordered is-striped is-fullwidth">
-      <h1><strong>TENANTS</strong></h1>
-      <thead>
-        <tr>
-          <th>tenant_id</th>
-          <th>first_name</th>
-          <th>last_name</th>
-          <th>phone_number</th>
-          <th>email</th>
-          <th>rent_balance</th>
-          <th class="table-col-button"></th>
-          <th class="table-col-button"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Victoria</td>
-          <td>Jones</td>
-          <td>123-456-7890</td>
-          <td>victoriajones@yahoo.com</td>
-          <td>$5000.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Emma</td>
-          <td>Mathis</td>
-          <td>555-555-5555</td>
-          <td>emmamathis@hotmail.com</td>
-          <td>$6000.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>John</td>
-          <td>Carey</td>
-          <td>31272377777</td>
-          <td>john.carey@gmail.com</td>
-          <td>$4500.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Eric</td>
-          <td>Williams</td>
-          <td>3128388548</td>
-          <td>eric222@gmail.com</td>
-          <td>$5200.00</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <p>&nbsp;</p>
-    <div class="container">
-      <div id="insert" style="display: block">
-        <form id="addTenant">
-          <legend><strong>Add Tenant</strong></legend>
-            <fieldset class="fields">
-              <label>first_name</label> <input type="text" name="firstname">
-              <label>last_name</label> <input type="text" name="lastname">
-              <label>phone_number</label> <input type="text" name="phonenumber">
-              <p>&nbsp;</p>
-              <label>email</label> <input type="text" name="email">
-              <label>rent_balance</label> <input type="text" name="rent_balance">
-            </fieldset>
-            <p>&nbsp;</p>
-            <input class="button is-black" type="submit" id="addTenant" value="Add Tenant">
-            <input class="button is-black" type="button" value="Cancel">
-        </form>
-      </div>
-      <p>&nbsp;</p>
-      <div id="update" style="display: block">
-        <form id="updateTenant">
-          <legend><strong>Update Tenant</strong></legend>
-            <fieldset class="fields">
-              <label>tenant_ID</label> <input type="number" name="tenantID">
-              <label>first_name</label> <input type="text" name="firstname">
-              <label>last_name</label> <input type="text" name="lastname">
-              <label>phone_number</label> <input type="text" name="phonenumber">
-              <p>&nbsp;</p>
-              <label>email</label> <input type="text" name="email">
-              <label>rent_balance</label> <input type="number" name="unitnum">
-            </fieldset>
-            <p>&nbsp;</p>
-            <input class="button is-black" type="submit" id="updateTenant" value="Update Tenant">
-            <input class="button is-black" type="button" value="Cancel">
-        </form>
-      </div>
-      <p>&nbsp;</p>
-    <div id="delete" style="display: block">
-      <form method="POST" id="deleteTenant">
-        <legend><strong>Delete Tenant</strong></legend>
-          <fieldset class="fields">
-          <p>Do you want to delete this tenant?</p>
-          <p>&nbsp;</p>
-          <input type="hidden" name="unitID" id="deleteunitID" value="1">
-          <label><strong>Tenant ID:</strong></label> 3
-          <label> <strong>Name:</strong> </label> John Carey
-        </fieldset>
-        <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="DeleteTenant" value="Delete Tenant">
-        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
-      </form> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>TENANTS</h3>
     </div>
-      
-  </div>
+    {{!-- Create table --}}
+    <table id="tenants-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{!-- {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}} --}}
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Rent Balance</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- For each row, print the tenant_ID, first_name, last_name, phone_number, email, and rent_balance --}}
+            {{#each data}}
+            <tr data-value={{this.tenant_ID}}>
+                <td>{{this.tenant_ID}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.phone_number}}</td>
+                <td>{{this.email}}</td>
+                <td>${{this.rent_balance}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="updateTenant({{this.tenant_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="deleteTenant({{this.tenant_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new tenant --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a tenant --}}
+        <form id="add-tenant-form">
+            <legend><strong>Add Tenant</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-first-name">First Name: </label>
+                <input type="text" name="input-first-name" id="input-first-name">
+                <label for="input-last-name">Last Name: </label>
+                <input type="text" name="input-last-name" id="input-last-name">
+                <label for="input-phone-number">Phone Number: </label>
+                <input type="text" name="input-phone-number" id="input-phone-number">
+                <label for="input-email">Email: </label>
+                <input type="text" name="input-email" id="input-email">
+                <label for="input-rent-balance">Rent Balance: </label>
+                <input type="number" name="input-rent-balance" id="input-rent-balance">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addTenant" value="Add Tenant">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateTenantForm">
+            <legend><strong>Update Tenant</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="tenant-id">Tenant ID:</label>
+                <select class="select" name="tenant-id" id="tenant-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="first-name">First Name:</label>
+                <input type="text" name="first-name" id="first-name" value="{{updatedData.first_name}}">
+                <label for="last-name">Last Name:</label>
+                <input type="text" name="last-name" id="last-name" value="{{updatedData.last_name}}">
+                <label for="phone-number">Phone Number:</label>
+                <input type="text" name="phone-number" id="phone-number" value="{{updatedData.phone_number}}">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" value="{{updatedData.email}}">
+                <label for="rent-balance">Rent Balance:</label>
+                <input type="number" name="rent-balance" id="rent-balance" value="{{updatedData.rent_balance}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-tenant" value="Update Tenant">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+
+<script src="../js/delete_tenant.js"></script>
+<script src="../js/update_tenant.js"></script>
+<script src="../js/add_tenant.js"></script>

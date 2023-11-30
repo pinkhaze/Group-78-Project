@@ -145,10 +145,66 @@ app.delete('/delete-utility-provider-ajax', function(req, res) {
     });
 });
 
-// GET ROUTE for displaying Tenants page
+/****************************************** TENANTS ************************************************/
+
+// GET ROUTE for displaying all tenants
 app.get('/tenants', function(req, res) {
-    const pageTitle = "Tenants";
-    res.render('tenants', { title: pageTitle });
+    let query = "SELECT * FROM Tenants;";
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.error("Error fetching tenants:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        const pageTitle = "Tenants";
+        res.render('tenants', { data: rows, title: pageTitle });
+    });
+});
+
+// POST ROUTE for adding a new tenant
+app.post('/add-tenant-form', function(req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values if necessary
+    // For example, assuming rent_balance is an optional field
+    let rentBalance = parseFloat(data.rent_balance);
+    if (isNaN(rentBalance)) {
+        rentBalance = null;
+    }
+
+    // Create the query to insert a new tenant into the Tenants table
+    const query = `
+        INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
+        VALUES ('${data.first_name}', '${data.last_name}', '${data.phone_number}', '${data.email}', ${rentBalance});
+    `;
+
+    // Execute the query on the database
+    db.pool.query(query, function(error, rows, fields) {
+        // Check for errors
+        if (error) {
+            console.error("Error adding tenant:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        // If successful, perform a SELECT * on Tenants to get updated data
+        const selectQuery = `SELECT * FROM Tenants;`;
+
+        db.pool.query(selectQuery, function(error, rows, fields) {
+            // Check for errors in the second query
+            if (error) {
+                console.error("Error fetching tenants:", error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            // Send the updated list of tenants as the response
+            res.send(rows);
+        });
+    });
 });
 
 // GET ROUTE for displaying Units page
