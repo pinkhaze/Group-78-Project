@@ -1,158 +1,116 @@
-<div class="container">
-    <table class="table is-bordered is-striped is-fullwidth">
-       <h1><strong>MAINTENANCE WORKERS</strong></h1>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>Maintenace Workers</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="maintenence-workers-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
         <thead>
-          <tr>
-            <th>worker_ID</th>
-            <th>first_name</th>
-            <th>last_name</th>
-            <th>phone</th>
-            <th>pay_rate</th>
-            <th>qualification</th>
-            <th>hours_worked</th>
-            <th class="table-col-button"></th>
-            <th class="table-col-button"></th>
-          </tr>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
         </thead>
+        {{!-- Table body --}}
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>John</td>
-                <td>Anderson</td>
-                <td>322-123-4567</td>
-                <td>20.50</td>
-                <td>Electrician</td>
-                <td>40.25</td>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the  wrokers_ID, first_name, last_name, phone, pay_rate, qualification, hours_worked--}}
+            {{#each data}}
+            <tr data-value={{this.worker_ID}}>
+                <td>{{this.worker_ID}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.pay_rate}}</td>
+                <td>{{this.qualification}}</td>
+                <td>{{this.hours_worked}}</td>
+                {{!-- Edit and delete buttons --}}
                 <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
+                    <button onClick="update({{this.worker_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
                 </td>
                 <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jane</td>
-                <td>Brown</td>
-                <td>322-987-6543</td>
-                <td>18.75</td>
-                <td>Plumber</td>
-                <td>37.50</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
+                    <button class="editButton" onclick="deleteMaintenanceWorker({{this.worker_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
                 </td>
             </tr>
-            <tr>
-                <td>3</td>
-                <td>Robert</td>
-                <td>Miller</td>
-                <td>3222345678</td>
-                <td>28.00</td>
-                <td>HVAC service technician</td>
-                <td>10.00</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Sarah</td>
-                <td>Jones</td>
-                <td>3228765432</td>
-                <td>29.25</td>
-                <td>Elevator mechanic</td>
-                <td>30.75</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
+            {{/each}}
         </tbody>
-      </table>
-    </div>
-    <p>&nbsp;</p>
-    <div class="container">
-      <div class="container">
-        <div id="insert" style="display: block">
-      <form id="addMaintenanceWorker">
-        <legend><strong>Add Maintenance Worker</strong></legend>
-          <fieldset class="fields">
-            <label for="first_name">first_name:</label>
-            <input type="text" id="first_name">
-            <label for="last_name">last_name:</label>
-            <input type="text" id="last_name">
-            <label for="phone">phone:</label>
-            <input type="tel" id="phone">
-            <label for="pay_rate">pay_rate:</label>
-            <p>&nbsp;</p>
-            <input type="number" id="pay_rate">
-            <label for="qualification">qualification:</label>
-            <input type="text" id="qualification">
-            <label for="hours_worked">hours_worked:</label>
-            <input type="number" id="hours_worked">
-          </fieldset>
-          <p>&nbsp;</p>
-            <input class="button is-black" type="submit" id="addMaintenanceWorker" value="Add Maintenance Worker">
-            <input class="button is-black" type="button" value="Cancel">
-      </form>
-    </div>
-    <p>&nbsp;</p>
-      <div id="update" style="display: block">
-        <form id="updateMaintenanceWorker">
-          <legend><strong>Update Maintenance Worker</strong></legend>
-            <fieldset class="fields">
-              <label>worker_ID</label> <input type="number" name="workerID">
-              <label>first_name</label> <input type="text" name="firstname">
-              <label>last_name</label> <input type="text" name="lastname">
-              <label>phone</label> <input type="text" name="phone">
-              <p>&nbsp;</p>
-              <label>pay_rate</label> <input type="number" name="payRate">
-              <label>qualification</label> <input type="text" name="qualification">
-              <label>hours_worked</label> <input type="number" name="hoursWorked">
+    </table>
+</div>
+
+{{!-- Add new Maintenance Worker --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a maintenance worker --}}
+        <form id="add-maintenance-worker-form">
+            <legend><strong>Add Maintenance Worker</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="first-name">First Name: </label>
+                <input type="text" name="first-name" id="first-name">
+                <label for="last-name">Last Name: </label>
+                <input type="text" name="last-name" id="last-name">
+                <label for="phone">Phone Number: </label>
+                <input type="text" name="phone" id="phone">
+                <label for="pay-rate">Pay Rate: </label>
+                <input type="number" name="pay-rate" id="pay-rate">
+                <label for="qualification">Qualifications: </label>
+                <input type="text" name="qualification" id="qualification">
+                <label for="hours-worked">Hours Worked: </label>
+                <input type="number" name="hours-worked" id="hours-worked">
             </fieldset>
-            <p>&nbsp;</p>
-            <input class="button is-black" type="submit" id="updateMaintenanceWorker" value="Update Maintenance Worker">
-            <input class="button is-black" type="button" value="Cancel">
+            <input class="button is-black is-small" type="submit" id="addMaintenanceWorker" value="Add Maintenance Worker">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
         </form>
-      </div>
-      <p>&nbsp;</p>
-      <div id="delete" style="display: block">
-        <form method="POST" id="deleteUnit">
-          <legend><strong>Delete Unit</strong></legend>
-            <fieldset class="fields">
-            <p>Do you want to delete this Maintenance Worker?</p>
-            <p>&nbsp;</p>
-            <input type="hidden" name="maintenanceworkerID" id="deletemaintenanceworkerID" value="1">
-            <label><strong>Maintenance Worker ID:</strong></label> 2
-            <label> <strong>Name:</strong> </label> Robert Miller
-          </fieldset>
-          <p>&nbsp;</p>
-          <input class="button is-black" type="submit" id="DeleteMaintenanceWorker" value="Delete Maintenance Worker">
-          <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
-        </form> 
-      </div>
-  </div>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateMaintenanceWorkerForm">
+            <legend><strong>Update Maintenance Worker</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="worker-id">Worker ID:</label>
+                <select class="select" name="worker-id" id="worker-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.worker_ID}}">{{this.worker_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="first-name">First Name:</label>
+                <input type="text" name="first-name" id="first-name" value="{{updatedData.first_name}}">
+                <label for="last-name">Last Name:</label>
+                <input type="text" name="last-name" id="last-name" value="{{updatedData.last_name}}">
+                <label for="phone">Phone Number:</label>
+                <input type="text" name="phone" id="phone" value="{{updatedData.phone}}">
+                <label for="pay-rate">Pay Rate:</label>
+                <input type="number" name="pay-rate" id="pay-rate" value="{{updatedData.pay_rate}}">
+                <label for="qualification">Qualifications: </label>
+                <input type="text" name="qualification" id="qualificiation" value="{{updatedData.qualification}}">
+                <label for="hours-worked">Hours Worked: </label>
+                <input type="number" name="hours-worked" id="hours-worked" value="{{updatedData.hours_worked}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-maintenance-worker" value="Update Maintenance Worker">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+<script src="../js/delete_maintenance_worker.js"></script>
+<script src="../js/update_maintenance_worker.js"></script>
+<script src="../js/add_maintenance_worker.js"></script>
