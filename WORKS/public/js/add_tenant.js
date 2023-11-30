@@ -1,20 +1,17 @@
-// Assuming addTenantForm is the form id for adding a new tenant
-var addTenantForm = document.getElementById("add-tenant-form");
+const addTenantForm = document.getElementById("add-tenant-form");
 
 addTenantForm.addEventListener("submit", function (e) {
-    // Prevent the default form submission
+    // Prevent default form submission
     e.preventDefault();
 
     console.log("Clicked Add Tenant button.");
 
-    // Get form fields
     let firstNameInput = document.getElementById("input-first-name");
     let lastNameInput = document.getElementById("input-last-name");
     let phoneNumberInput = document.getElementById("input-phone-number");
     let emailInput = document.getElementById("input-email");
     let rentBalanceInput = document.getElementById("input-rent-balance");
 
-    // Get values from the form fields
     let firstNameValue = firstNameInput.value;
     let lastNameValue = lastNameInput.value;
     let phoneNumberValue = phoneNumberInput.value;

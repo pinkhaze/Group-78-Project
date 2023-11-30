@@ -210,6 +210,23 @@ app.post('/add-tenant-form', function(req, res) {
     });
 });
 
+// DELETE ROUTE for deleting a tenant by id
+app.delete('/delete-tenant-ajax', function(req, res) {
+    let data = req.body;
+    let tenantID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM Tenants WHERE tenant_ID = ?";
+
+    db.pool.query(deleteQuery, [tenantID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); // Internal Server Error
+        } else {
+            res.sendStatus(204); // No Content (indicating successful deletion)
+        }
+    });
+});
+
 // GET ROUTE for displaying Units page
 app.get('/units', function(req, res) {
     const pageTitle = "Units";
@@ -237,20 +254,37 @@ app.get('/rental-agreements', function (req, res) {
     let query3 = `SELECT * FROM Tenants;`;
   
     db.pool.query(query1, function (error, rentalAgreements, fields) {
-      db.pool.query(query2, function (error, units, fields) {
-        db.pool.query(query3, function (error, tenants, fields) {
+        db.pool.query(query2, function (error, units, fields) {
+            db.pool.query(query3, function (error, tenants, fields) {
 
-            const pageTitle = "Rental Agreements";
-            res.render('rental-agreements', {
-              rentalAgreements: rentalAgreements,
-              units: units,
-              tenants: tenants,
-              title: pageTitle
+                const pageTitle = "Rental Agreements";
+                res.render('rental-agreements', {
+                    rentalAgreements: rentalAgreements,
+                    units: units,
+                    tenants: tenants,
+                    title: pageTitle
+                });
             });
         });
-      });
     });
-  });
+});
+
+// DELETE ROUTE for deleting a rental agreement by id
+app.delete('/delete-rental-agreement-ajax', function(req, res) {
+    let data = req.body;
+    let rentalAgreementID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM RentalAgreements WHERE rental_ID = ?";
+
+    db.pool.query(deleteQuery, [rentalAgreementID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); 
+        } else {
+            res.sendStatus(204); 
+        }
+    });
+});
 
 // GET ROUTE for displaying Provided Utilities page
 app.get('/provided-utilities', function(req, res) {
