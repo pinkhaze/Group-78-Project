@@ -81,32 +81,34 @@
 {{!-- Update data  --}}
 <div class="container p-2">
     <div id="update" style="display: block">
-        <form id="update-tenant-form">
+        <form id="updateTenantForm">
             <legend><strong>Update Tenant</strong></legend>
             <fieldset class="fields p-2">
                 <label for="tenant-id">Tenant ID:</label>
                 <select class="select" name="tenant-id" id="tenant-id">
                     <option value=""></option>
                     {{#each data}}
-                    <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
+                        <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
                     {{/each}}
                 </select>
                 <label for="first-name">First Name:</label>
-                <input type="text" name="first-name" id="input-first-name-update" value="{{updatedData.first_name}}">
+                <input type="text" name="first-name" id="first-name" value="{{updatedData.first_name}}">
                 <label for="last-name">Last Name:</label>
-                <input type="text" name="last-name" id="input-last-name-update" value="{{updatedData.last_name}}">
+                <input type="text" name="last-name" id="last-name" value="{{updatedData.last_name}}">
                 <label for="phone-number">Phone Number:</label>
-                <input type="text" name="phone-number" id="input-phone-number-update" value="{{updatedData.phone_number}}">
+                <input type="text" name="phone-number" id="phone-number" value="{{updatedData.phone_number}}">
                 <label for="email">Email:</label>
-                <input type="text" name="email" id="-input-email-update" value="{{updatedData.email}}">
+                <input type="text" name="email" id="email" value="{{updatedData.email}}">
                 <label for="rent-balance">Rent Balance:</label>
-                <input type="number" name="rent-balance" id="input-rent-balance-update" value="{{updatedData.rent_balance}}">
+                <input type="number" name="rent-balance" id="rent-balance" value="{{updatedData.rent_balance}}">
             </fieldset>
             <input class="button is-black is-small" type="submit" id="update-tenant" value="Update Tenant">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
     </div>
 </div>
+
+  </form>
 
 <script src="../js/delete_tenant.js"></script>
 <script src="../js/update_tenant.js"></script>

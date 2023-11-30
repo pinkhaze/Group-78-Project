@@ -166,6 +166,75 @@ app.get('/tenants', function(req, res) {
     });
 });
 
+app.get('/tenantsID', function(req, res) {
+    // SQL query to select specific fields for a tenant based on tenant_ID
+    let query = "SELECT first_name, last_name, phone_number, email, rent_balance FROM Tenants WHERE tenant_ID = ?";
+
+    // Extract tenant_ID from the query parameter and convert it to an integer
+    let tenantID = parseInt(req.query.id);
+
+    // Execute the SQL query with the specified tenant_ID
+    db.pool.query(query, [tenantID], function(error, results, fields) {
+        if (error) {
+            // If there's an error executing the query, log the error and send a 500 Internal Server Error response
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            // If the query is successful, send the results as JSON
+            res.json(results);
+        }
+    });
+});
+
+app.put('/update-tenant', function(req, res) {
+    let data = req.body;
+
+    // Extracting data from the request body
+    let tenantID = parseInt(data.tenantId);
+    let firstName = data.firstName;
+    let lastName = data.lastName;
+    let phoneNumber = data.phoneNumber;
+    let email = data.email;
+    let rentBalance = parseFloat(data.rentBalance);
+
+    // Input validation
+    if (isNaN(tenantID) || isNaN(rentBalance)) {
+        res.status(400).send(`Invalid entry`);
+        return;
+    }
+
+    // SQL queries
+    let selectTenant = 'SELECT * FROM Tenants WHERE tenant_ID = ?';
+    let updateQuery = `UPDATE Tenants 
+                   SET first_name = ?, 
+                       last_name = ?, 
+                       phone_number = ?, 
+                       email = ?, 
+                       rent_balance = ? 
+                   WHERE tenant_ID = ?`;
+
+    let updateValues = [firstName, lastName, phoneNumber, email, isNaN(rentBalance) ? null : rentBalance, tenantID];
+
+    // Execute the update query
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update tenant.'); 
+        } else {
+            // Fetch the updated tenant
+            db.pool.query(selectTenant, [tenantID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Send the updated tenant back to the client
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
 // POST ROUTE for adding a new tenant
 app.post('/add-tenant-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
@@ -317,6 +386,40 @@ app.post('/add-rental-agreement-form', function(req, res) {
             // Send the updated list of rental agreements as the response
             res.send(rows);
         });
+    });
+});
+
+// PUT route for updating rental agreements
+app.put('/update-rental-agreement', (req, res) => {
+    // Extract data from the request body
+    const { rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit } = req.body;
+
+    // Assuming you have a database connection (e.g., using a library like MySQL or MongoDB)
+    // Perform the update operation in your database
+    // Replace the following lines with your actual database update logic
+
+    // Sample MySQL query (assuming you are using a MySQL database)
+    const updateQuery = `
+        UPDATE RentalAgreements
+        SET
+            unit_ID = ?,
+            tenant_ID = ?,
+            start_date = ?,
+            end_date = ?,
+            total_rent_balance = ?,
+            security_deposit = ?
+        WHERE rental_ID = ?;
+    `;
+
+    // Execute the update query
+    db.pool.query(updateQuery, [unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit, rental_ID], (error, results) => {
+        if (error) {
+            console.error('Error updating rental agreement:', error);
+            res.status(500).send('Internal Server Error');
+        } else {
+            // Assuming success, you can send a success response
+            res.json({ message: 'Rental agreement updated successfully' });
+        }
     });
 });
 

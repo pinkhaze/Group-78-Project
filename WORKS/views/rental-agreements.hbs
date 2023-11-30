@@ -87,6 +87,48 @@
     </div>
 </div>
 
+
+<h2>Update Rental Agreement</h2>
+<form id="update-rental-agreement-form-ajax">
+
+    <!-- Hidden field to store the rental agreement ID -->
+    <input type="hidden" id="rental-id-update" name="rental-id-update" />
+
+    <!-- Select dropdown for unit ID -->
+    <label for="input-unit-id-update">Unit: </label>
+    <select name="input-unit-id-update" id="input-unit-id-update">
+        <!-- Options will be populated dynamically using JavaScript -->
+    </select>
+
+    <!-- Select dropdown for tenant ID -->
+    <label for="input-tenant-id-update">Tenant: </label>
+    <select name="input-tenant-id-update" id="input-tenant-id-update">
+        <!-- Options will be populated dynamically using JavaScript -->
+    </select>
+
+    <!-- Input field for start date -->
+    <label for="input-start-date-update">Start Date: </label>
+    <input type="date" name="input-start-date-update" id="input-start-date-update" required />
+
+    <!-- Input field for end date -->
+    <label for="input-end-date-update">End Date: </label>
+    <input type="date" name="input-end-date-update" id="input-end-date-update" required />
+
+    <!-- Input field for total rent balance -->
+    <label for="input-total-rent-balance-update">Total Rent Balance: </label>
+    <input type="number" name="input-total-rent-balance-update" id="input-total-rent-balance-update" required />
+
+    <!-- Input field for security deposit -->
+    <label for="input-security-deposit-update">Security Deposit: </label>
+    <input type="number" name="input-security-deposit-update" id="input-security-deposit-update" required />
+
+    <!-- Submit button -->
+    <input type="submit" value="Update Rental Agreement">
+
+    <!-- Cancel button to hide the form -->
+    <input type="button" value="Cancel" onClick="resetUpdateForm()">
+</form>
+    
 <script src="../js/add_rental_agreement.js"></script>
 <script src="../js/update_rental_agreement.js"></script>
 <script src="../js/delete_rental_agreement.js"></script>
