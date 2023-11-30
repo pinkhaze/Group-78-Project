@@ -151,6 +151,114 @@ app.delete('/delete-unit-ajax', function(req, res) {
     });
 });
 
+/****************************************** Maintenance Workers ************************************************/
+
+// GET ROUTE for displaying all utility providers
+app.get('/maintenance-workers', function(req, res) {
+    let query = "SELECT * FROM MaintenanceWorkers;";
+    db.pool.query(query, function(error, rows, fields) {
+        const pageTitle = "Maintenance Workers";
+        res.render('maintenance-workers', { data: rows, title: pageTitle });
+    });
+});
+
+/// Load Maintenance Worker before Update
+app.get('/workersID', function(req, res){
+    let query = "SELECT first_name, last_name, phone, pay_rate, qualification, hours_worked FROM MaintenanceWorkers WHERE worker_ID = ?";
+    let workerID = parseInt(req.query.id)
+   db.pool.query(query, [workerID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+                res.json(results);
+        }
+    });
+});
+
+// POST ROUTE for adding maintenance worker
+app.post('/add-maintenance-worker-form', function(req, res) {
+    let data = req.body;
+
+    // Ensure data is correct
+    let firstName = data.first_name;
+    let lastName = data.last_name;
+    let phone = data.phone;
+    let payRate = parseFloat(data.pay_rate);
+    let qualification = data.qualification;
+    let hoursWorked = parseFloat(data.hours_worked);
+
+    let query = `INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualfication, hours_worked) VALUES (?, ?, ?, ?, ?, ?)`;
+    console.log(name)
+    
+    db.pool.query(query, [firstName, lastName, phone, payRate, qualification, hoursWorked], function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            return res.sendStatus(500); // Internal Server Error
+        } else {
+            console.log("Maintenance Worker added successfully");
+            res.sendStatus(200); // OK
+        }
+    });
+});
+
+// PUT ROUTE for updating a maintenance worker by id
+app.put('/update-maintenance-worker', function(req, res) {
+    let data = req.body;
+    let workerID = parseInt(data.worker_ID);
+    let firstName = data.first_name;
+    let lastName = data.last_name;
+    let phone = data.phone;
+    let payRate = parseFloat(data.pay_rate);
+    let qualifcation = data.qualifcation;
+    let hoursWorked = parstFloat(data.hours_worked);
+
+    let selectedMaitnenanceWorker = 'SELECT * FROM MaintenanceWorker WHERE worker_ID = ?';
+    let updateQuery = `UPDATE MaintenanceWorkers 
+                   SET first_name = ?, 
+                       last_name = ?,
+                       phone = ?,
+                       pay_rate = ?,
+                       qualification = ?,
+                       hours_worked = ?
+                   WHERE worker_ID = ?`;
+
+    let updateValues = [firstName, lastName, phone, payRate, qualifcation, hoursWorked];
+
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update Maintenance Worker.'); 
+        } else {
+            db.pool.query(selectedMaitnenanceWorker, [workerID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// DELETE ROUTE for deleting a Maintenance Worker by id
+app.delete('/delete-maintenance-worker-ajax', function(req, res) {
+    let data = req.body;
+    let workerID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM MaintenanceWorkers WHERE worker_ID = ?";
+
+    db.pool.query(deleteQuery, [workerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); 
+        } else {
+            res.sendStatus(204); 
+        }
+    });
+});
+
 
 /****************************************** Utility Providers ************************************************/
 
