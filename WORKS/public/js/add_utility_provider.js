@@ -1,4 +1,4 @@
-// Assuming addUtilityProviderForm is the form id for adding a new utility provider
+// addUtilityProviderForm is the form id for adding a new utility provider
 var addUtilityProviderForm = document.getElementById("add-utility-provider-form");
 
 addUtilityProviderForm.addEventListener("submit", function (e) {
@@ -53,5 +53,4 @@ addUtilityProviderForm.addEventListener("submit", function (e) {
 // Function to reset the form
 function resetForm() {
     location.reload(); // Reload the page to reset the form
-    console.log("Form reset functionality goes here.");
 }
