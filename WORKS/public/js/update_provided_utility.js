@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function update(utilityID) {
-    fetch(`/utilityID?id=${utilityID}`)
+    fetch(`/providedUtilityID?id=${utilityID}`)
         .then((response) => response.json())
         .then((updatedDataArray) => {
             if (updatedDataArray.length > 0) {
