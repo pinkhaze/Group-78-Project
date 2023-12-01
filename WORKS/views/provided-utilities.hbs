@@ -57,7 +57,8 @@
         <form id="add-provided-utility-form">
             <legend><strong>Add Provided Utility</strong></legend>
             <fieldset class="fields p-2">
-                <label for="input-unit_ID">Unit ID: </label>
+                
+                <label for="input-unit-ID">Unit ID: </label>
                 <option value=""></option>
                     {{#each data}}
                     <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
@@ -82,22 +83,28 @@
         <form id="updateProvidedUtility">
             <legend><strong>Update Provided Utility</strong></legend>
             <fieldset class="fields p-2">
-              <label for="unit-id">Unit ID:</label>
-              <select class="select" name="unit-id" id="unit-id">
+            <label for="utility-ID">Utility ID: </label>
+            <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.utility_ID}}">{{this.utility_ID}}</option>
+                    {{/each}}
+                </select>
+              <label for="unit-ID">Unit ID:</label>
+              <select class="select" name="unit-ID" id="unit-ID">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
                     {{/each}}
                 </select>
-                <label for="provider-id">Provider ID:</label>
-                <select class="select" name="provider-id" id="provider-id">
+                <label for="provider-ID">Provider ID:</label>
+                <select class="select" name="provider-ID" id="provider-ID">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
                     {{/each}}
                 </select>
             </fieldset>
-            <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Provider">
+            <input class="button is-black is-small" type="submit" id="update-provided-utility" value="Update Utility Provider">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
     </div>
