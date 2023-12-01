@@ -5,7 +5,7 @@
 
 function deleteMaintenanceRequest(maintenanceRequestID) {
     console.log('Clicked delete button');
-    let link = '/delete-provided-utility-ajax/';
+    let link = '/delete-maintenance-request-ajax/';
     let data = {
       id: maintenanceRequestID
     };

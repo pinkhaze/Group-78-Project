@@ -47,7 +47,7 @@ function update(utilityID) {
 
 
 // Get the form element
-let updateProviderUtilityForm = document.getElementById('update-provided-utility');
+let updateProviderUtilityForm = document.getElementById('updateProvidedUtility');
 
 updateProviderUtilityForm.addEventListener("submit", function (e) {
     // Prevent the form from submitting
