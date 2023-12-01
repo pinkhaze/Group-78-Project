@@ -32,17 +32,6 @@ function fetchTenantData(tenantId) {
         });
 }
 
-function resetTenantForm() {
-    // Clear form fields instead of reloading the page
-    document.getElementById("tenant-id").value = "";
-    document.getElementById("first-name").value = "";
-    document.getElementById("last-name").value = "";
-    document.getElementById("phone-number").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("rent-balance").value = "";
-    console.log("Tenant form reset functionality goes here.");
-}
-
 document.getElementById("updateTenantForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -88,7 +77,6 @@ document.getElementById("updateTenantForm").addEventListener("submit", function 
         throw new Error("There was an error with the input.");
     })
     .then(() => {
-        // Update the table row with the new data
         location.reload();
     })
     .catch((error) => {

@@ -703,40 +703,35 @@ app.post('/add-tenant-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-    // Capture NULL values if necessary
-    // For example, assuming rent_balance is an optional field
     let rentBalance = parseFloat(data.rent_balance);
-    if (isNaN(rentBalance)) {
-        rentBalance = null;
-    }
 
-    // Create the query to insert a new tenant into the Tenants table
+    // Query to insert a new tenant into Tenants table
     const query = `
         INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
         VALUES ('${data.first_name}', '${data.last_name}', '${data.phone_number}', '${data.email}', ${rentBalance});
     `;
 
-    // Execute the query on the database
+    // Execute query
     db.pool.query(query, function(error, rows, fields) {
-        // Check for errors
+        // Error handling
         if (error) {
             console.error("Error adding tenant:", error);
             res.status(500).send("Internal Server Error");
             return;
         }
 
-        // If successful, perform a SELECT * on Tenants to get updated data
+        // SELECT * on Tenants to get updated data
         const selectQuery = `SELECT * FROM Tenants;`;
 
         db.pool.query(selectQuery, function(error, rows, fields) {
-            // Check for errors in the second query
+            // Error handling
             if (error) {
                 console.error("Error fetching tenants:", error);
                 res.status(500).send("Internal Server Error");
                 return;
             }
 
-            // Send the updated list of tenants as the response
+            // Send tenant data
             res.send(rows);
         });
     });
@@ -754,7 +749,7 @@ app.delete('/delete-tenant-ajax', function(req, res) {
             console.log(error);
             res.sendStatus(500); // Internal Server Error
         } else {
-            res.sendStatus(204); // No Content (indicating successful deletion)
+            res.sendStatus(204);
         }
     });
 });
@@ -806,7 +801,7 @@ app.post('/add-rental-agreement-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-    // Capture NULL values if necessary
+    // Capture NULL values
     let unitID = parseInt(data.unit_ID);
     let tenantID = parseInt(data.tenant_ID);
     let startDate = data.start_date;
@@ -814,13 +809,7 @@ app.post('/add-rental-agreement-form', function(req, res) {
     let totalRentBalance = parseFloat(data.total_rent_balance);
     let securityDeposit = parseFloat(data.security_deposit);
 
-    // Ensure that numeric values are valid; set to null if not
-    unitID = isNaN(unitID) ? null : unitID;
-    tenantID = isNaN(tenantID) ? null : tenantID;
-    totalRentBalance = isNaN(totalRentBalance) ? null : totalRentBalance;
-    securityDeposit = isNaN(securityDeposit) ? null : securityDeposit;
-
-    // Create the query to insert a new rental agreement into the RentalAgreements table
+    // Create query to insert a new rental agreement into the RentalAgreements table
     const query = `
         INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
         VALUES (?, ?, ?, ?, ?, ?);
@@ -835,11 +824,11 @@ app.post('/add-rental-agreement-form', function(req, res) {
             return;
         }
 
-        // If successful, perform a SELECT * on RentalAgreements to get updated data
+        // SELECT * on RentalAgreements to get updated data
         const selectQuery = `SELECT * FROM RentalAgreements;`;
 
         db.pool.query(selectQuery, function(error, rows, fields) {
-            // Check for errors in the second query
+            // Error handling
             if (error) {
                 console.error("Error fetching rental agreements:", error);
                 res.status(500).send("Internal Server Error");
@@ -852,39 +841,32 @@ app.post('/add-rental-agreement-form', function(req, res) {
     });
 });
 
-// PUT route for updating rental agreements
-app.put('/update-rental-agreement', (req, res) => {
-    // Extract data from the request body
-    const { rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit } = req.body;
+// // PUT route for updating rental agreements
+// app.put('/update-rental-agreement', (req, res) => {
+//     const { rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit } = req.body;
 
-    // Assuming you have a database connection (e.g., using a library like MySQL or MongoDB)
-    // Perform the update operation in your database
-    // Replace the following lines with your actual database update logic
+//     const updateQuery = `
+//         UPDATE RentalAgreements
+//         SET
+//             unit_ID = ?,
+//             tenant_ID = ?,
+//             start_date = ?,
+//             end_date = ?,
+//             total_rent_balance = ?,
+//             security_deposit = ?
+//         WHERE rental_ID = ?;
+//     `;
 
-    // Sample MySQL query (assuming you are using a MySQL database)
-    const updateQuery = `
-        UPDATE RentalAgreements
-        SET
-            unit_ID = ?,
-            tenant_ID = ?,
-            start_date = ?,
-            end_date = ?,
-            total_rent_balance = ?,
-            security_deposit = ?
-        WHERE rental_ID = ?;
-    `;
-
-    // Execute the update query
-    db.pool.query(updateQuery, [unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit, rental_ID], (error, results) => {
-        if (error) {
-            console.error('Error updating rental agreement:', error);
-            res.status(500).send('Internal Server Error');
-        } else {
-            // Assuming success, you can send a success response
-            res.json({ message: 'Rental agreement updated successfully' });
-        }
-    });
-});
+// 
+//     db.pool.query(updateQuery, [unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit, rental_ID], (error, results) => {
+//         if (error) {
+//             console.error('Error updating rental agreement:', error);
+//             res.status(500).send('Internal Server Error');
+//         } else {
+//             res.json({ message: 'Rental agreement updated successfully' });
+//         }
+//     });
+// });
 
 // DELETE ROUTE for deleting a rental agreement by id
 app.delete('/delete-rental-agreement-ajax', function(req, res) {

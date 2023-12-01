@@ -3,7 +3,7 @@
 {{!-- Display data --}}
 <div class="container p-2">
     <div class="content">
-        <h3>Provided Utilities</h3>
+        <h3>PROVIDED UTILITIES</h3>
     </div>
     {{!-- Create table --}}
     <table id="provided-utilities-table" class="table is-bordered is-striped is-fullwidth">
@@ -32,7 +32,7 @@
             <tr data-value={{this.utility_ID}}>
                 <td>{{this.utility_ID}}</td>
                 <td>{{this.unit_ID}}</td>
-                <td>${{this.provider_ID}}</td>
+                <td>{{this.provider_ID}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
                     <button onClick="update({{this.utility_ID}})">

@@ -3,7 +3,7 @@
 {{!-- Display data --}}
 <div class="container p-2">
     <div class="content">
-        <h3>Maintenance Requests</h3>
+        <h3>MAINTENANCE REQUESTS</h3>
     </div>
     {{!-- Create table --}}
     <table id="maintenance-requests-table" class="table is-bordered is-striped is-fullwidth">
@@ -32,12 +32,12 @@
             <tr data-value={{this.maintenance_request_ID}}>
                 <td>{{this.maintenance_request_ID}}</td>
                 <td>{{this.unit_ID}}</td>
-                <td>${{this.tenant_ID}}</td>
-                <td>${{this.description}}</td>
-                <td>${{this.date_submitted}}</td>
-                <td>${{this.time_to_complete}}</td>
+                <td>{{this.tenant_ID}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.date_submitted}}</td>
+                <td>{{this.time_to_complete}}</td>
                 <td>${{this.repair_cost}}</td>
-                <td>${{this.is_closed}}</td>
+                <td>{{this.is_closed}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
                     <button onClick="update({{this.maintenance_request_ID}})">

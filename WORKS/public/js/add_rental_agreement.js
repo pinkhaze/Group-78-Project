@@ -1,4 +1,9 @@
-var addRentalAgreementForm = document.getElementById("add-rental-agreement-form");
+// Citation for the following function:
+// Date: 11/15/23
+// Based on: nodejs-starter-app (Add new data)
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+
+const addRentalAgreementForm = document.getElementById("add-rental-agreement-form");
 
 addRentalAgreementForm.addEventListener("submit", function (e) {
     // Prevent the default form submission
@@ -22,7 +27,7 @@ addRentalAgreementForm.addEventListener("submit", function (e) {
     let totalRentBalanceValue = totalRentBalanceInput.value;
     let securityDepositValue = securityDepositInput.value;
 
-    // Check for NULL or empty values
+    // Check for empty values
     if (!unitIdValue || !tenantIdValue || !startDateValue || !endDateValue || !totalRentBalanceValue || !securityDepositValue) {
         console.log("Please fill in all fields.");
         return;

@@ -90,32 +90,30 @@
 <!-- Update rental agreement -->
 <div class="container p-2">
     <div id="update" style="display: none"></div>
-    <!-- Form to update a rental agreement -->
     <form id="update-rental-agreement-form">
         <legend><strong>Update Rental Agreement</strong></legend>
         <fieldset class="fields p-2">
-            <!-- Include a dropdown to select the rental agreement to update -->
-            <label for="update-agreement-id">Select Agreement to Update: </label>
+            <label for="update-agreement-id">Agreement: </label>
             <select name="update-agreement-id" id="update-agreement-id">
                 <option value="">Select an Agreement</option>
                 {{#each agreements}}
-                    <option value="{{this.agreement_ID}}">{{this.unit_ID}} - {{this.tenant_name}}</option>
+                    <option value="{{this.rental_ID}}">{{this.unit_ID}} - {{this.tenant_name}}</option>
                 {{/each}}
             </select>
-            <!-- Include fields for updating the agreement details -->
-            <label for="update-start-date">New Start Date: </label>
+            <label for="update-start-date">Start Date: </label>
             <input type="date" name="update-start-date" id="update-start-date">
-            <label for="update-end-date">New End Date: </label>
+            <label for="update-end-date">End Date: </label>
             <input type="date" name="update-end-date" id="update-end-date">
-            <label for="update-total-rent-balance">New Total Rent Balance: </label>
+            <label for="update-total-rent-balance">Total Rent Balance: </label>
             <input type="number" name="update-total-rent-balance" id="update-total-rent-balance">
-            <label for="update-security-deposit">New Security Deposit: </label>
+            <label for="update-security-deposit">Security Deposit: </label>
             <input type="number" name="update-security-deposit" id="update-security-deposit">
         </fieldset>
         <input class="button is-black is-small" type="submit" id="updateRentalAgreement" value="Update Rental Agreement">
         <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
     </form>
 </div>
+
   
 <script src="../js/add_rental_agreement.js"></script>
 <script src="../js/update_rental_agreement.js"></script>
