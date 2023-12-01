@@ -9,7 +9,8 @@ const path = require('path');
 const { engine } = require('express-handlebars');
 const exphbs = require('express-handlebars'); 
 // Import database
-const db = require('./database/db-connector')
+const db = require('./database/db-connector');
+const { prototype } = require('events');
 
 // Instantiate an express object to interact with the server
 const app = express();            
@@ -152,27 +153,22 @@ app.delete('/delete-unit-ajax', function(req, res) {
 });
 
 /****************************************** Provided Utilities ************************************************/
-/// GET ROUTE for displaying all units
+/// GET ROUTE for displaying all provided Utilities
 app.get('/provided-utilities', function(req, res) {
-    let query = `
-  SELECT ProvidedUtilities.utility_ID, Units.unit_number, Units.is_available, Units.num_bedroom,
-         Units.num_bathroom, Units.square_feet, Units.rent_price,
-         UtilityProviders.name AS utility_provider_name, UtilityProviders.service_type, UtilityProviders.utility_cost
-  FROM ProvidedUtilities
-  JOIN Units ON ProvidedUtilities.unit_ID = Units.unit_ID
-  JOIN UtilityProviders ON ProvidedUtilities.provider_ID = UtilityProviders.provider_ID`;
+    let query = `SELECT * FROM ProvidedUtilities`;
+
 
     db.pool.query(query, function(error, rows, fields) {
         const pageTitle = "Provided Utilities";
-        res.render('units', { data: rows, title: pageTitle });
+        res.render('provided-utilities', { data: rows, title: pageTitle });
     });
 });
 
-/// Load Unit before Update
-app.get('/unitsID', function(req, res){
-    let query = "SELECT unit_number, is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year FROM Units WHERE unit_ID = ?";
-    let unitID = parseInt(req.query.id)
-   db.pool.query(query, [unitID], function(error, results, fields) {
+/// Load providedUtilities before Update
+app.get('/providedUtilityID', function(req, res){
+    let query = "SELECT utility_ID, unit_ID, provider_ID WHERE utility_ID = ?";
+    let utilityID = parseInt(req.query.id)
+   db.pool.query(query, [utilityID], function(error, results, fields) {
         if (error) {
             console.error("Error executing query:", error);
             res.status(500).json({ error: "Internal Server Error" });
@@ -182,23 +178,18 @@ app.get('/unitsID', function(req, res){
     });
 });
 
-// POST ROUTE for adding unit
-app.post('/add-unit-form', function(req, res) {
+// POST ROUTE for adding provided utility
+app.post('/add-provided-utility-form', function(req, res) {
     let data = req.body;
 
     // Ensure that the utility cost is a valid number
-    let unitNumber = parseInt(data.unit_number);
-    let isAvailable = Boolean(Number(data.is_available));
-    let numBedroom = parseInt(data.num_bedroom);
-    let numBathroom = parseInt(data.num_bathroom);
-    let squareFeet = parseInt(data.square_feet);
-    let rentPrice = parseFloat(data.rent_price);
-    let previousYearIncome = parseFloat(data.previous_year_income);
-    let year = parseInt(data.year);
+    let unitID = parseInt(data.unit_ID);
+    let providerID = parseInt(data.provider_ID);
 
-    let query = `INSERT INTO Units (is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    let query = `INSERT INTO ProvidedUtilities (unit_ID, provider_ID) VALUES (?, ?)`;
     
-    db.pool.query(query, [isAvailable, numBedroom, numBathroom, squareFeet, unitNumber, rentPrice,previousYearIncome, year], function(error, rows, fields) {
+    db.pool.query(query, [unitID, providerID], function(error, rows, fields) {
         if (error) {
             console.error(error);
             return res.sendStatus(500); // Internal Server Error
@@ -209,40 +200,29 @@ app.post('/add-unit-form', function(req, res) {
     });
 });
 
-// PUT ROUTE for updating a unit by id
-app.put('/update-unit', function(req, res) {
+// PUT ROUTE for updating a provided utility by id
+app.put('/update-provided-utility', function(req, res) {
     let data = req.body;
 
+    // ensure data is correct
+    let utilityID = parseInt(data.utility_ID);
     let unitID = parseInt(data.unit_ID);
-    let isAvailable = Boolean(Number(data.is_available));
-    let numBedroom = parseInt(data.num_bedroom);
-    let numBathroom = parseInt(data.num_bathroom);
-    let squareFeet = parseInt(data.square_feet);
-    let rentPrice = parseFloat(data.rent_price);
-    let previousYearIncome = parseFloat(data.previous_year_income);
-    let year = parseInt(data.year);
-
+    let providerID = parseInt(data.provider_ID);
    
-    let selectUnit = 'SELECT * FROM Units WHERE unit_ID = ?';
-    let updateQuery = `UPDATE Units 
-                   SET is_availabe = ?,
-                       num_bedroom = ?,
-                       num_bathroom = ?,
-                       square_feet = ?,
-                       unit_number = ?,
-                       rent_price = ?,
-                       previous_year_income = ?,
-                       year = ?
-                   WHERE unit_ID = ?`;
+    let selectProvidedUtility = 'SELECT * FROM ProvidedUtilities WHERE utility_ID = ?';
+    let updateQuery = `UPDATE ProvidedUtilities 
+                   SET unit_ID = ?,
+                       provider_ID =?
+                   WHERE utility_ID = ?`;
 
-    let updateValues = [isAvailable, numBedroom, numBathroom, squareFeet, unitNumber, rentPrice, previousYearIncome, year];
+    let updateValues = [unitID, providerID];
 
     db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error: Unable to update utility provider.'); 
         } else {
-            db.pool.query(selectUnit, [unitID], function(error, rows, fields) {
+            db.pool.query(selectProvidedUtility, [utilityID], function(error, rows, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -254,14 +234,114 @@ app.put('/update-unit', function(req, res) {
     });
 });
 
-// DELETE ROUTE for deleting a utility provider by id
-app.delete('/delete-unit-ajax', function(req, res) {
+// DELETE ROUTE for deleting a provided utility by id
+app.delete('/delete-provided-utility-ajax', function(req, res) {
     let data = req.body;
-    let unitID = parseInt(data.id);
+    let utilityID = parseInt(data.id);
 
-    let deleteQuery = "DELETE FROM Units WHERE unit_ID = ?";
+    let deleteQuery = "DELETE FROM ProvidedUtilites WHERE utility_ID = ?";
 
-    db.pool.query(deleteQuery, [unitID], function(error, rows, fields) {
+    db.pool.query(deleteQuery, [utilityID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); 
+        } else {
+            res.sendStatus(204); 
+        }
+    });
+});
+
+
+/****************************************** Request Assignments ************************************************/
+/// GET ROUTE for displaying all request assignments
+app.get('/request-assignments', function(req, res) {
+    let query = `SELECT * FROM RequestAssignments`;
+
+
+    db.pool.query(query, function(error, rows, fields) {
+        const pageTitle = "Request Assignments";
+        res.render('request-assignments', { data: rows, title: pageTitle });
+    });
+});
+
+/// Load request assignment before Update
+app.get('/assignmentID', function(req, res){
+    let query = "SELECT worker_ID, maintenance_request_ID WHERE assignment_ID = ?";
+    let assignmentID = parseInt(req.query.id)
+   db.pool.query(query, [assignmentID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+                res.json(results);
+        }
+    });
+});
+
+// POST ROUTE for adding request assignment
+app.post('/add-request-assignment-form', function(req, res) {
+    let data = req.body;
+
+    // Ensure that the utility cost is a valid number
+    let workerID = parseInt(data.worker_ID);
+    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
+
+
+    let query = `INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID) VALUES (?, ?)`;
+    
+    db.pool.query(query, [workerID, maintenanceRequestID], function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            return res.sendStatus(500); // Internal Server Error
+        } else {
+            console.log("Request Assignment added successfully");
+            res.sendStatus(200); // OK
+        }
+    });
+});
+
+// PUT ROUTE for updating a provided utility by id
+app.put('/update-request-assignment', function(req, res) {
+    let data = req.body;
+
+    // ensure data is correct
+    let assignmentID = parseInt(data.assignment_ID);
+    let workerID = parseInt(data.worker_ID);
+    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
+   
+    let selectedRequestAssignment = 'SELECT * FROM RequestAssignments WHERE assignment_ID = ?';
+    let updateQuery = `UPDATE RequestAssignments 
+                   SET worker_ID = ?,
+                       maintenance_request_ID =?
+                   WHERE assignment_ID = ?`;
+
+    let updateValues = [workerID, maintenanceRequestID];
+
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update Request Assignment.'); 
+        } else {
+            db.pool.query(selectedRequestAssignment, [assignmentID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// DELETE ROUTE for deleting a request assignment by id
+app.delete('/delete-request-assignment-ajax', function(req, res) {
+    let data = req.body;
+    let assignmentID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM RequestAssignments WHERE assignment_ID = ?";
+
+    db.pool.query(deleteQuery, [assignmentID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(500); 
