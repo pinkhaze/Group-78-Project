@@ -211,7 +211,7 @@ app.put('/update-maintenance-worker', function(req, res) {
     let phone = data.phone;
     let payRate = parseFloat(data.pay_rate);
     let qualifcation = data.qualifcation;
-    let hoursWorked = parstFloat(data.hours_worked);
+    let hoursWorked = parseFloat(data.hours_worked);
 
     let selectedMaitnenanceWorker = 'SELECT * FROM MaintenanceWorker WHERE worker_ID = ?';
     let updateQuery = `UPDATE MaintenanceWorkers 
