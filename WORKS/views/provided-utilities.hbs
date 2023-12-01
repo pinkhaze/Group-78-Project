@@ -1,126 +1,107 @@
-<div class="container">
-    <table class="table is-bordered is-striped is-fullwidth">
-      <h1><strong>PROVIDED UTILITIES</strong></h1>
-      <thead>
-        <tr>
-          <th>utility_ID</th>
-          <th>unit_ID</th>
-          <th>provider_ID</th>
-          <th class="table-col-button"></th>
-          <th class="table-col-button"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>2</td>
-          <td>2</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>3</td>
-          <td>3</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>4</td>
-          <td>4</td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-          <td>
-            <button>
-              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>Provided Utilities</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="provided-utilities-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the utility_ID, unit_ID, and provider_ID --}}
+            {{#each data}}
+            <tr data-value={{this.utility_ID}}>
+                <td>{{this.utility_ID}}</td>
+                <td>{{this.unit_ID}}</td>
+                <td>${{this.provider_ID}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.utility_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteUtilityProvider({{this.utility_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
     </table>
-  </div>
-  <p>&nbsp;</p>
-  <div class="container">
-    <div id="insert" style="display: block">
-      <form id="addProvidedUtilities">
-        <legend><strong>Add Provided Utilities</strong></legend>
-          <fieldset class="fields">
-        <label for="unit_ID">unit_ID</label>
-        <input type="number" id="unit_ID">
-        <label for="provider_ID">provider_ID</label>
-        <input type="number" id="provider_ID">
-      </fieldset>
-      <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="addProvidedUtilities" value="Add Provided Utilities">
-        <input class="button is-black" type="button" value="Cancel">
-      </form>
+</div>
+
+{{!-- Add new provided Utility --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a provided utility --}}
+        <form id="add-provided-utility-form">
+            <legend><strong>Add Provided Utility</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit_ID">Unit ID: </label>
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-provider-ID">Provider ID: </label>
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addProvidedUtility" value="Add Provided Utility">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
     </div>
-    <p>&nbsp;</p>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
     <div id="update" style="display: block">
-      <form id="updateProvidedUtilities">
-        <legend><strong>Update Provided Utilities</strong></legend>
-          <fieldset class="fields">
-        <label for="utility_ID">utility_ID</label>
-        <input type="number" id="utility_ID">
-        <label for="unit_ID">unit_ID</label>
-        <input type="number" id="unit_ID">
-        <label for="provider_ID">provider_ID</label>
-        <input type="number" id="provider_ID">
-      </fieldset>
-      <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="addProvidedUtilities" value="Update Provided Utilities">
-        <input class="button is-black" type="button" value="Cancel">
-      </form>
+        <form id="updateProvidedUtility">
+            <legend><strong>Update Provided Utility</strong></legend>
+            <fieldset class="fields p-2">
+              <label for="unit-id">Unit ID:</label>
+              <select class="select" name="unit-id" id="unit-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="provider-id">Provider ID:</label>
+                <select class="select" name="provider-id" id="provider-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Provider">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
     </div>
-    <p>&nbsp;</p>
-    <div id="delete" style="display: block">
-      <form method="POST" id="deleteProvidedUtility">
-        <legend><strong>Delete Request Assignment</strong></legend>
-          <fieldset class="fields">
-          <p>Do you want to delete these Provided Utilities?</p>
-          <p>&nbsp;</p>
-          <input type="hidden" name="utilityID" id="deleteutilityID" value="1">
-          <label><strong>Utility ID:</strong></label> 1
-          <label> <strong>Unit ID:</strong> </label> 1
-        </fieldset>
-        <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="DeleteProvidedUtility" value="Delete Provided Utilities">
-        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
-      </form> 
-    </div>
-  </div>
+</div>
+<script src="../public/js/delete_provided_utility.js"></script>
+<script src="../public/js/update_provided_utility.js"></script>
+<script src="../public/js/add_provided_utility.js"></script>
