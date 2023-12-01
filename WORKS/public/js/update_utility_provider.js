@@ -105,5 +105,4 @@ updateUtilityProviderForm.addEventListener("submit", function (e) {
 // Function to reset the form
 function resetForm() {
     location.reload()
-    console.log("Form reset functionality goes here.");
 };
