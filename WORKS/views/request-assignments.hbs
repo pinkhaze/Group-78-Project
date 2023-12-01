@@ -1,128 +1,112 @@
-<div class="container">
-    <table class="table is-bordered is-striped is-fullwidth">
-      <h1><strong>REQUEST ASSIGNMENTS</strong></h1>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>Request Assignments</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="request-assignments-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
         <thead>
-          <tr>
-            <th>assignment_ID</th>
-            <th>worker_ID</th>
-            <th>maintenance_request_ID</th>
-            <th class="table-col-button"></th>
-            <th class="table-col-button"></th>
-          </tr>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
         </thead>
+        {{!-- Table body --}}
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the assignment_ID, worker_ID, and maintenance_request_ID --}}
+            {{#each data}}
+            <tr data-value={{this.assignment_ID}}>
+                <td>{{this.assignment_ID}}</td>
+                <td>{{this.worker_ID}}</td>
+                <td>{{this.maintenance_request_ID}}</td>
+                {{!-- Edit and delete buttons --}}
                 <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
+                    <button onClick="update({{this.assignment_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
                 </td>
                 <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
+                    <button class="editButton" onclick="deleteRequestAssignment({{this.assignment_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
                 </td>
             </tr>
-            <tr>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>4</td>
-                <td>4</td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-regular fa-trash-can"></i>
-                  </button>
-                </td>
-                <td>
-                  <button>
-                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
-                  </button>
-                </td>
-            </tr>
+            {{/each}}
         </tbody>
-      </table>
+    </table>
+</div>
+
+{{!-- Add new Request Assignment --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a Request Assignment --}}
+        <form id="add-request-assignment-form">
+            <legend><strong>Add Request Assignment</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-worker-ID">Maintenace Worker ID: </label>
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.worker_ID}}">{{this.worker_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-maintenance-request-ID">Tenant ID: </label>
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.maintenance_request_ID}}">{{this.maintenance_request_ID}}</option>
+                    {{/each}}
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addRequestAssignment" value="Add Request Assignment">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
     </div>
-    <p>&nbsp;</p>
-    <div class="container">
-      <div class="container">
-        <div id="insert" style="display: block">
-      <form id="AddRequestAssignment">
-        <legend><strong>Add Request Assignment</strong></legend>
-          <fieldset class="fields">
-            <label for="worker_ID">worker_ID</label>
-            <input type="number" id="worker_ID">
-            <label for="maintenance_request_ID">maintenance_request_ID</label>
-            <input type="number" id="maintenance_request_ID">
-          </fieldset>
-          <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="AddRequestAssignments" value="Add Request Assignment">
-        <input class="button is-black" type="button" value="Cancel">
-      </form>
-    </div>
-    <p>&nbsp;</p>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
     <div id="update" style="display: block">
-      <form id="updateRequestAssignment">
-        <legend><strong>Update Request Assignment</strong></legend>
-          <fieldset class="fields">
-            <label for="assignment_ID">worker_ID</label>
-            <input type="number" id="worker_ID">
-            <label for="maintenance_request_ID">maintenance_request_ID</label>
-            <input type="number" id="maintenance_request_ID">
-            <label>worker_ID</label> 
-            <input type="number" name="worker_id">
-          </fieldset>
-          <p>&nbsp;</p>
-          </fieldset>
-          <input class="button is-black" type="submit" id="UpdateRequestAssignment" value="Update RequestAssignment">
-          <input class="button is-black" type="button" value="Cancel" >
-      </form> 
+        <form id="updateRequestAssignment">
+            <legend><strong>Update Request Assignment</strong></legend>
+            <fieldset class="fields p-2">
+            <label for="assignment-ID">Request Assignment ID: </label>
+            <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.assignment_ID}}">{{this.assignment_ID}}</option>
+                    {{/each}}
+                </select>
+              <label for="worker-ID">Maintenance Worker ID: </label>
+              <select class="select" name="worker-ID" id="worker-ID">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.worker_ID}}">{{this.worker_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="maintenance-request-ID">Maintenance Request ID: </label>
+                <select class="select" name="maintenance-request-ID" id="maintenance-request-ID">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.maintenance_request_ID}}">{{this.maintenance_request_ID}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-request-assignment" value="Update Request Assignment">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
     </div>
-    <p>&nbsp;</p>
-    <div id="delete" style="display: block">
-      <form method="POST" id="deleteRequestAssignment">
-        <legend><strong>Delete Unit</strong></legend>
-          <fieldset class="fields">
-          <p>Do you want to delete this Request Assignment?</p>
-          <input type="hidden" name="assignmentID" id="deleteassignmentID" value="1">
-          <p>&nbsp;</p>
-          <label><strong>Request Assignment ID:</strong></label> 2
-          <label> <strong>Worker ID:</strong> </label> 2
-        </fieldset>
-        <p>&nbsp;</p>
-        <input class="button is-black" type="submit" id="DeleteRequestAssignment" value="Delete Request Assignment">
-        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
-      </form> 
-    </div>
-  </div>
+</div>
+<script src="../public/js/delete_request_assignment.js"></script>
+<script src="../public/js/update_request_assignment.js"></script>
+<script src="../public/js/add_request_assignment.js"></script>
