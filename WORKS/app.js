@@ -30,7 +30,7 @@ const hbs = exphbs.create({
 // Instantiate an express object to interact with the server
 const app = express();            
 // Set a port number
-PORT = 3998; 
+const PORT = process.env.PORT || 3998;
 
 // Middleware 
 app.use(express.json())
@@ -298,7 +298,6 @@ app.delete('/delete-tenant-ajax', function(req, res) {
 app.get('/provided-utilities', function(req, res) {
     let query = `SELECT * FROM ProvidedUtilities`;
 
-
     db.pool.query(query, function(error, rows, fields) {
         const pageTitle = "Provided Utilities";
         res.render('provided-utilities', { data: rows, title: pageTitle });
@@ -383,106 +382,6 @@ app.delete('/delete-provided-utility-ajax', function(req, res) {
     let deleteQuery = "DELETE FROM ProvidedUtilites WHERE utility_ID = ?";
 
     db.pool.query(deleteQuery, [utilityID], function(error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(500); 
-        } else {
-            res.sendStatus(204); 
-        }
-    });
-});
-
-/****************************************** Request Assignments ************************************************/
-
-/// GET ROUTE for displaying all request assignments
-app.get('/request-assignments', function(req, res) {
-    let query = `SELECT * FROM RequestAssignments`;
-
-
-    db.pool.query(query, function(error, rows, fields) {
-        const pageTitle = "Request Assignments";
-        res.render('request-assignments', { data: rows, title: pageTitle });
-    });
-});
-
-/// Load request assignment before Update
-app.get('/assignmentID', function(req, res){
-    let query = "SELECT worker_ID, maintenance_request_ID WHERE assignment_ID = ?";
-    let assignmentID = parseInt(req.query.id)
-   db.pool.query(query, [assignmentID], function(error, results, fields) {
-        if (error) {
-            console.error("Error executing query:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-        } else {
-                res.json(results);
-        }
-    });
-});
-
-// POST ROUTE for adding request assignment
-app.post('/add-request-assignment-form', function(req, res) {
-    let data = req.body;
-
-    // Ensure that the utility cost is a valid number
-    let workerID = parseInt(data.worker_ID);
-    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
-
-
-    let query = `INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID) VALUES (?, ?)`;
-    
-    db.pool.query(query, [workerID, maintenanceRequestID], function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            return res.sendStatus(500); // Internal Server Error
-        } else {
-            console.log("Request Assignment added successfully");
-            res.sendStatus(200); // OK
-        }
-    });
-});
-
-// PUT ROUTE for updating a provided utility by id
-app.put('/update-request-assignment', function(req, res) {
-    let data = req.body;
-
-    // ensure data is correct
-    let assignmentID = parseInt(data.assignment_ID);
-    let workerID = parseInt(data.worker_ID);
-    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
-   
-    let selectedRequestAssignment = 'SELECT * FROM RequestAssignments WHERE assignment_ID = ?';
-    let updateQuery = `UPDATE RequestAssignments 
-                   SET worker_ID = ?,
-                       maintenance_request_ID =?
-                   WHERE assignment_ID = ?`;
-
-    let updateValues = [workerID, maintenanceRequestID];
-
-    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error: Unable to update Request Assignment.'); 
-        } else {
-            db.pool.query(selectedRequestAssignment, [assignmentID], function(error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    res.send(rows);
-                }
-            });
-        }
-    });
-});
-
-// DELETE ROUTE for deleting a request assignment by id
-app.delete('/delete-request-assignment-ajax', function(req, res) {
-    let data = req.body;
-    let assignmentID = parseInt(data.id);
-
-    let deleteQuery = "DELETE FROM RequestAssignments WHERE assignment_ID = ?";
-
-    db.pool.query(deleteQuery, [assignmentID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(500); 
@@ -830,13 +729,13 @@ app.put('/update-rental-agreement', function(req, res) {
 
     let selectRentalAgreement = 'SELECT * FROM RentalAgreements WHERE rental_ID = ?';
     let updateQuery = `UPDATE RentalAgreements 
-                       SET unit_ID = ?, 
+                        SET unit_ID = ?, 
                            tenant_ID = ?, 
                            start_date = ?, 
                            end_date = ?, 
                            total_rent_balance = ?, 
                            security_deposit = ? 
-                       WHERE rental_ID = ?`;
+                        WHERE rental_ID = ?`;
 
     let updateValues = [unitId, tenantId, startDate, endDate, isNaN(totalRentBalance) ? null : totalRentBalance, isNaN(securityDeposit) ? null : securityDeposit, rentalAgreementId];
 
@@ -915,7 +814,6 @@ app.get('/maintenance-requests', function (req, res) {
 
 // POST ROUTE for adding a maintenance request
 app.post('/add-maintenance-request-form', function(req, res) {
-    // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
     // Capture NULL values
@@ -925,17 +823,14 @@ app.post('/add-maintenance-request-form', function(req, res) {
     let dateSubmitted = data.date_submitted;
     let timeToComplete = parseInt(data.time_to_complete);
     let repairCost = parseFloat(data.repair_cost);
-    let isClosed = data.is_closed === 'true'; // Assuming is_closed is a boolean field
+    let isClosed = data.is_closed === 'true';
 
-    // Create query to insert a new maintenance request into the MaintenanceRequests table
     const query = `
         INSERT INTO MaintenanceRequests (unit_ID, tenant_ID, description, date_submitted, time_to_complete, repair_cost, is_closed)
         VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
 
-    // Execute the query on the database
     db.pool.query(query, [unitID, tenantID, description, dateSubmitted, timeToComplete, repairCost, isClosed], function(error, rows, fields) {
-        // Check for errors
         if (error) {
             console.error("Error adding maintenance request:", error);
             res.status(500).send("Internal Server Error");
@@ -946,14 +841,11 @@ app.post('/add-maintenance-request-form', function(req, res) {
         const selectQuery = `SELECT * FROM MaintenanceRequests;`;
 
         db.pool.query(selectQuery, function(error, rows, fields) {
-            // Error handling
             if (error) {
                 console.error("Error fetching maintenance requests:", error);
                 res.status(500).send("Internal Server Error");
                 return;
             }
-
-            // Send the updated list of maintenance requests as the response
             res.send(rows);
         });
     });
@@ -1015,20 +907,16 @@ app.put('/update-maintenance-request', function(req, res) {
 
     let updateValues = [unitId, tenantId, description, dateSubmitted, timeToComplete, repairCost, isClosed, maintenanceRequestId];
 
-    
-    // Execute the update query
     db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error: Unable to update maintenance request.'); 
         } else {
-            // Fetch the updated maintenance request
             db.pool.query(selectMaintenanceRequest, [maintenanceRequestId], function(error, rows, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    // Send the updated maintenance request back to the client
                     res.send(rows);
                 }
             });
@@ -1036,8 +924,8 @@ app.put('/update-maintenance-request', function(req, res) {
     });
 });
 
-// DELETE ROUTE for deleting a rental agreement by id
-app.delete('/delete-maintenance-request-ajax', function(req, res) {
+// DELETE route for deleting a maintenance request
+app.delete('/delete-maintenance-request', function(req, res) {
     let data = req.body;
     let maintenanceRequestID = parseInt(data.id);
 
@@ -1053,17 +941,24 @@ app.delete('/delete-maintenance-request-ajax', function(req, res) {
     });
 });
 
+/****************************************** Request Assignments ************************************************/
+
+// GET route for displaying all request assignments
+app.get('/request-assignments', function(req, res) {
+    let query = "SELECT * FROM RequestAssignments;";
+
+    db.pool.query(query, function(error, rows, fields) {
+        const pageTitle = "Request Assignments";
+        res.render('request-assignments', { data: rows, title: pageTitle });
+    });
+});
+
 // GET ROUTE for displaying Provided Utilities page
 app.get('/provided-utilities', function(req, res) {
     const pageTitle = "Provided Utilities";
     res.render('provided-utilities', { title: pageTitle });
 });
 
-// GET ROUTE for displaying Request Assignments page
-app.get('/request-assignments', function(req, res) {
-    const pageTitle = "Request Assignments";
-    res.render('request-assignments', { title: pageTitle });
-});
 
 app.listen(PORT, function(){     
     console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
