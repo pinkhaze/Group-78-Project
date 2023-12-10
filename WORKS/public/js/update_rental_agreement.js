@@ -1,65 +1,85 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//     // Event listener
-//     document.getElementById("update-agreement-id").addEventListener("change", function () {
-//         let selectedRentalID = document.getElementById("update-agreement-id").value;
-//         if (selectedRentalID == "") {
-//             location.reload();
-//             return;
-//         }
-//         // Callback function to update rental agreement form
-//         updateRentalAgreement(selectedRentalID);
-//     });
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("rental-agreement-id").addEventListener("change", function () {
+        let selectedRentalAgreementId = document.getElementById("rental-agreement-id").value;
+        if (selectedRentalAgreementId === "") {
+            location.reload();
+            return;
+        }
+        fetchRentalAgreementData(selectedRentalAgreementId);
+    });
+});
 
-//     // Function to update the rental agreement form
-//     function updateRentalAgreement(rental_ID) {
-//         fetch(`/rental-agreements?id=${rental_ID}`)
-//             .then((response) => response.json())
-//             .then((updatedDataArray) => {
-//                 if (updatedDataArray.length > 0) {
-//                     const updatedData = updatedDataArray[0];
-//                     document.getElementById("input-unit-id-update").value = updatedData.unit_ID;
-//                     document.getElementById("input-tenant-id-update").value = updatedData.tenant_ID;
-//                     document.getElementById("input-start-date-update").value = updatedData.start_date;
-//                     document.getElementById("input-end-date-update").value = updatedData.end_date;
-//                     document.getElementById("input-total-rent-balance-update").value = updatedData.total_rent_balance;
-//                     document.getElementById("input-security-deposit-update").value = updatedData.security_deposit;
-//                 } else {
-//                     console.error("Empty or invalid response");
-//                 }
-//             })
-//             .catch((error) => {
-//                 console.error("Error fetching data", error);
-//             });
-//     }
+function fetchRentalAgreementData(rentalAgreementId) {
+    fetch(`/rentalAgreementsID?id=${rentalAgreementId}`)
+        .then((response) => response.json())
+        .then((updatedRentalAgreementArray) => {
+            if (updatedRentalAgreementArray.length > 0) {
+                const updatedRentalAgreement = updatedRentalAgreementArray[0];
+                let selectedRentalAgreementId = rentalAgreementId;
+                let rentalAgreementIdInput = document.getElementById("rental-agreement-id");
+                rentalAgreementIdInput.value = selectedRentalAgreementId;
+                document.getElementById("unit-id").value = updatedRentalAgreement.unit_number;
+                document.getElementById("tenant-id").value = updatedRentalAgreement.tenant_ID;
+             
+                document.getElementById("start-date").value = formatDate(updatedRentalAgreement.start_date);
+                document.getElementById("end-date").value = formatDate(updatedRentalAgreement.end_date);
+                document.getElementById("total-rent-balance").value = updatedRentalAgreement.total_rent_balance;
+                document.getElementById("security-deposit").value = parseFloat(updatedRentalAgreement.security_deposit);
+            } else {
+                console.error("Empty or invalid response array");
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching rental agreement data", error);
+        });
+}
 
-//     document.getElementById("update-rental-agreement-form-ajax").addEventListener("submit", function (e) {
-//         e.preventDefault();
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
 
-//         // Get data
-//         const formData = {
-//             rental_ID: document.getElementById("rental-id-update").value,
-//             unit_ID: document.getElementById("input-unit-id-update").value,
-//             tenant_ID: document.getElementById("input-tenant-id-update").value,
-//             start_date: document.getElementById("input-start-date-update").value,
-//             end_date: document.getElementById("input-end-date-update").value,
-//             total_rent_balance: document.getElementById("input-total-rent-balance-update").value,
-//             security_deposit: document.getElementById("input-security-deposit-update").value
-//         };
+document.getElementById("updateRentalAgreementForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-//         fetch(`/update-rental-agreement`, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(formData),
-//         })
-//             .then((response) => response.json())
-//             .then((updatedData) => {
-//                 console.log('Rental agreement updated successfully:', updatedData);
+    // Extract values from the form fields
+    const rentalAgreementIdInput = document.getElementById("rental-agreement-id");
+    const unitIdInput = document.getElementById("unit-id");
+    const tenantIdInput = document.getElementById("tenant-id");
+    const startDateInput = document.getElementById("start-date");
+    const endDateInput = document.getElementById("end-date");
+    const totalRentBalanceInput = document.getElementById("total-rent-balance");
+    const securityDepositInput = document.getElementById("security-deposit");
 
-//             })
-//             .catch((error) => {
-//                 console.error('Error updating rental agreement:', error);
-//             });
-//     });
-// });
+    // Construct data object with the extracted values
+    const data = {
+        rentalAgreementId: rentalAgreementIdInput.value,
+        unitId: unitIdInput.value,
+        tenantId: tenantIdInput.value,
+        startDate: startDateInput.value,
+        endDate: endDateInput.value,
+        totalRentBalance: parseFloat(totalRentBalanceInput.value),
+        securityDeposit: parseFloat(securityDepositInput.value),
+    };
+
+    // Send a PUT request to the server endpoint for updating rental agreements
+    fetch("/update-rental-agreement", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error("There was an error with the input.");
+    })
+    .then(() => {
+        location.reload();
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+});

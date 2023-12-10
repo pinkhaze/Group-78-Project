@@ -39,11 +39,11 @@
                 <td>${{this.rent_balance}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button onClick="updateTenant({{this.tenant_ID}})">
-                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    <button class="edit-button" data-tenant-id="{{this.tenant_ID}}">
+                        Edit
                     </button>
                 </td>
-                <td>
+                 <td>
                     <button onclick="deleteTenant({{this.tenant_ID}})">
                          <i class="fa-sharp fa-regular fa-trash-can"></i>
                     </button>

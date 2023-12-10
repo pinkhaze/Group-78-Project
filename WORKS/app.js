@@ -12,10 +12,25 @@ const exphbs = require('express-handlebars');
 const db = require('./database/db-connector');
 const { prototype } = require('events');
 
+const handlebars = require('handlebars');
+
+handlebars.registerHelper('if_eq', function(a, b, opts) {
+    return a === b ? opts.fn(this) : opts.inverse(this);
+});
+
+const hbs = exphbs.create({
+    extname: '.hbs',
+    helpers: {
+      format_date: function (date) {
+        return new Date(date).toLocaleDateString();
+      },
+    },
+});
+
 // Instantiate an express object to interact with the server
 const app = express();            
 // Set a port number
-PORT = 3999; 
+PORT = 3998; 
 
 // Middleware 
 app.use(express.json())
@@ -23,10 +38,10 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'assets')));
               
-// Create an instance of the handlebars engine to process templates
-app.engine('.hbs', engine({extname: ".hbs"})); 
+// Set up the handlebars engine
+app.engine('.hbs', hbs.engine);
 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
-app.set('view engine', '.hbs'); 
+app.set('view engine', '.hbs');
 
 /*
     ROUTES
@@ -40,8 +55,9 @@ app.get('/', function(req, res)
     });
 
 /****************************************** Units ************************************************/
+
 /// GET ROUTE for displaying all units
-app.get('/unit', function(req, res) {
+app.get('/units', function(req, res) {
     let query = "SELECT * FROM Units;";
     db.pool.query(query, function(error, rows, fields) {
         const pageTitle = "Units";
@@ -51,14 +67,14 @@ app.get('/unit', function(req, res) {
 
 /// Load Unit before Update
 app.get('/unitsID', function(req, res){
-    let query = "SELECT unit_number, is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year FROM Units WHERE unit_ID = ?";
-    let unitID = parseInt(req.query.id)
-   db.pool.query(query, [unitID], function(error, results, fields) {
+    let query = "SELECT unit_ID, is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year FROM Units WHERE unit_ID = ?";
+    let unitID = parseInt(req.query.id);
+    db.pool.query(query, [unitID], function(error, results, fields) {
         if (error) {
             console.error("Error executing query:", error);
             res.status(500).json({ error: "Internal Server Error" });
         } else {
-                res.json(results);
+            res.json(results);
         }
     });
 });
@@ -69,7 +85,7 @@ app.post('/add-unit-form', function(req, res) {
 
     // Ensure that the utility cost is a valid number
     let unitNumber = parseInt(data.unit_number);
-    let isAvailable = Boolean(Number(data.is_available));
+    let isAvailable = (parseInt(data.is_available));
     let numBedroom = parseInt(data.num_bedroom);
     let numBathroom = parseInt(data.num_bathroom);
     let squareFeet = parseInt(data.square_feet);
@@ -95,35 +111,35 @@ app.put('/update-unit', function(req, res) {
     let data = req.body;
 
     let unitID = parseInt(data.unit_ID);
-    let isAvailable = Boolean(Number(data.is_available));
+    let isAvailable = (parseInt(data.is_available));
+    let unitNumber = parseInt(data.unit_number);
     let numBedroom = parseInt(data.num_bedroom);
     let numBathroom = parseInt(data.num_bathroom);
     let squareFeet = parseInt(data.square_feet);
     let rentPrice = parseFloat(data.rent_price);
     let previousYearIncome = parseFloat(data.previous_year_income);
     let year = parseInt(data.year);
+    console.log(req.body)
 
    
-    let selectUnit = 'SELECT * FROM Units WHERE unit_ID = ?';
+    let selectUnit = 'SELECT * FROM Units WHERE unit_ID = ? AND unit_number = ?';
     let updateQuery = `UPDATE Units 
-                   SET is_availabe = ?,
+                   SET is_available = ?,
                        num_bedroom = ?,
                        num_bathroom = ?,
                        square_feet = ?,
-                       unit_number = ?,
                        rent_price = ?,
                        previous_year_income = ?,
-                       year = ?
-                   WHERE unit_ID = ?`;
+                       year = ?`
 
-    let updateValues = [isAvailable, numBedroom, numBathroom, squareFeet, unitNumber, rentPrice, previousYearIncome, year];
+    let updateValues = [isAvailable, numBedroom, numBathroom, squareFeet, rentPrice, previousYearIncome, year];
 
     db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error: Unable to update utility provider.'); 
         } else {
-            db.pool.query(selectUnit, [unitID], function(error, rows, fields) {
+            db.pool.query(selectUnit, [unitID, unitNumber], function(error, rows, fields) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -148,6 +164,131 @@ app.delete('/delete-unit-ajax', function(req, res) {
             res.sendStatus(500); 
         } else {
             res.sendStatus(204); 
+        }
+    });
+});
+
+/****************************************** Tenants ************************************************/
+
+// GET route for displaying all tenants
+app.get('/tenants', function(req, res) {
+    let query = "SELECT * FROM Tenants;";
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.error("Error fetching tenants:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        const pageTitle = "Tenants";
+        res.render('tenants', { data: rows, title: pageTitle });
+    });
+});
+
+app.get('/tenantsID', function(req, res) {
+    let query = "SELECT first_name, last_name, phone_number, email, rent_balance FROM Tenants WHERE tenant_ID = ?";
+
+    let tenantID = parseInt(req.query.id);
+
+    db.pool.query(query, [tenantID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// PUT route for updating a tenant
+app.put('/update-tenant', function(req, res) {
+    let data = req.body;
+
+    let tenantID = parseInt(data.tenantId);
+    let firstName = data.firstName;
+    let lastName = data.lastName;
+    let phoneNumber = data.phoneNumber;
+    let email = data.email;
+    let rentBalance = parseFloat(data.rentBalance);
+
+    if (isNaN(tenantID) || isNaN(rentBalance)) {
+        res.status(400).send(`Invalid entry`);
+        return;
+    }
+
+    let selectTenant = 'SELECT * FROM Tenants WHERE tenant_ID = ?';
+    let updateQuery = `UPDATE Tenants 
+                   SET first_name = ?, 
+                       last_name = ?, 
+                       phone_number = ?, 
+                       email = ?, 
+                       rent_balance = ? 
+                   WHERE tenant_ID = ?`;
+
+    let updateValues = [firstName, lastName, phoneNumber, email, isNaN(rentBalance) ? null : rentBalance, tenantID];
+
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update tenant.'); 
+        } else {
+            db.pool.query(selectTenant, [tenantID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// POST route for adding a new tenant
+app.post('/add-tenant-form', function(req, res) {
+    let data = req.body;
+
+    let rentBalance = parseFloat(data.rent_balance);
+
+    const query = `
+        INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
+        VALUES ('${data.first_name}', '${data.last_name}', '${data.phone_number}', '${data.email}', ${rentBalance});
+    `;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.error("Error adding tenant:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        const selectQuery = `SELECT * FROM Tenants;`;
+
+        db.pool.query(selectQuery, function(error, rows, fields) {
+            if (error) {
+                console.error("Error fetching tenants:", error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+            res.send(rows);
+        });
+    });
+});
+
+// DELETE route for deleting a tenant by id
+app.delete('/delete-tenant-ajax', function(req, res) {
+    let data = req.body;
+    let tenantID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM Tenants WHERE tenant_ID = ?";
+
+    db.pool.query(deleteQuery, [tenantID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(204);
         }
     });
 });
@@ -251,8 +392,8 @@ app.delete('/delete-provided-utility-ajax', function(req, res) {
     });
 });
 
-
 /****************************************** Request Assignments ************************************************/
+
 /// GET ROUTE for displaying all request assignments
 app.get('/request-assignments', function(req, res) {
     let query = `SELECT * FROM RequestAssignments`;
@@ -351,128 +492,6 @@ app.delete('/delete-request-assignment-ajax', function(req, res) {
     });
 });
 
-
-
-/****************************************** Maintenance Requests ************************************************/
-
-// GET ROUTE for displaying all maintenance Requests
-app.get('/maintenance-requests', function(req, res) {
-    let query = "SELECT * FROM MaintenanceRequests;";
-    db.pool.query(query, function(error, rows, fields) {
-        const pageTitle = "Maintenance Requests";
-        res.render('maintenance-requests', { data: rows, title: pageTitle });
-    });
-});
-
-/// Load Maintenance Requests before Update
-app.get('/maintenanceRequestID', function(req, res){
-    let query = "SELECT unit_ID, tenant_ID, description, date_submitted, time_to_complete, repair_cost, is_closed FROM MaintenanceRequests WHERE maintenance_request_ID = ?";
-    let maintenanceRequestID = parseInt(req.query.id)
-   db.pool.query(query, [maintenanceRequestID], function(error, results, fields) {
-        if (error) {
-            console.error("Error executing query:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-        } else {
-                res.json(results);
-        }
-    });
-});
-
-// POST ROUTE for adding maintenance worker
-app.post('/add-maintenance-request-form"', function(req, res) {
-    let data = req.body;
-
-    // Ensure data is correct
-    let unitID = parseInt(data.unit_ID);
-    let tenantID = parseINT(data.tenant_ID);
-    let description = data.description;
-    let dateSubmitted = new Date(date_submitted_str);
-    // Format the date as 'YYYY-MM-DD'
-    let formattedDate = dateSubmitted.toISOString().split('T')[0];
-    let timeToComplete = parseInt(data.time_to_complete);
-    let repairCost = parseFloat(data.repair_cost);
-    let is_closed =  Boolean(Number(data.is_closed));
-
-    let query = `INSERT INTO MaintenanceRequests (unit_ID, tenant_ID, description, date_submitted, time_to_complete, repair_cost, is_closed) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    
-    db.pool.query(query, [unitID, tenantID, description, formattedDate, timeToComplete, repairCost, is_closed], function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            return res.sendStatus(500); // Internal Server Error
-        } else {
-            console.log("Maintenance Request added successfully");
-            res.sendStatus(200); // OK
-        }
-    });
-});
-
-// PUT ROUTE for updating a maintenance request by id
-app.put('/update-maintenance-request', function(req, res) {
-    let data = req.body;
-
-    // Ensure data is correct
-    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
-    let unitID = parseInt(data.unit_ID);
-    let tenantID = parseINT(data.tenant_ID);
-    let description = data.description;
-    let dateSubmitted = new Date(date_submitted_str);
-    // Format the date as 'YYYY-MM-DD'
-    let formattedDate = dateSubmitted.toISOString().split('T')[0];
-    let timeToComplete = parseInt(data.time_to_complete);
-    let repairCost = parseFloat(data.repair_cost);
-    let isClosed =  Boolean(Number(data.is_closed));
-
-    let selectedMaitnenanceRequest = 'SELECT * FROM MaintenanceRequests WHERE maintenance_request_ID = ?';
-
-    let updateQuery = `UPDATE MaintenanceRequests 
-                   SET unit_ID = ?, 
-                       tenant_ID = ?,
-                       description = ?,
-                       date_submitted = ?,
-                       time_to_complete = ?,
-                       repair_cost = ?,
-                       is_closed = ?
-                   WHERE maintenance_request_ID = ?`;
-
-    let updateValues = [unitID, tenantID, description, formattedDate, timeToComplete, repairCost, isClosed];
-
-    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error: Unable to update Maintenance Request.'); 
-        } else {
-            db.pool.query(selectedMaitnenanceRequest, [maintenanceRequestID], function(error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    res.send(rows);
-                }
-            });
-        }
-    });
-});
-
-// DELETE ROUTE for deleting a Maintenance Request by id
-app.delete('/delete-maintenance-request-ajax', function(req, res) {
-    let data = req.body;
-    let maintenanceRequestID = parseInt(data.id);
-
-    let deleteQuery = "DELETE FROM MaitenanceRequests WHERE maintenance_request_ID = ?";
-
-    db.pool.query(deleteQuery, [maintenanceRequestID], function(error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(500); 
-        } else {
-            res.sendStatus(204); 
-        }
-    });
-});
-
-
-
-
 /****************************************** Maintenance Workers ************************************************/
 
 // GET ROUTE for displaying all utility providers
@@ -510,8 +529,7 @@ app.post('/add-maintenance-worker-form', function(req, res) {
     let qualification = data.qualification;
     let hoursWorked = parseFloat(data.hours_worked);
 
-    let query = `INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualfication, hours_worked) VALUES (?, ?, ?, ?, ?, ?)`;
-    console.log(name)
+    let query = `INSERT INTO MaintenanceWorkers (first_name, last_name, phone, pay_rate, qualification, hours_worked) VALUES (?, ?, ?, ?, ?, ?)`;
     
     db.pool.query(query, [firstName, lastName, phone, payRate, qualification, hoursWorked], function(error, rows, fields) {
         if (error) {
@@ -580,7 +598,6 @@ app.delete('/delete-maintenance-worker-ajax', function(req, res) {
         }
     });
 });
-
 
 /****************************************** Utility Providers ************************************************/
 
@@ -691,155 +708,6 @@ app.delete('/delete-utility-provider-ajax', function(req, res) {
     });
 });
 
-/****************************************** TENANTS ************************************************/
-
-// GET ROUTE for displaying all tenants
-app.get('/tenants', function(req, res) {
-    let query = "SELECT * FROM Tenants;";
-
-    db.pool.query(query, function(error, rows, fields) {
-        if (error) {
-            console.error("Error fetching tenants:", error);
-            res.status(500).send("Internal Server Error");
-            return;
-        }
-
-        const pageTitle = "Tenants";
-        res.render('tenants', { data: rows, title: pageTitle });
-    });
-});
-
-app.get('/tenantsID', function(req, res) {
-    // SQL query to select specific fields for a tenant based on tenant_ID
-    let query = "SELECT first_name, last_name, phone_number, email, rent_balance FROM Tenants WHERE tenant_ID = ?";
-
-    // Extract tenant_ID from the query parameter and convert it to an integer
-    let tenantID = parseInt(req.query.id);
-
-    // Execute the SQL query with the specified tenant_ID
-    db.pool.query(query, [tenantID], function(error, results, fields) {
-        if (error) {
-            // If there's an error executing the query, log the error and send a 500 Internal Server Error response
-            console.error("Error executing query:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-        } else {
-            // If the query is successful, send the results as JSON
-            res.json(results);
-        }
-    });
-});
-
-app.put('/update-tenant', function(req, res) {
-    let data = req.body;
-
-    // Extracting data from the request body
-    let tenantID = parseInt(data.tenantId);
-    let firstName = data.firstName;
-    let lastName = data.lastName;
-    let phoneNumber = data.phoneNumber;
-    let email = data.email;
-    let rentBalance = parseFloat(data.rentBalance);
-
-    // Input validation
-    if (isNaN(tenantID) || isNaN(rentBalance)) {
-        res.status(400).send(`Invalid entry`);
-        return;
-    }
-
-    // SQL queries
-    let selectTenant = 'SELECT * FROM Tenants WHERE tenant_ID = ?';
-    let updateQuery = `UPDATE Tenants 
-                   SET first_name = ?, 
-                       last_name = ?, 
-                       phone_number = ?, 
-                       email = ?, 
-                       rent_balance = ? 
-                   WHERE tenant_ID = ?`;
-
-    let updateValues = [firstName, lastName, phoneNumber, email, isNaN(rentBalance) ? null : rentBalance, tenantID];
-
-    // Execute the update query
-    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
-        if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error: Unable to update tenant.'); 
-        } else {
-            // Fetch the updated tenant
-            db.pool.query(selectTenant, [tenantID], function(error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    // Send the updated tenant back to the client
-                    res.send(rows);
-                }
-            });
-        }
-    });
-});
-
-// POST ROUTE for adding a new tenant
-app.post('/add-tenant-form', function(req, res) {
-    // Capture the incoming data and parse it back to a JS object
-    let data = req.body;
-
-    let rentBalance = parseFloat(data.rent_balance);
-
-    // Query to insert a new tenant into Tenants table
-    const query = `
-        INSERT INTO Tenants (first_name, last_name, phone_number, email, rent_balance)
-        VALUES ('${data.first_name}', '${data.last_name}', '${data.phone_number}', '${data.email}', ${rentBalance});
-    `;
-
-    // Execute query
-    db.pool.query(query, function(error, rows, fields) {
-        // Error handling
-        if (error) {
-            console.error("Error adding tenant:", error);
-            res.status(500).send("Internal Server Error");
-            return;
-        }
-
-        // SELECT * on Tenants to get updated data
-        const selectQuery = `SELECT * FROM Tenants;`;
-
-        db.pool.query(selectQuery, function(error, rows, fields) {
-            // Error handling
-            if (error) {
-                console.error("Error fetching tenants:", error);
-                res.status(500).send("Internal Server Error");
-                return;
-            }
-
-            // Send tenant data
-            res.send(rows);
-        });
-    });
-});
-
-// DELETE ROUTE for deleting a tenant by id
-app.delete('/delete-tenant-ajax', function(req, res) {
-    let data = req.body;
-    let tenantID = parseInt(data.id);
-
-    let deleteQuery = "DELETE FROM Tenants WHERE tenant_ID = ?";
-
-    db.pool.query(deleteQuery, [tenantID], function(error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(500); // Internal Server Error
-        } else {
-            res.sendStatus(204);
-        }
-    });
-});
-
-// GET ROUTE for displaying Units page
-app.get('/units', function(req, res) {
-    const pageTitle = "Units";
-    res.render('units', { title: pageTitle });
-});
-
 /****************************************** RENTAL AGREEMENTS ************************************************/
 
 app.get('/rental-agreements', function (req, res) {
@@ -856,8 +724,10 @@ app.get('/rental-agreements', function (req, res) {
         LEFT JOIN Units ON RentalAgreements.unit_ID = Units.unit_ID
         LEFT JOIN Tenants ON RentalAgreements.tenant_ID = Tenants.tenant_ID;`;
   
+    // Query to get all data from Units table
     let query2 = `SELECT * FROM Units;`;
-  
+
+    // Query to get all data from Tenants table
     let query3 = `SELECT * FROM Tenants;`;
   
     db.pool.query(query1, function (error, rentalAgreements, fields) {
@@ -876,12 +746,38 @@ app.get('/rental-agreements', function (req, res) {
     });
 });
 
-// POST ROUTE for adding a rental agreement
+// GET route for displaying a rental agreement by ID
+app.get('/rentalAgreementsID', function(req, res) {
+    let query = `
+        SELECT 
+            RentalAgreements.rental_ID,
+            Units.unit_number, 
+            Tenants.tenant_ID,
+            RentalAgreements.start_date, 
+            RentalAgreements.end_date, 
+            RentalAgreements.total_rent_balance, 
+            RentalAgreements.security_deposit 
+        FROM RentalAgreements
+        LEFT JOIN Units ON RentalAgreements.unit_ID = Units.unit_ID
+        LEFT JOIN Tenants ON RentalAgreements.tenant_ID = Tenants.tenant_ID
+        WHERE RentalAgreements.rental_ID = ?`;
+
+    let rentalAgreementID = parseInt(req.query.id);
+
+    db.pool.query(query, [rentalAgreementID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// POST route for adding a rental agreement
 app.post('/add-rental-agreement-form', function(req, res) {
-    // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-    // Capture NULL values
     let unitID = parseInt(data.unit_ID);
     let tenantID = parseInt(data.tenant_ID);
     let startDate = data.start_date;
@@ -889,66 +785,79 @@ app.post('/add-rental-agreement-form', function(req, res) {
     let totalRentBalance = parseFloat(data.total_rent_balance);
     let securityDeposit = parseFloat(data.security_deposit);
 
-    // Create query to insert a new rental agreement into the RentalAgreements table
     const query = `
         INSERT INTO RentalAgreements (unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit)
         VALUES (?, ?, ?, ?, ?, ?);
     `;
 
-    // Execute the query on the database
     db.pool.query(query, [unitID, tenantID, startDate, endDate, totalRentBalance, securityDeposit], function(error, rows, fields) {
-        // Check for errors
+
         if (error) {
             console.error("Error adding rental agreement:", error);
             res.status(500).send("Internal Server Error");
             return;
         }
 
-        // SELECT * on RentalAgreements to get updated data
         const selectQuery = `SELECT * FROM RentalAgreements;`;
 
         db.pool.query(selectQuery, function(error, rows, fields) {
-            // Error handling
             if (error) {
                 console.error("Error fetching rental agreements:", error);
                 res.status(500).send("Internal Server Error");
                 return;
             }
 
-            // Send the updated list of rental agreements as the response
             res.send(rows);
         });
     });
 });
 
-// // PUT route for updating rental agreements
-// app.put('/update-rental-agreement', (req, res) => {
-//     const { rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit } = req.body;
+app.put('/update-rental-agreement', function(req, res) {
+    let data = req.body;
 
-//     const updateQuery = `
-//         UPDATE RentalAgreements
-//         SET
-//             unit_ID = ?,
-//             tenant_ID = ?,
-//             start_date = ?,
-//             end_date = ?,
-//             total_rent_balance = ?,
-//             security_deposit = ?
-//         WHERE rental_ID = ?;
-//     `;
+    let rentalAgreementId = parseInt(data.rentalAgreementId);
+    let unitId = parseInt(data.unitId);
+    let tenantId = parseInt(data.tenantId);
+    let startDate = data.startDate;
+    let endDate = data.endDate;
+    let totalRentBalance = parseFloat(data.totalRentBalance);
+    let securityDeposit = parseFloat(data.securityDeposit);
 
-// 
-//     db.pool.query(updateQuery, [unit_ID, tenant_ID, start_date, end_date, total_rent_balance, security_deposit, rental_ID], (error, results) => {
-//         if (error) {
-//             console.error('Error updating rental agreement:', error);
-//             res.status(500).send('Internal Server Error');
-//         } else {
-//             res.json({ message: 'Rental agreement updated successfully' });
-//         }
-//     });
-// });
+    if (isNaN(rentalAgreementId) || isNaN(unitId) || isNaN(tenantId) || isNaN(totalRentBalance) || isNaN(securityDeposit)) {
+        res.status(400).send(`Invalid entry`);
+        return;
+    }
 
-// DELETE ROUTE for deleting a rental agreement by id
+    let selectRentalAgreement = 'SELECT * FROM RentalAgreements WHERE rental_ID = ?';
+    let updateQuery = `UPDATE RentalAgreements 
+                       SET unit_ID = ?, 
+                           tenant_ID = ?, 
+                           start_date = ?, 
+                           end_date = ?, 
+                           total_rent_balance = ?, 
+                           security_deposit = ? 
+                       WHERE rental_ID = ?`;
+
+    let updateValues = [unitId, tenantId, startDate, endDate, isNaN(totalRentBalance) ? null : totalRentBalance, isNaN(securityDeposit) ? null : securityDeposit, rentalAgreementId];
+
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update rental agreement.'); 
+        } else {
+            db.pool.query(selectRentalAgreement, [rentalAgreementId], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// DELETE route for deleting a rental agreement by id
 app.delete('/delete-rental-agreement-ajax', function(req, res) {
     let data = req.body;
     let rentalAgreementID = parseInt(data.id);
@@ -965,22 +874,189 @@ app.delete('/delete-rental-agreement-ajax', function(req, res) {
     });
 });
 
+/****************************************** Maintenance Requests ************************************************/
+
+app.get('/maintenance-requests', function (req, res) {
+    let query1 = 
+        `SELECT 
+            MaintenanceRequests.maintenance_request_ID, 
+            Units.unit_number, 
+            CONCAT(Tenants.first_name, ' ', Tenants.last_name) AS tenant_name,
+            MaintenanceRequests.description,
+            MaintenanceRequests.date_submitted, 
+            MaintenanceRequests.time_to_complete, 
+            MaintenanceRequests.repair_cost, 
+            MaintenanceRequests.is_closed
+        FROM MaintenanceRequests
+        LEFT JOIN Units ON MaintenanceRequests.unit_ID = Units.unit_ID
+        LEFT JOIN Tenants ON MaintenanceRequests.tenant_ID = Tenants.tenant_ID;`;
+  
+    // Query to get all data from Units table
+    let query2 = `SELECT * FROM Units;`;
+
+    // Query to get all data from Tenants table
+    let query3 = `SELECT * FROM Tenants;`;
+
+    db.pool.query(query1, function (error, maintenanceRequests, fields) {
+        db.pool.query(query2, function (error, units, fields) {
+            db.pool.query(query3, function (error, tenants, fields) {
+
+                const pageTitle = "Maintenance Requests";
+                res.render('maintenance-requests', {
+                    maintenanceRequests: maintenanceRequests,
+                    units: units,
+                    tenants: tenants,
+                    title: pageTitle
+                });
+            });
+        });
+    });
+});
+
+// POST ROUTE for adding a maintenance request
+app.post('/add-maintenance-request-form', function(req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values
+    let unitID = parseInt(data.unit_ID);
+    let tenantID = parseInt(data.tenant_ID);
+    let description = data.description;
+    let dateSubmitted = data.date_submitted;
+    let timeToComplete = parseInt(data.time_to_complete);
+    let repairCost = parseFloat(data.repair_cost);
+    let isClosed = data.is_closed === 'true'; // Assuming is_closed is a boolean field
+
+    // Create query to insert a new maintenance request into the MaintenanceRequests table
+    const query = `
+        INSERT INTO MaintenanceRequests (unit_ID, tenant_ID, description, date_submitted, time_to_complete, repair_cost, is_closed)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    `;
+
+    // Execute the query on the database
+    db.pool.query(query, [unitID, tenantID, description, dateSubmitted, timeToComplete, repairCost, isClosed], function(error, rows, fields) {
+        // Check for errors
+        if (error) {
+            console.error("Error adding maintenance request:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        // SELECT * on MaintenanceRequests to get updated data
+        const selectQuery = `SELECT * FROM MaintenanceRequests;`;
+
+        db.pool.query(selectQuery, function(error, rows, fields) {
+            // Error handling
+            if (error) {
+                console.error("Error fetching maintenance requests:", error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            // Send the updated list of maintenance requests as the response
+            res.send(rows);
+        });
+    });
+});
+
+app.get('/maintenanceRequestsID', function(req, res){
+    let query = `SELECT 
+                    MaintenanceRequests.maintenance_request_ID, 
+                    Units.unit_number, 
+                    Tenants.tenant_ID,
+                    MaintenanceRequests.description, 
+                    MaintenanceRequests.date_submitted, 
+                    MaintenanceRequests.time_to_complete, 
+                    MaintenanceRequests.repair_cost 
+                FROM MaintenanceRequests
+                LEFT JOIN Units ON MaintenanceRequests.unit_ID = Units.unit_ID
+                LEFT JOIN Tenants ON MaintenanceRequests.tenant_ID = Tenants.tenant_ID
+                WHERE MaintenanceRequests.maintenance_request_ID = ?`;
+
+    let maintenanceRequestID = parseInt(req.query.id)
+    db.pool.query(query, [maintenanceRequestID], function(error, results, fields) {
+        if (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+                res.json(results);
+        }
+    });
+});
+
+app.put('/update-maintenance-request', function(req, res) {
+    let data = req.body;
+
+    let maintenanceRequestId = parseInt(data.maintenanceRequestId);
+    let unitId = parseInt(data.unitId);
+    let tenantId = parseInt(data.tenantId);
+    let description = data.description;
+    let dateSubmitted = data.dateSubmitted;
+    let timeToComplete = parseInt(data.timeToComplete);
+    let repairCost = parseFloat(data.repairCost);
+    let isClosed = data.isClosed;
+
+    if (isNaN(maintenanceRequestId) || isNaN(unitId) || isNaN(tenantId) || isNaN(timeToComplete) || isNaN(repairCost)) {
+        res.status(400).send(`Invalid entry`);
+        return;
+    }
+
+    let selectMaintenanceRequest = 'SELECT * FROM MaintenanceRequests WHERE maintenance_request_ID = ?';
+    let updateQuery = `
+                UPDATE MaintenanceRequests 
+                SET unit_ID = ?, 
+                    tenant_ID = ?, 
+                    description = ?, 
+                    date_submitted = ?, 
+                    time_to_complete = ?, 
+                    repair_cost = ?, 
+                    is_closed = ? 
+                WHERE maintenance_request_ID = ?`;
+
+    let updateValues = [unitId, tenantId, description, dateSubmitted, timeToComplete, repairCost, isClosed, maintenanceRequestId];
+
+    
+    // Execute the update query
+    db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error: Unable to update maintenance request.'); 
+        } else {
+            // Fetch the updated maintenance request
+            db.pool.query(selectMaintenanceRequest, [maintenanceRequestId], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    // Send the updated maintenance request back to the client
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// DELETE ROUTE for deleting a rental agreement by id
+app.delete('/delete-maintenance-request-ajax', function(req, res) {
+    let data = req.body;
+    let maintenanceRequestID = parseInt(data.id);
+
+    let deleteQuery = "DELETE FROM MaintenanceRequests WHERE maintenance_request_ID = ?";
+
+    db.pool.query(deleteQuery, [maintenanceRequestID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500); 
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
 // GET ROUTE for displaying Provided Utilities page
 app.get('/provided-utilities', function(req, res) {
     const pageTitle = "Provided Utilities";
     res.render('provided-utilities', { title: pageTitle });
-});
-
-// GET ROUTE for displaying Maintenance Requests page
-app.get('/maintenance-requests', function(req, res) {
-    const pageTitle = "Maintenance Requests";
-    res.render('maintenance-requests', { title: pageTitle });
-});
-
-// GET ROUTE for displaying Maintenance Workers page
-app.get('/maintenance-workers', function(req, res) {
-    const pageTitle = "Maintenance Workers";
-    res.render('maintenance-workers', { title: pageTitle });
 });
 
 // GET ROUTE for displaying Request Assignments page

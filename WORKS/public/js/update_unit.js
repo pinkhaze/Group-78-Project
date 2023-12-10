@@ -1,25 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener for the change event on the provider-id select element
-    document.getElementById("unit-id").addEventListener("change", function () {
-        let selectedUnitID = document.getElementById("unit-id").value;
+    document.getElementById("unit-id-select").addEventListener("change", function () {
+        let selectedUnitID = document.getElementById("unit-id-select").value;
         if (selectedUnitID == "") {
             location.reload()
             return;}
         // Fetch data for the selected provider
-        fetch(`/unitID?id=${selectedunitID}`)
+        fetch(`/unitsID?id=${selectedUnitID}`)
         .then((response) => response.json())
         .then((updatedDataArray) => {
         if (updatedDataArray.length > 0) {
             const updatedData = updatedDataArray[0];
+
             document.getElementById("unit-number").value = updatedData.unit_number;
             document.getElementById("is-available").value = updatedData.is_available;
-            document.getElementById("num-beroom").value = updatedData.num_bedroom;
+            document.getElementById("num-bedroom").value = updatedData.num_bedroom;
             document.getElementById("num-bathroom").value = updatedData.num_bathroom;
             document.getElementById("square-feet").value = updatedData.square_feet;
             document.getElementById("rent-price").value = updatedData.rent_price;
             document.getElementById("previous-year-income").value = updatedData.previous_year_income;
-            document.getElementById("year").value = updatedData.year;
+            document.getElementById("year-check").value = updatedData.year;
         } else {
             console.error("Empty or invalid response array");
         }
@@ -37,7 +38,7 @@ function update(unit_ID) {
                 const updatedData = updatedDataArray[0];
                 
                 let selectedunitID = unit_ID; 
-                let unitIDDropdown = document.getElementById("unit-id");
+                let unitIDDropdown = document.getElementById("unit-id-select");
                 unitIDDropdown.value = selectedunitID;
 
                 document.getElementById("unit-number").value = updatedData.unit_number;
@@ -47,7 +48,9 @@ function update(unit_ID) {
                 document.getElementById("square-feet").value = updatedData.square_feet;
                 document.getElementById("rent-price").value = updatedData.rent_price;
                 document.getElementById("previous-year-income").value = updatedData.previous_year_income;
-                document.getElementById("year").value = updatedData.year;
+                document.getElementById("year-check").value = updatedData.year;
+                console.log(updatedData.year)
+
             } else {
                 console.error("Empty or invalid response array");
             }
@@ -66,7 +69,7 @@ updateUnitForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields
-    let unitIDSelect = document.getElementById("unit-id");
+    let unitIDSelect = document.getElementById("unit-id-select");
     let unitNumberInput = document.getElementById("unit-number");
     let isAvailableSelect = document.getElementById("is-available");
     let numBedroomInput = document.getElementById("num-bedroom");
@@ -74,7 +77,7 @@ updateUnitForm.addEventListener("submit", function (e) {
     let squareFeetInput = document.getElementById("square-feet");
     let rentPriceInput = document.getElementById("rent-price");
     let previousYearIncomeInput = document.getElementById("previous-year-income");
-    let yearInput = document.getElementById("year");
+    let yearInput = document.getElementById("year-check");
 
     // Get values from the form fields
     let unitIDValue = unitIDSelect.value;

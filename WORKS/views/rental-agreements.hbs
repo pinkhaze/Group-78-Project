@@ -30,8 +30,8 @@
                 <td>{{this.rental_ID}}</td>
                 <td>{{this.unit_number}}</td>
                 <td>{{this.tenant_name}}</td>
-                <td>{{this.start_date}}</td>
-                <td>{{this.end_date}}</td>
+                <td>{{format_date this.start_date}}</td>
+                <td>{{format_date this.end_date}}</td>
                 <td>${{this.total_rent_balance}}</td>
                 <td>${{this.security_deposit}}</td>
                 {{!-- Edit and delete buttons --}}
@@ -62,7 +62,7 @@
                 <select name="input-unit-id" id="input-unit-id">
                     <option value="">Select a Unit</option>
                     {{#each units}}
-                        <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                        <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
                     {{/each}}
                 </select>
                 <label for="input-tenant-id">Tenant: </label>
@@ -87,34 +87,50 @@
     </div>
 </div>
 
-<!-- Update rental agreement -->
+
+<!-- Update Rental Agreement -->
 <div class="container p-2">
-    <div id="update" style="display: none"></div>
-    <form id="update-rental-agreement-form">
-        <legend><strong>Update Rental Agreement</strong></legend>
-        <fieldset class="fields p-2">
-            <label for="update-agreement-id">Agreement: </label>
-            <select name="update-agreement-id" id="update-agreement-id">
-                <option value="">Select an Agreement</option>
-                {{#each agreements}}
-                    <option value="{{this.rental_ID}}">{{this.unit_ID}} - {{this.tenant_name}}</option>
-                {{/each}}
-            </select>
-            <label for="update-start-date">Start Date: </label>
-            <input type="date" name="update-start-date" id="update-start-date">
-            <label for="update-end-date">End Date: </label>
-            <input type="date" name="update-end-date" id="update-end-date">
-            <label for="update-total-rent-balance">Total Rent Balance: </label>
-            <input type="number" name="update-total-rent-balance" id="update-total-rent-balance">
-            <label for="update-security-deposit">Security Deposit: </label>
-            <input type="number" name="update-security-deposit" id="update-security-deposit">
-        </fieldset>
-        <input class="button is-black is-small" type="submit" id="updateRentalAgreement" value="Update Rental Agreement">
-        <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
-    </form>
+    <div id="updateRentalAgreement" style="display: block">
+        <form id="updateRentalAgreementForm">
+            <legend><strong>Update Rental Agreement</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="rental-agreement-id">Agreement ID:</label>
+                <select class="select" name="rental-agreement-id" id="rental-agreement-id">
+                    <option value=""></option>
+                    {{#each rentalAgreements}}
+                        <option value="{{this.rental_ID}}">{{this.rental_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="unit-id">Unit:</label>
+                <select class="select" name="unit-id" id="unit-id">
+                    <option value=""></option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
+                    {{/each}}
+                </select>
+                <label for="tenant-id">Tenant:</label>
+                <select class="select" name="tenant-id" id="tenant-id">
+                    <option value=""></option>
+                    {{#each tenants}}
+                        <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                    {{/each}}
+                </select>
+                <label for="start-date">Start Date:</label>
+                <input type="date" name="start-date" id="start-date" value="{{updatedRentalAgreement.start_date}}">
+                <label for="end-date">End Date:</label>
+                <input type="date" name="end-date" id="end-date" value="{{updatedRentalAgreement.end_date}}">
+                <label for="total-rent-balance">Total Rent Balance:</label>
+                <input type="number" name="total-rent-balance" id="total-rent-balance" value="{{updatedRentalAgreement.total_rent_balance}}">
+                <label for="security-deposit">Security Deposit:</label>
+                <input type="number" name="security-deposit" id="security-deposit" value="{{updatedRentalAgreement.security_deposit}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-rental-agreement" value="Update Rental Agreement">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetRentalAgreementForm()">
+        </form>
+    </div>
 </div>
 
-  
+
 <script src="../js/add_rental_agreement.js"></script>
 <script src="../js/update_rental_agreement.js"></script>
 <script src="../js/delete_rental_agreement.js"></script>

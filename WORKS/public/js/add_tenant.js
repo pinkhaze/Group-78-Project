@@ -6,7 +6,6 @@
 const addTenantForm = document.getElementById("add-tenant-form");
 
 addTenantForm.addEventListener("submit", function (e) {
-    // Prevent default form submission
     e.preventDefault();
 
     console.log("Clicked Add Tenant button.");
@@ -23,13 +22,11 @@ addTenantForm.addEventListener("submit", function (e) {
     let emailValue = emailInput.value;
     let rentBalanceValue = rentBalanceInput.value;
 
-    // Check empty values
     if (!firstNameValue || !lastNameValue || !phoneNumberValue || !emailValue || !rentBalanceValue) {
         console.log("Please fill in all fields.");
         return;
     }
 
-    // Prepare data for AJAX request
     let data = {
         first_name: firstNameValue,
         last_name: lastNameValue,
@@ -38,12 +35,10 @@ addTenantForm.addEventListener("submit", function (e) {
         rent_balance: rentBalanceValue,
     };
 
-    // Setup AJAX request
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/add-tenant-form", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    // Define AJAX callback function
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4) {
             if (xhttp.status == 200) {
@@ -54,6 +49,5 @@ addTenantForm.addEventListener("submit", function (e) {
         }
     };
 
-    // Send the AJAX request
     xhttp.send(JSON.stringify(data));
 });

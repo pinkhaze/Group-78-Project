@@ -7,6 +7,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         fetchTenantData(selectedTenantId);
     });
+
+       // Add event listener to handle clicking the "Edit" button
+       document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("edit-button")) {
+            let selectedTenantId = event.target.dataset.tenantId;
+            if (selectedTenantId) {
+                populateUpdateForm(selectedTenantId);
+            } else {
+                console.error("Invalid tenant ID");
+            }
+        }
+    });
+
 });
 
 function fetchTenantData(tenantId) {
@@ -83,3 +96,7 @@ document.getElementById("updateTenantForm").addEventListener("submit", function 
         console.error(error);
     });
 });
+
+function populateUpdateForm(tenantId) {
+    fetchTenantData(tenantId);
+}

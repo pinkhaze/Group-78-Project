@@ -3,7 +3,7 @@
 {{!-- Display data --}}
 <div class="container p-2">
     <div class="content">
-        <h3>UNITS</h3>
+        <h3>Units</h3>
     </div>
     {{!-- Create table --}}
     <table id="units-table" class="table is-bordered is-striped is-fullwidth">
@@ -31,11 +31,11 @@
             {{#each data}}
             <tr data-value={{this.unit_ID}}>
                 <td>{{this.unit_ID}}</td>
-                <td>{{this.unit_number}}</td>
-                <td>{{this.is_available ? 'yes' : 'no'}}</td>
+                <td>{{#if this.is_available}}yes{{else}}no{{/if}}</td>              
                 <td>{{this.num_bedroom}}</td>
                 <td>{{this.num_bathroom}}</td>
                 <td>{{this.square_feet}}</td>
+                <td>{{this.unit_number}}</td>
                 <td>{{this.rent_price}}</td>
                 <td>{{this.previous_year_income}}</td>
                 <td>{{this.year}}</td>
@@ -67,9 +67,9 @@
                 <input type="number" name="input-unit-number" id="input-unit-number">
                 <label for="input-is-available">Is Available: </label>
                 <select class="select" name="input-is-available" id="input-is-available" required>
-                    <option value="blank"></option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
                 <label for="input-num-bedroom"> Number of Bedrooms: </label>
                 <input type="number" name="input-num-bedroom" id="input-num-bedroom">
                 <label for="input-num-bathroom">Number of Bathrooms: </label>
@@ -95,8 +95,8 @@
         <form id="updateUnitForm">
             <legend><strong>Update Unit</strong></legend>
             <fieldset class="fields p-2">
-                <label for="unit-id">Unit ID:</label>
-                <select class="select" name="unit-id" id="unit-id">
+                <label for="unit-id-select">Unit ID:</label>
+                <select class="select" name="unit-id-select" id="unit-id-select">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
@@ -104,16 +104,10 @@
                 </select>
                 <label for="unit-number">Unit number:</label>
                 <input type="number" name="unit-number" id="unit-number" value="{{updatedData.unit_ID}}">
-                <label for="is-available">Is available:</label>
+               <label for="is-available">Is available:</label>
                 <select class="select" name="is-available" id="is-available" required>
-                    <option value=""></option>
-                    {{#each updatedData}}
-                    <option value="{{this}}" {{#if (eq updatedData.is_available this)}} selected {{/if}}>
-                        {{this}}
-                    </option>
-                    {{/each}}
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                <option value="0" {{#if_eq updatedData.is_available 0}}selected{{/if_eq}}>no</option>
+                <option value="1" {{#if_eq updatedData.is_available 1}}selected{{/if_eq}}>yes</option>
                 </select>
                 <label for="num-bedroom">UNumber of Bedrooms: </label>
                 <input type="number" name="num-bedroom" id="num-bedroom" value="{{updatedData.num_bedroom}}">
@@ -125,8 +119,8 @@
                 <input type="number" name="rent-price" id="rent-price" value="{{updatedData.rent_price}}">
                 <label for="previous-year-income">Previous Year Income: </label>
                 <input type="number" name="previous-year-income" id="previous-year-income" value="{{updatedData.previous_year_income}}">
-                <label for="year">Year: </label>
-                <input type="number" name="year" id="year" value="{{updatedData.year}}">
+                <label for="year-check">Year: </label>
+                <input type="number" name="year-check" id="year-check" value="{{updatedData.year}}">
             </fieldset>
             <input class="button is-black is-small" type="submit" id="update-unit" value="Update Unit">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">

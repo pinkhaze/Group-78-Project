@@ -9,43 +9,41 @@
     <table id="maintenance-requests-table" class="table is-bordered is-striped is-fullwidth">
         {{!-- Table header --}}
         <thead>
-            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            {{!-- Iterate over keys of the first row and print the current key in the header cell --}}
             <tr>
-                {{#each data.[0]}}
-                <th>
-                    {{@key}}
-                </th>
-                {{/each}}
+                <th>ID</th>
+                <th>Unit</th>
+                <th>Tenant</th>
+                <th>Description</th>
+                <th>Date Submitted</th>
+                <th>Time to Complete</th>
+                <th>Repair Cost</th>
+                <th>Is Closed</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         {{!-- Table body --}}
         <tbody>
-            {{!-- Citation for the following table:
-                  Date: 11/15/23
-                  Based on: nodejs-starter-app
-                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
-            --}}
             {{!-- For each row, print the maintenance_request_ID, unit_ID, tenant_ID, description, date_submitted, time_to_complete, repair_cost, and is_closed --}}
-            {{#each data}}
+            {{#each maintenanceRequests}}
             <tr data-value={{this.maintenance_request_ID}}>
                 <td>{{this.maintenance_request_ID}}</td>
-                <td>{{this.unit_ID}}</td>
-                <td>{{this.tenant_ID}}</td>
+                <td>{{this.unit_number}}</td>
+                <td>{{this.tenant_name}}</td>
                 <td>{{this.description}}</td>
-                <td>{{this.date_submitted}}</td>
+                <td>{{format_date this.date_submitted}}</td>
                 <td>{{this.time_to_complete}}</td>
                 <td>${{this.repair_cost}}</td>
                 <td>{{this.is_closed}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button onClick="update({{this.maintenance_request_ID}})">
-                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    <button class="edit-button" data-maintenance-request-id="{{this.maintenance_request_ID}}">
+                        <i class="fas fa-pen-to-square"></i>
                     </button>
                 </td>
                 <td>
-                    <button class="editButton" onclick="deleteMaintenaceRequest({{this.maintenance_request_ID}})">
+                    <button onclick="deleteMaintenanceRequest({{this.maintenance_request_ID}})">
                          <i class="fa-sharp fa-regular fa-trash-can"></i>
                     </button>
                 </td>
@@ -58,93 +56,86 @@
 {{!-- Add new maintenance request --}}
 <div class="container p-2">
     <div id="insert" style="display: block"></div>
-        {{!-- Form to add a maintenance request --}}
-        <form id="add-maintenance-request-form">
-            <legend><strong>Add Maintenance Request</strong></legend>
+    {{!-- Form to add a maintenance request --}}
+    <form id="add-maintenance-request-form">
+        <legend><strong>Add Maintenance Request</strong></legend>
+        <fieldset class="fields p-2">
+            <label for="input-unit-id">Unit: </label>
+            <select name="input-unit-id" id="input-unit-id">
+                <option value="">Select a Unit</option>
+                {{#each units}}
+                    <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
+                {{/each}}
+            </select>
+            <label for="input-tenant-id">Tenant: </label>
+            <select name="input-tenant-id" id="input-tenant-id">
+                <option value="">Select a Tenant</option>
+                {{#each tenants}}
+                    <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                {{/each}}
+            </select>
+            <label for="input-description">Description: </label>
+            <input type="text" name="input-description" id="input-description">
+            <label for="input-date-submitted">Date Submitted: </label>
+            <input type="date" name="input-date-submitted" id="input-date-submitted">
+            <label for="input-time-to-complete">Time to Complete (hours): </label>
+            <input type="number" name="input-time-to-complete" id="input-time-to-complete">
+            <label for="input-repair-cost">Repair Cost: </label>
+            <input type="number" name="input-repair-cost" id="input-repair-cost">
+            <label for="input-is-closed">Is Closed: </label>
+            <select name="input-is-closed" id="input-is-closed">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </fieldset>
+        <input class="button is-black is-small" type="submit" id="addMaintenanceRequest" value="Add Maintenance Request">
+        <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+    </form>
+</div>
+
+<div class="container p-2">
+    <div id="updateMaintenanceRequest" style="display: block">
+        <form id="updateMaintenanceRequestForm">
+            <legend><strong>Update Maintenance Request</strong></legend>
             <fieldset class="fields p-2">
-                <label for="input-unit-ID">Unit ID: </label>
-                <option value=""></option>
-                    {{#each data}}
-                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                <label for="maintenance-request-id">Rental ID:</label>
+                <select name="maintenance-request-id" id="maintenance-request-id">
+                    <option value=""></option>
+                    {{#each maintenanceRequests}}
+                        <option value="{{this.maintenance_request_ID}}">{{this.maintenance_request_ID}}</option>
                     {{/each}}
                 </select>
-                <label for="input-tenant-ID">Tenant ID: </label>
-                <option value=""></option>
-                    {{#each data}}
-                    <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
+                <label for="unit-id">Unit:</label>
+                <select name="unit-id" id="unit-id">
+                    <option value=""></option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
                     {{/each}}
                 </select>
-                <label for="input-description">Description of Problem: </label>
-                <input type="text" name="input-description" id="input-description">
-                <label for="input-date-submitted">Date Submitted: </label>
-                <input type="date" name="input-date-submitted" id="input-date-submitted">
-                <label for="input-time-to-complete">Time To Complete in Minutes: </label>
-                <input type="number" name="input-time-to-complete" id="input-time-to-complete">
-                <label for="input-repair-cost">Repair Cost: </label>
-                <input type="number" name="input-repair-cost" id="input-repair-cost">
-                <label for="input-is-closed">Is The Request Done: </label>
-                <select class="select" name="input-is-closed" id="input-is-closed" required>
-                    <option value="blank"></option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                <label for="tenant-id">Tenant:</label>
+                <select name="tenant-id" id="tenant-id">
+                    <option value=""></option>
+                    {{#each tenants}}
+                        <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                    {{/each}}
                 </select>
+                <label for="description">Description:</label>
+                <textarea name="description" id="description">{{updatedMaintenanceRequest.description}}</textarea>
+                <label for="date-submitted">Date Submitted:</label>
+                <input type="date" name="date-submitted" id="date-submitted" value="{{updatedMaintenanceRequest.date_submitted}}">
+                <label for="time-to-complete">Time to Complete (hours):</label>
+                <input type="number" name="time-to-complete" id="time-to-complete" value="{{updatedMaintenanceRequest.time_to_complete}}">
+                <label for="repair-cost">Repair Cost:</label>
+                <input type="number" name="repair-cost" id="repair-cost" value="{{updatedMaintenanceRequest.repair_cost}}">
+                <label for="is-closed">Is Closed:</label>
+                <input type="checkbox" name="is-closed" id="is-closed" {{#if updatedMaintenanceRequest.is_closed}}checked{{/if}}>
             </fieldset>
-            <input class="button is-black is-small" type="submit" id="addMaintenanceRequest" value="Add Maintenance Request">
-            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+            <input class="button is-black is-small" type="submit" id="update-maintenance-request" value="Update Maintenance Request">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetMaintenanceRequestForm()">
         </form>
     </div>
 </div>
 
-{{!-- Update data  --}}
-<div class="container p-2">
-    <div id="update" style="display: block">
-        <form id="updateMaintenanceRequest">
-            <legend><strong>Update Maintenance Request</strong></legend>
-            <fieldset class="fields p-2">
-            <label for="maintenance-request-ID">Maintenance Request ID: </label>
-            <option value=""></option>
-                    {{#each data}}
-                    <option value="{{this.maintenance_request_ID}}">{{this.maintenance_request_ID}}</option>
-                    {{/each}}
-                </select>
-              <label for="unit-ID">Unit ID: </label>
-              <select class="select" name="unit-ID" id="unit-ID">
-                    <option value=""></option>
-                    {{#each data}}
-                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
-                    {{/each}}
-                </select>
-                <label for="tenant-ID">Tenant ID: </label>
-                <select class="select" name="tenant-ID" id="tenant-ID">
-                    <option value=""></option>
-                    {{#each data}}
-                    <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
-                    {{/each}}
-                </select>
-                <label for="description">Description of Problem:</label>
-                <input type="text" name="description" id="description" value="{{updatedData.description}}">
-                <label for="date-submitted">Date Submitted: </label>
-                <input type="date" name="date-submitted" id="date-submitted" value="{{updatedData.date_submitted}}">
-                <label for="time-to-complete">Time to Complete in Minutes:</label>
-                <input type="number" name="time-to-complete" id="time-to-complete" value="{{updatedData.time_to_complete}}">
-                <label for="repair_cost">Repair Cost:</label>
-                <input type="text" name="repair-cost" id="repair-cost" value="{{updatedData.repair_cost}}">
-                <select class="select" name="is-closed" id="is-closed" required>
-                    <option value=""></option>
-                    {{#each updatedData}}
-                    <option value="{{this}}" {{#if (eq updatedData.is_closed this)}} selected {{/if}}>
-                        {{this}}
-                    </option>
-                    {{/each}}
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </fieldset>
-            <input class="button is-black is-small" type="submit" id="update-provided-utility" value="Update Maintenance Request">
-            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
-        </form>
-    </div>
-</div>
-<script src="../public/js/delete_maintenance_request.js"></script>
-<script src="../public/js/update_maintenance_request.js"></script>
-<script src="../public/js/add_maintenance_request.js"></script>
+<script src="../js/delete_maintenance_request.js"></script>
+<script src="../js/update_maintenance_request.js"></script>
+<script src="../js/add_maintenance_request.js"></script>
