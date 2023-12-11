@@ -83,3 +83,8 @@ document.getElementById("updateRentalAgreementForm").addEventListener("submit", 
         console.error(error);
     });
 });
+
+// Function to reset the form
+function resetForm() {
+    location.reload()
+};

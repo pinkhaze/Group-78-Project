@@ -36,7 +36,7 @@
                 <td>${{this.security_deposit}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button onClick="update({{this.rental_ID}})">
+                    <button onClick="fetchRentalAgreementData({{this.rental_ID}})">
                         <i class="fa-sharp fa-solid fa-pen-to-square"></i>
                     </button>
                 </td>
@@ -124,7 +124,7 @@
                 <input type="number" name="security-deposit" id="security-deposit" value="{{updatedRentalAgreement.security_deposit}}">
             </fieldset>
             <input class="button is-black is-small" type="submit" id="update-rental-agreement" value="Update Rental Agreement">
-            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetRentalAgreementForm()">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
     </div>
 </div>

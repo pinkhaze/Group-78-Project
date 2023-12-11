@@ -86,31 +86,31 @@
         <form id="updateMaintenanceWorkerForm">
             <legend><strong>Update Maintenance Worker</strong></legend>
             <fieldset class="fields p-2">
-                <label for="worker-id">Worker ID:</label>
-                <select class="select" name="worker-id" id="worker-id">
+                <label for="worker-id-update">Worker ID:</label>
+                <select class="select" name="worker-id-update" id="worker-id-update">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.worker_ID}}">{{this.worker_ID}}</option>
                     {{/each}}
                 </select>
-                <label for="first-name">First Name:</label>
-                <input type="text" name="first-name" id="first-name" value="{{updatedData.first_name}}">
-                <label for="last-name">Last Name:</label>
-                <input type="text" name="last-name" id="last-name" value="{{updatedData.last_name}}">
-                <label for="phone">Phone Number:</label>
-                <input type="text" name="phone" id="phone" value="{{updatedData.phone}}">
-                <label for="pay-rate">Pay Rate:</label>
-                <input type="number" name="pay-rate" id="pay-rate" value="{{updatedData.pay_rate}}">
-                <label for="qualification">Qualifications: </label>
-                <input type="text" name="qualification" id="qualificiation" value="{{updatedData.qualification}}">
-                <label for="hours-worked">Hours Worked: </label>
-                <input type="number" name="hours-worked" id="hours-worked" value="{{updatedData.hours_worked}}">
+                <label for="first-name-update">First Name:</label>
+                <input type="text" name="first-name-update" id="first-name-update" value="{{updatedData.first_name}}">
+                <label for="last-name-update">Last Name:</label>
+                <input type="text" name="last-name-update" id="last-name-update" value="{{updatedData.last_name}}">
+                <label for="phone-update">Phone Number:</label>
+                <input type="text" name="phone-update" id="phone-update" value="{{updatedData.phone}}">
+                <label for="pay-rate-update">Pay Rate:</label>
+                <input type="number" name="pay-rate-update" id="pay-rate-update" value="{{updatedData.pay_rate}}">
+                <label for="qualification-update">Qualifications: </label>
+                <input type="text" name="qualification-update" id="qualification-update" value="{{updatedData.qualification}}">
+                <label for="hours-worked-update">Hours Worked: </label>
+                <input type="number" name="hours-worked-update" id="hours-worked-update" value="{{updatedData.hours_worked}}">
             </fieldset>
             <input class="button is-black is-small" type="submit" id="update-maintenance-worker" value="Update Maintenance Worker">
             <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
         </form>
     </div>
 </div>
-<script src="../public/js/maintenence_workers_CRUD/delete_maintenance_worker.js"></script>
-<script src="../public/js/maintenence_workers_CRUD/update_maintenance_worker.js"></script>
-<script src="../public/js/maintenence_workers_CRUD/add_maintenance_worker.js"></script>
+<script src="../js/maintenence_workers_CRUD/delete_maintenance_worker.js"></script>
+<script src="../js/maintenence_workers_CRUD/update_maintenance_worker.js"></script>
+<script src="../js/maintenence_workers_CRUD/add_maintenance_worker.js"></script>

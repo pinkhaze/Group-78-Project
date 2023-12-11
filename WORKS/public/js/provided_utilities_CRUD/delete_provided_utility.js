@@ -3,11 +3,11 @@
 // Based on: nodejs-starter-app
 // Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data
 
-function deleteMaintenanceWorker(workerID) {
-  console.log('Clicked delete button');
-  let link = '/delete-maintenance-worker-ajax/';
+function deleteProvidedUtility(utilityID) {
+  console.log(utilityID);
+  let link = '/delete-provided-utility-ajax';
   let data = {
-    id: workerID
+    id: utilityID
   };
 
   $.ajax({
@@ -16,15 +16,15 @@ function deleteMaintenanceWorker(workerID) {
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     success: function(result) {
-      deleteRow(workerID);
+      deleteRow(utilityID);
     }
   });
 };
 
-function deleteRow(workerID){
-    let table = document.getElementById("maintenence-workers-table");
+function deleteRow(utilityID){
+    let table = document.getElementById("provided-utilities-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
-       if (table.rows[i].getAttribute("data-value") == workerID) {
+       if (table.rows[i].getAttribute("data-value") == utilityID) {
             table.deleteRow(i);
             break;
        }

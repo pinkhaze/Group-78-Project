@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener for the change event on the unit-id select element
-    document.getElementById("utility-ID").addEventListener("change", function () {
-        let selectedUtilityID = document.getElementById("utility-ID").value;
+    document.getElementById("utility-id-select").addEventListener("change", function () {
+        let selectedUtilityID = document.getElementById("utility-id-select").value;
         if (selectedUtilityID == "") {
             location.reload()
             return;}
         // Fetch data for the selected provider
-        fetch(`/utilityID?id=${selectedUtilityID}`)
+        fetch(`/providedUtilityID?id=${selectedUtilityID}`)
         .then((response) => response.json())
         .then((updatedDataArray) => {
         if (updatedDataArray.length > 0) {
             const updatedData = updatedDataArray[0];
-            document.getElementById("unit-ID").value = parseInt(updatedData.unit_ID);
-            document.getElementById("provider-ID").value = parseInt(updatedData.provider_ID);
+            document.getElementById("unit-ID-select").value = parseInt(updatedData.unit_ID);
+            document.getElementById("provider-ID-select").value = parseInt(updatedData.provider_ID);
         } else {
             console.error("Empty or invalid response array");
         }
@@ -23,19 +23,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });})
 });
 
-function update(utilityID) {
-    fetch(`/providedUtilityID?id=${utilityID}`)
+function update(utility_ID) {
+    fetch(`/providedUtilityID?id=${utility_ID}`)
         .then((response) => response.json())
         .then((updatedDataArray) => {
             if (updatedDataArray.length > 0) {
                 const updatedData = updatedDataArray[0];
                 
-                let selectedUtilityID = utilityID; 
-                let utilityIdDropdown = document.getElementById("utility-id");
+                let selectedUtilityID = utility_ID; 
+                let utilityIdDropdown = document.getElementById("utility-id-select");
                 utilityIdDropdown.value = selectedUtilityID;
 
-                document.getElementById("unit-ID").value = parseInt(updatedData.unit_ID);
-                document.getElementById("provider-ID").value = parseInt(updatedData.provider_ID);
+                document.getElementById("unit-ID-select").value = parseInt(updatedData.unit_ID);
+                document.getElementById("provider-ID-select").value = parseInt(updatedData.provider_ID);
             } else {
                 console.error("Empty or invalid response array");
             }
@@ -43,7 +43,7 @@ function update(utilityID) {
         .catch((error) => {
             console.error("Error fetching provided Utility data", error);
         });
-}
+};
 
 
 // Get the form element
@@ -54,13 +54,13 @@ updateProviderUtilityForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields
-    let utilityIDSelect = document.getElementById("utility-ID");
-    let unitIdSelect = document.getElementById("unit-ID");
-    let providerIdSelect = document.getElementById("provider-ID");
+    let utilityIDSelect = document.getElementById("utility-id-select");
+    let unitIdSelect = document.getElementById("unit-ID-select");
+    let providerIdSelect = document.getElementById("provider-ID-select");
 
     // Get values from the form fields
     let utilityIDValue = utilityIDSelect.value;
-    let unitIDValue = utilityIDSelect.value;
+    let unitIDValue = unitIdSelect.value;
     let providerIdValue = providerIdSelect.value;
 
     // Prepare data for AJAX request

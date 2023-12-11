@@ -57,21 +57,22 @@
         <form id="add-provided-utility-form">
             <legend><strong>Add Provided Utility</strong></legend>
             <fieldset class="fields p-2">
-                
                 <label for="input-unit-ID">Unit ID: </label>
+                <select class="select" name="unit-id-select" id="unit-id-select">
                 <option value=""></option>
                     {{#each data}}
                     <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
                     {{/each}}
                 </select>
                 <label for="input-provider-ID">Provider ID: </label>
+                <select class="select" name="provider-id-select" id="provider-id-select">
                 <option value=""></option>
                     {{#each data}}
                     <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
                     {{/each}}
                 </select>
             </fieldset>
-            <input class="button is-black is-small" type="submit" id="addProvidedUtility" value="Add Provided Utility">
+            <input class="button is-black is-small" type="submit" id="addProvidedUtility" value="addProvidedUtility">
             <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
         </form>
     </div>
@@ -83,21 +84,22 @@
         <form id="updateProvidedUtility">
             <legend><strong>Update Provided Utility</strong></legend>
             <fieldset class="fields p-2">
-            <label for="utility-ID">Utility ID: </label>
+            <label for="utility-id-select">Utility ID: </label>
+            <select class="select" name="utility-id-select" id="utility-id-select">
             <option value=""></option>
                     {{#each data}}
                     <option value="{{this.utility_ID}}">{{this.utility_ID}}</option>
                     {{/each}}
                 </select>
-              <label for="unit-ID">Unit ID:</label>
-              <select class="select" name="unit-ID" id="unit-ID">
+              <label for="unit-ID-select">Unit ID:</label>
+              <select class="select" name="unit-ID-select" id="unit-ID-select">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
                     {{/each}}
                 </select>
-                <label for="provider-ID">Provider ID:</label>
-                <select class="select" name="provider-ID" id="provider-ID">
+                <label for="provider-ID-select">Provider ID:</label>
+                <select class="select" name="provider-ID-select" id="provider-ID-select">
                     <option value=""></option>
                     {{#each data}}
                     <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
@@ -109,6 +111,6 @@
         </form>
     </div>
 </div>
-<script src="../public/js/provided_utilities_CRUD/add_provided_utility.js"></script>
-<script src="../public/js/provided_utilities_CRUD/update_provided_utility.js"></script>
-<script src="../public/js/provided_utilities_CRUD/delete_provided_utility.js"></script>
+<script src="../js/provided_utilities_CRUD/add_provided_utility.js"></script>
+<script src="../js/provided_utilities_CRUD/update_provided_utility.js"></script>
+<script src="../js/provided_utilities_CRUD/delete_provided_utility.js"></script>

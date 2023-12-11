@@ -13,8 +13,8 @@ addProvidedUtilityForm.addEventListener("submit", function (e) {
     console.log("Add Provided Utility form submitted");
 
     // Get form fields
-    let unitIDSelect = document.getElementById("input-unit-ID");
-    let providedUtilitySelect = document.getElementById("input-provider-ID");
+    let unitIDSelect = document.getElementById("unit-id-select");
+    let providedUtilitySelect = document.getElementById("provider-id-select");
     
 
     // Get values from the form fields

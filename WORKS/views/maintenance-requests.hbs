@@ -38,7 +38,7 @@
                 <td>{{this.is_closed}}</td>
                 {{!-- Edit and delete buttons --}}
                 <td>
-                    <button class="edit-button" data-maintenance-request-id="{{this.maintenance_request_ID}}">
+                    <button class="edit-button" onclick="fetchMaintenanceRequestData({{this.maintenance_request_ID}})">
                         <i class="fas fa-pen-to-square"></i>
                     </button>
                 </td>

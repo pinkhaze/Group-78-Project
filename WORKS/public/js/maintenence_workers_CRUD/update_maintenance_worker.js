@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener for the change event on the worker-id select element
-    document.getElementById("worker-id").addEventListener("change", function () {
-        let selectedWorkerID = document.getElementById("worker-id").value;
+    document.getElementById("worker-id-update").addEventListener("change", function () {
+        let selectedWorkerID = document.getElementById("worker-id-update").value;
         if (selectedWorkerID == "") {
             location.reload()
             return;}
@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((updatedDataArray) => {
         if (updatedDataArray.length > 0) {
             const updatedData = updatedDataArray[0];
-            document.getElementById("first-name").value= updatedData.first_name;
-            document.getElementById("last-name").value= updatedData.last_name;
-            document.getElementById("phone").value= updatedData.phone;
-            document.getElementById("pay-rate").value= updatedData.pay_rate;
-            document.getElementById("qualification").value= updatedData.qualification;
-            document.getElementById("hours-worked").value= updatedData.hours_worked;
+            document.getElementById("first-name-update").value= updatedData.first_name;
+            document.getElementById("last-name-update").value= updatedData.last_name;
+            document.getElementById("phone-update").value= updatedData.phone;
+            document.getElementById("pay-rate-update").value= updatedData.pay_rate;
+            document.getElementById("qualification-update").value= updatedData.qualification;
+            document.getElementById("hours-worked-update").value= updatedData.hours_worked;
         } else {
             console.error("Empty or invalid response array");
         }
@@ -35,15 +35,15 @@ function update(worker_ID) {
                 const updatedData = updatedDataArray[0];
                 
                 let selectedWorkerID = worker_ID; 
-                let workerIdDropdown = document.getElementById("worker-id");
-                workerIdDropdown.value = selectedworkerID;
+                let workerIdDropdown = document.getElementById("worker-id-update");
+                workerIdDropdown.value = selectedWorkerID;
 
-                document.getElementById("first-name").value= updatedData.first_name;
-                document.getElementById("last-name").value= updatedData.last_name;
-                document.getElementById("phone").value= updatedData.phone;
-                document.getElementById("pay-rate").value= updatedData.pay_rate;
-                document.getElementById("qualification").value= updatedData.qualification;
-                document.getElementById("hours-worked").value= updatedData.hours_worked;
+                document.getElementById("first-name-update").value= updatedData.first_name;
+                document.getElementById("last-name-update").value= updatedData.last_name;
+                document.getElementById("phone-update").value= updatedData.phone;
+                document.getElementById("pay-rate-update").value= updatedData.pay_rate;
+                document.getElementById("qualification-update").value= updatedData.qualification;
+                document.getElementById("hours-worked-update").value= updatedData.hours_worked;
             } else {
                 console.error("Empty or invalid response array");
             }
@@ -61,13 +61,13 @@ updateMaintenanceWorkerForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields
-    let workerIDSelect = document.getElementById("worker-id");
-    let firstNameInput = document.getElementById("first-name");
-    let lastNameInput = document.getElementById("last-name");
-    let phoneInput = document.getElementById("phone");
-    let payRateInput = document.getElementById("pay-rate");
-    let qualificationInput = document.getElementById("qualification");
-    let hoursWorkedInput = document.getElementById("hours-worked");
+    let workerIDSelect = document.getElementById("worker-id-update");
+    let firstNameInput = document.getElementById("first-name-update");
+    let lastNameInput = document.getElementById("last-name-update");
+    let phoneInput = document.getElementById("phone-update");
+    let payRateInput = document.getElementById("pay-rate-update");
+    let qualificationInput = document.getElementById("qualification-update");
+    let hoursWorkedInput = document.getElementById("hours-worked-update");
 
     // Get values from the form fields
     let workerIDValue = workerIDSelect.value;

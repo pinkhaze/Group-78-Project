@@ -306,8 +306,9 @@ app.get('/provided-utilities', function(req, res) {
 
 /// Load providedUtilities before Update
 app.get('/providedUtilityID', function(req, res){
-    let query = "SELECT utility_ID, unit_ID, provider_ID WHERE utility_ID = ?";
+    let query = "SELECT unit_ID, provider_ID FROM ProvidedUtilities WHERE utility_ID = ?";
     let utilityID = parseInt(req.query.id)
+    console.log(utilityID)
    db.pool.query(query, [utilityID], function(error, results, fields) {
         if (error) {
             console.error("Error executing query:", error);
@@ -349,13 +350,13 @@ app.put('/update-provided-utility', function(req, res) {
     let unitID = parseInt(data.unit_ID);
     let providerID = parseInt(data.provider_ID);
    
-    let selectProvidedUtility = 'SELECT * FROM ProvidedUtilities WHERE utility_ID = ?';
+    let selectProvidedUtility = 'SELECT unit_ID, Provider_ID FROM ProvidedUtilities WHERE utility_ID = ?';
     let updateQuery = `UPDATE ProvidedUtilities 
                    SET unit_ID = ?,
-                       provider_ID =?
+                       provider_ID = ?
                    WHERE utility_ID = ?`;
 
-    let updateValues = [unitID, providerID];
+    let updateValues = [unitID, providerID, utilityID];
 
     db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
@@ -374,12 +375,14 @@ app.put('/update-provided-utility', function(req, res) {
     });
 });
 
+
 // DELETE ROUTE for deleting a provided utility by id
 app.delete('/delete-provided-utility-ajax', function(req, res) {
     let data = req.body;
     let utilityID = parseInt(data.id);
+    console.log(utilityID)
 
-    let deleteQuery = "DELETE FROM ProvidedUtilites WHERE utility_ID = ?";
+    let deleteQuery = "DELETE FROM ProvidedUtilities WHERE utility_ID = ?";
 
     db.pool.query(deleteQuery, [utilityID], function(error, rows, fields) {
         if (error) {
@@ -403,7 +406,7 @@ app.get('/maintenance-workers', function(req, res) {
 });
 
 /// Load Maintenance Worker before Update
-app.get('/workersID', function(req, res){
+app.get('/workerID', function(req, res){
     let query = "SELECT first_name, last_name, phone, pay_rate, qualification, hours_worked FROM MaintenanceWorkers WHERE worker_ID = ?";
     let workerID = parseInt(req.query.id)
    db.pool.query(query, [workerID], function(error, results, fields) {
