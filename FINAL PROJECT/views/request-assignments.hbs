@@ -1,0 +1,114 @@
+{{!-- Citation for the following table:
+    Date: 11/15/23
+    Based on: nodejs-starter-app
+    Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+--}}
+
+<!-- Display data -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<div class="container">
+    <div class="content">
+        <h3 class="has-text-centered">Request Assignments</h3>
+    </div>
+    <!-- Create table -->
+    <table id="request-assignments-table" class="table is-bordered is-striped is-fullwidth has-text-centered">
+        <!-- Table header -->
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Maintenance Worker</th>
+                <th>Expected Time - Request Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <!-- Table body -->
+        <tbody>
+            <!-- Iterate over data rows -->
+            {{#each requestAssignments}}
+                <tr data-value="{{this.assignment_ID}}">
+                    <td>{{this.assignment_ID}}</td>
+                    <td>{{this.worker_name}}</td>
+                    <td>{{this.time_description}}</td>
+                    <!-- Edit and delete buttons -->
+                    <td>
+                        <button onClick="updateRequestAssignment({{this.assignment_ID}})">
+                            <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="deleteRequestAssignment({{this.assignment_ID}})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new request assignment --}}
+<div class="container p-2">
+    {{!-- Form to add a request assignment --}}
+    <form id="add-request-assignment-form">
+        <legend><strong>Add Request Assignment</strong></legend>
+        <fieldset class="fields p-2">
+            <label for="input-worker-id">Maintenance Worker: </label>
+            <select name="input-worker-id" id="input-worker-id">
+                <option value="">Select a Maintenance Worker</option>
+                {{#each maintenanceWorkers}}
+                    <option value="{{this.worker_ID}}">{{this.first_name}} {{this.last_name}}
+                    </option>
+                {{/each}}
+            </select>
+            <label for="input-maintenance-request-id">Maintenance Request: </label>
+            <select name="input-maintenance-request-id" id="input-maintenance-request-id">
+                <option value="">Select a Maintenance Request</option>
+                {{#each maintenanceRequests}}
+                    <option value="{{this.maintenance_request_ID}}">{{this.time_to_complete}} - {{this.description}}
+                    </option>
+                {{/each}}
+            </select>
+        </fieldset>
+        <input class="button is-black is-small" type="submit" id="addRequestAssignment" value="Add Request Assignment">
+        <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+    </form>
+</div>
+
+<!-- Update Request Assignment Form -->
+<div class="container p-2">
+    <form id="updateRequestAssignmentForm">
+        <legend><strong>Update Request Assignment</strong></legend>
+        <fieldset class="fields p-2">
+            <label for="update-assignment-id">Assignment ID:</label>
+            <select name="update-assignment-id" id="update-assignment-id">
+                <option value=""></option>
+                {{#each requestAssignments}}
+                    <option value="{{this.assignment_ID}}">{{this.assignment_ID}}</option>
+                {{/each}}
+            </select>
+            <label for="update-worker-id">Maintenance Worker:</label>
+            <select name="update-worker-id" id="update-worker-id">
+                <option value=""></option>
+                {{#each maintenanceWorkers}}
+                    <option value="{{this.worker_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                {{/each}}
+            </select>
+            <label for="update-maintenance-request-id">Maintenance Request:</label>
+            <select name="update-maintenance-request-id" id="update-maintenance-request-id">
+                <option value=""></option>
+                {{#each maintenanceRequests}}
+                    <option value="{{this.maintenance_request_ID}}">{{this.time_to_complete}} - {{this.description}}</option>
+                {{/each}}
+            </select>
+        </fieldset>
+        <input class="button is-black is-small" type="submit" id="update-request-assignment" value="Update Request Assignment">
+        <input class="button is-black is-small" type="button" value="Cancel" onclick="resetRequestAssignmentForm()">
+    </form>
+</div>
+
+<script src="../js/request_assignments_crud/add_request_assignment.js"></script>
+<script src="../js/request_assignments_crud/update_request_assignment.js"></script>
+<script src="../js/request_assignments_crud/delete_request_assignment.js"></script>
+

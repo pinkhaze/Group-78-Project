@@ -1,0 +1,129 @@
+{{!-- Citation for the following table:
+    Date: 11/15/23
+    Based on: nodejs-starter-app
+    Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+--}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container">
+    <div class="content">
+        <h3 class="has-text-centered">Maintenance Workers</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="maintenence-workers-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{!-- {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}} --}}
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Pay Rate</th>
+                <th>Qualification</th>
+                <th>Hours Worked</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the  wrokers_ID, first_name, last_name, phone, pay_rate, qualification, hours_worked--}}
+            {{#each data}}
+            <tr data-value={{this.worker_ID}}>
+                <td>{{this.worker_ID}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.pay_rate}}</td>
+                <td>{{this.qualification}}</td>
+                <td>{{this.hours_worked}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.worker_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteMaintenanceWorker({{this.worker_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new Maintenance Worker --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a maintenance worker --}}
+        <form id="add-maintenance-worker-form">
+            <legend><strong>Add Maintenance Worker</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="first-name">First Name: </label>
+                <input type="text" name="first-name" id="first-name">
+                <label for="last-name">Last Name: </label>
+                <input type="text" name="last-name" id="last-name">
+                <label for="phone">Phone Number: </label>
+                <input type="text" name="phone" id="phone">
+                <label for="pay-rate">Pay Rate: </label>
+                <input type="number" name="pay-rate" id="pay-rate">
+                <label for="qualification">Qualifications: </label>
+                <input type="text" name="qualification" id="qualification">
+                <label for="hours-worked">Hours Worked: </label>
+                <input type="number" name="hours-worked" id="hours-worked">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addMaintenanceWorker" value="Add Maintenance Worker">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateMaintenanceWorkerForm">
+            <legend><strong>Update Maintenance Worker</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="worker-id-update">Worker ID:</label>
+                <select class="select" name="worker-id-update" id="worker-id-update">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.worker_ID}}">{{this.worker_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="first-name-update">First Name:</label>
+                <input type="text" name="first-name-update" id="first-name-update" value="{{updatedData.first_name}}">
+                <label for="last-name-update">Last Name:</label>
+                <input type="text" name="last-name-update" id="last-name-update" value="{{updatedData.last_name}}">
+                <label for="phone-update">Phone Number:</label>
+                <input type="text" name="phone-update" id="phone-update" value="{{updatedData.phone}}">
+                <label for="pay-rate-update">Pay Rate:</label>
+                <input type="number" name="pay-rate-update" id="pay-rate-update" value="{{updatedData.pay_rate}}">
+                <label for="qualification-update">Qualifications: </label>
+                <input type="text" name="qualification-update" id="qualification-update" value="{{updatedData.qualification}}">
+                <label for="hours-worked-update">Hours Worked: </label>
+                <input type="number" name="hours-worked-update" id="hours-worked-update" value="{{updatedData.hours_worked}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-maintenance-worker" value="Update Maintenance Worker">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+<script src="../js/maintenence_workers_CRUD/delete_maintenance_worker.js"></script>
+<script src="../js/maintenence_workers_CRUD/update_maintenance_worker.js"></script>
+<script src="../js/maintenence_workers_CRUD/add_maintenance_worker.js"></script>

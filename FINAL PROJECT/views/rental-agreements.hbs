@@ -1,0 +1,139 @@
+{{!-- Citation for the following table:
+    Date: 11/15/23
+    Based on: nodejs-starter-app
+    Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+--}}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container">
+    <div class="content">
+        <h3 class="has-text-centered">Rental Agreements</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="rental-agreements-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print the current key in the header cell --}}
+            <tr>
+                <th>ID</th>
+                <th>Unit</th>
+                <th>Tenant</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Rent Balance</th>
+                <th>Security Deposit</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- For each row, print the rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, and security_deposit --}}
+            {{#each rentalAgreements}}
+            <tr data-value={{this.rental_ID}}>
+                <td>{{this.rental_ID}}</td>
+                <td>{{this.unit_number}}</td>
+                <td>{{this.tenant_name}}</td>
+                <td>{{format_date this.start_date}}</td>
+                <td>{{format_date this.end_date}}</td>
+                <td>${{this.total_rent_balance}}</td>
+                <td>${{this.security_deposit}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="fetchRentalAgreementData({{this.rental_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="deleteRentalAgreement({{this.rental_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new rental agreement --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a rental agreement --}}
+        <form id="add-rental-agreement-form">
+            <legend><strong>Add Rental Agreement</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit-id">Unit: </label>
+                <select name="input-unit-id" id="input-unit-id">
+                    <option value="">Select a Unit</option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-tenant-id">Tenant: </label>
+                <select name="input-tenant-id" id="input-tenant-id">
+                    <option value="">Select a Tenant</option>
+                        {{#each tenants}}
+                            <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                </select>
+                <label for="input-start-date">Start Date: </label>
+                <input type="date" name="input-start-date" id="input-start-date">
+                <label for="input-end-date">End Date: </label>
+                <input type="date" name="input-end-date" id="input-end-date">
+                <label for="input-total-rent-balance">Total Rent Balance: </label>
+                <input type="number" name="input-total-rent-balance" id="input-total-rent-balance">
+                <label for="input-security-deposit">Security Deposit: </label>
+                <input type="number" name="input-security-deposit" id="input-security-deposit">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addRentalAgreement" value="Add Rental Agreement">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+<!-- Update Rental Agreement -->
+<div class="container p-2">
+    <div id="updateRentalAgreement" style="display: block">
+        <form id="updateRentalAgreementForm">
+            <legend><strong>Update Rental Agreement</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="rental-agreement-id">Agreement ID:</label>
+                <select class="select" name="rental-agreement-id" id="rental-agreement-id">
+                    <option value=""></option>
+                    {{#each rentalAgreements}}
+                        <option value="{{this.rental_ID}}">{{this.rental_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="unit-id">Unit:</label>
+                <select class="select" name="unit-id" id="unit-id">
+                    <option value=""></option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_number}}</option>
+                    {{/each}}
+                </select>
+                <label for="tenant-id">Tenant:</label>
+                <select class="select" name="tenant-id" id="tenant-id">
+                    <option value=""></option>
+                    {{#each tenants}}
+                        <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                    {{/each}}
+                </select>
+                <label for="start-date">Start Date:</label>
+                <input type="date" name="start-date" id="start-date" value="{{updatedRentalAgreement.start_date}}">
+                <label for="end-date">End Date:</label>
+                <input type="date" name="end-date" id="end-date" value="{{updatedRentalAgreement.end_date}}">
+                <label for="total-rent-balance">Total Rent Balance:</label>
+                <input type="number" name="total-rent-balance" id="total-rent-balance" value="{{updatedRentalAgreement.total_rent_balance}}">
+                <label for="security-deposit">Security Deposit:</label>
+                <input type="number" name="security-deposit" id="security-deposit" value="{{updatedRentalAgreement.security_deposit}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-rental-agreement" value="Update Rental Agreement">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+
+<script src="../js/rental_agreements_crud/add_rental_agreement.js"></script>
+<script src="../js/rental_agreements_crud/update_rental_agreement.js"></script>
+<script src="../js/rental_agreements_crud/delete_rental_agreement.js"></script>
