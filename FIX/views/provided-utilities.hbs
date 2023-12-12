@@ -1,0 +1,116 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3 class="has-text-centered">Provided Utilities</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="provided-utilities-table" class="table is-bordered is-striped is-fullwidth has-text-centered">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the utility_ID, unit_ID, and provider_ID --}}
+            {{#each data}}
+            <tr data-value={{this.utility_ID}}>
+                <td>{{this.utility_ID}}</td>
+                <td>{{this.unit_ID}}</td>
+                <td>{{this.provider_ID}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.utility_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteProvidedUtility({{this.utility_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new provided Utility --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a provided utility --}}
+        <form id="add-provided-utility-form">
+            <legend><strong>Add Provided Utility</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit-ID">Unit ID: </label>
+                <select class="select" name="unit-id-select" id="unit-id-select">
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-provider-ID">Provider ID: </label>
+                <select class="select" name="provider-id-select" id="provider-id-select">
+                <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addProvidedUtility" value="addProvidedUtility">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateProvidedUtility">
+            <legend><strong>Update Provided Utility</strong></legend>
+            <fieldset class="fields p-2">
+            <label for="utility-id-select">Utility ID: </label>
+            <select class="select" name="utility-id-select" id="utility-id-select">
+            <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.utility_ID}}">{{this.utility_ID}}</option>
+                    {{/each}}
+                </select>
+              <label for="unit-ID-select">Unit ID:</label>
+              <select class="select" name="unit-ID-select" id="unit-ID-select">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="provider-ID-select">Provider ID:</label>
+                <select class="select" name="provider-ID-select" id="provider-ID-select">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-provided-utility" value="Update Utility Provider">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+<script src="../js/provided_utilities_CRUD/add_provided_utility.js"></script>
+<script src="../js/provided_utilities_CRUD/update_provided_utility.js"></script>
+<script src="../js/provided_utilities_CRUD/delete_provided_utility.js"></script>
