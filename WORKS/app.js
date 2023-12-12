@@ -946,20 +946,126 @@ app.delete('/delete-maintenance-request', function(req, res) {
 
 /****************************************** Request Assignments ************************************************/
 
-// GET route for displaying all request assignments
-app.get('/request-assignments', function(req, res) {
-    let query = "SELECT * FROM RequestAssignments;";
+app.get('/request-assignments', (req, res) => {
+    const query1 = `SELECT
+                        RequestAssignments.assignment_ID,
+                        CONCAT(MaintenanceWorkers.first_name, ' ', MaintenanceWorkers.last_name) AS worker_name,
+                        CONCAT(MaintenanceRequests.time_to_complete, ' Hours - ', MaintenanceRequests.description) AS time_description
+                    FROM RequestAssignments
+                    LEFT JOIN MaintenanceWorkers ON RequestAssignments.worker_ID = MaintenanceWorkers.worker_ID
+                    LEFT JOIN MaintenanceRequests ON RequestAssignments.maintenance_request_ID = MaintenanceRequests.maintenance_request_ID;`;
 
-    db.pool.query(query, function(error, rows, fields) {
-        const pageTitle = "Request Assignments";
-        res.render('request-assignments', { data: rows, title: pageTitle });
+    const query2 = `SELECT * FROM MaintenanceWorkers;`;
+    const query3 = `SELECT * FROM MaintenanceRequests;`;
+    const pageTitle = "Request Assignments";
+
+    db.pool.query(query1, (error, requestAssignments) => {
+        if (error) {
+            return res.status(500).json({ error: 'An error occurred while fetching request assignments.' });
+        }
+        db.pool.query(query2, (error, maintenanceWorkers) => {
+            if (error) {
+                return res.status(500).json({ error: 'An error occurred while fetching maintenance workers.' });
+            }
+            db.pool.query(query3, (error, maintenanceRequests) => {
+                if (error) {
+                    return res.status(500).json({ error: 'An error occurred while fetching maintenance requests.' });
+                }
+                res.render('request-assignments', {
+                    requestAssignments: requestAssignments,
+                    maintenanceWorkers: maintenanceWorkers,
+                    maintenanceRequests: maintenanceRequests,
+                    title: pageTitle
+                });
+            });
+        });
     });
 });
 
-// GET ROUTE for displaying Provided Utilities page
-app.get('/provided-utilities', function(req, res) {
-    const pageTitle = "Provided Utilities";
-    res.render('provided-utilities', { title: pageTitle });
+// POST route for adding a request assignment
+app.post('/add-request-assignment-form', function(req, res) {
+    let data = req.body;
+
+    let workerID = parseInt(data.worker_ID);
+    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
+
+    const query = `INSERT INTO RequestAssignments (worker_ID, maintenance_request_ID)
+                  VALUES (?, ?);`;
+
+    db.pool.query(query, [workerID, maintenanceRequestID], function(error) {
+        if (error) {
+            console.error("Error adding request assignment:", error);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        const selectQuery = `SELECT * FROM RequestAssignments;`;
+
+        db.pool.query(selectQuery, function(error, rows) {
+            if (error) {
+                console.error("Error fetching request assignments:", error);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            res.send(rows);
+        });
+    });
+});
+
+app.get('/requestAssignmentID', function(req, res){
+    let assignmentID = parseInt(req.query.id);
+    if (isNaN(assignmentID)) {
+        return res.status(400).send('Invalid ID');
+    }
+
+    let query = `SELECT * FROM RequestAssignments WHERE assignment_ID = ?`;
+    db.pool.query(query, [assignmentID], function(error, results) {
+        if (error) {
+            console.error("Error executing query:", error);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        res.json(results);
+    });
+});
+
+app.put('/update-request-assignment', function(req, res) {
+    let data = req.body;
+    let assignmentID = parseInt(data.assignment_ID);
+    let workerID = parseInt(data.worker_ID);
+    let maintenanceRequestID = parseInt(data.maintenance_request_ID);
+
+    if (isNaN(assignmentID) || isNaN(workerID) || isNaN(maintenanceRequestID)) {
+        return res.status(400).send('Invalid input');
+    }
+
+    let updateQuery = `UPDATE RequestAssignments SET worker_ID = ?, maintenance_request_ID = ? WHERE assignment_ID = ?`;
+
+    db.pool.query(updateQuery, [workerID, maintenanceRequestID, assignmentID], function(error) {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Internal Server Error: Unable to update request assignment.');
+        }
+        res.status(200).send('Request assignment updated successfully.');
+    });
+});
+
+// DELETE route for deleting a request assignment
+app.delete('/delete-request-assignment', function (req, res) {
+    let data = req.body;
+    let assignmentID = parseInt(data.id);
+    console.log(assignmentID);
+
+    let deleteQuery = "DELETE FROM RequestAssignments WHERE assignment_ID = ?";
+
+    db.pool.query(deleteQuery, [assignmentID], function (error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(204);
+        }
+    });
 });
 
 
