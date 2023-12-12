@@ -1,0 +1,132 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container">
+    <div class="content">
+        <h3 class="has-text-centered">Units</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="units-table" class="table is-bordered is-striped is-fullwidth has-text-centered">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the unit_ID, is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year --}}
+            {{#each data}}
+            <tr data-value={{this.unit_ID}}>
+                <td>{{this.unit_ID}}</td>
+                <td>{{#if this.is_available}}yes{{else}}no{{/if}}</td>              
+                <td>{{this.num_bedroom}}</td>
+                <td>{{this.num_bathroom}}</td>
+                <td>{{this.square_feet}}</td>
+                <td>{{this.unit_number}}</td>
+                <td>{{this.rent_price}}</td>
+                <td>{{this.previous_year_income}}</td>
+                <td>{{this.year}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.unit_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteUnit({{this.unit_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new Unit --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a Unit --}}
+        <form id="add-unit-form">
+            <legend><strong>Add Unit</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit-number">Unit Number: </label>
+                <input type="number" name="input-unit-number" id="input-unit-number">
+                <label for="input-is-available">Is Available: </label>
+                <select name="input-is-available" id="input-is-available" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <label for="input-num-bedroom"> Number of Bedrooms: </label>
+                <input type="number" name="input-num-bedroom" id="input-num-bedroom">
+                <label for="input-num-bathroom">Number of Bathrooms: </label>
+                <input type="number" name="input-num-bathroom" id="input-num-bathroom">
+                <label for="input-square-feet">Square Feet: </label>
+                <input type="number" name="input-square-feet" id="input-square-feet">
+                <label for="input-rent-price">Rent Price: </label>
+                <input type="number" name="input-rent-price" id="input-rent-price">
+                <label for="input-previous-year-income">Previous Year Income: </label>
+                <input type="number" name="input-previous-year-income" id="input-previous-year-income">
+                <label for="year">Year: </label>
+                <input type="number" name="year" id="year">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addUnit" value="Add Unit">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateUnitForm">
+            <legend><strong>Update Unit</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="unit-id-select">Unit ID:</label>
+                <select name="unit-id-select" id="unit-id-select">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="unit-number">Unit number:</label>
+                <input type="number" name="unit-number" id="unit-number" value="{{updatedData.unit_ID}}">
+               <label for="is-available">Is available:</label>
+                <select class="select" name="is-available" id="is-available" required>
+                <option value="0" {{#if_eq updatedData.is_available 0}}selected{{/if_eq}}>no</option>
+                <option value="1" {{#if_eq updatedData.is_available 1}}selected{{/if_eq}}>yes</option>
+                </select>
+                <label for="num-bedroom">UNumber of Bedrooms: </label>
+                <input type="number" name="num-bedroom" id="num-bedroom" value="{{updatedData.num_bedroom}}">
+                <label for="num-bathroom">Number of Bathrooms: </label>
+                <input type="number" name="num-bathroom" id="num-bathroom" value="{{updatedData.num_bathroom}}">
+                <label for="square-feet">Square Feet: </label>
+                <input type="number" name="square-feet" id="square-feet" value="{{updatedData.square_feet}}">
+                <label for="rent-price">Rent Price: </label>
+                <input type="number" name="rent-price" id="rent-price" value="{{updatedData.rent_price}}">
+                <label for="previous-year-income">Previous Year Income: </label>
+                <input type="number" name="previous-year-income" id="previous-year-income" value="{{updatedData.previous_year_income}}">
+                <label for="year-check">Year: </label>
+                <input type="number" name="year-check" id="year-check" value="{{updatedData.year}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-unit" value="Update Unit">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+<script src="../js/units_CRUD/add_unit.js"></script>
+<script src="../js/units_CRUD/update_unit.js"></script>
+<script src="../js/units_CRUD/delete_unit.js"></script>

@@ -1,0 +1,90 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>RENTAL AGREEMENTS</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="rental-agreements-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print the current key in the header cell --}}
+            <tr>
+                {{#each rentalAgreements.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- For each row, print the rental_ID, unit_ID, tenant_ID, start_date, end_date, total_rent_balance, and security_deposit --}}
+            {{#each rentalAgreements}}
+            <tr data-value={{this.rental_ID}}>
+                <td>{{this.rental_ID}}</td>
+                <td>{{this.unit_number}}</td>
+                <td>{{this.tenant_name}}</td>
+                <td>{{this.start_date}}</td>
+                <td>{{this.end_date}}</td>
+                <td>${{this.total_rent_balance}}</td>
+                <td>${{this.security_deposit}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.rental_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="deleteRentalAgreement({{this.rental_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new rental agreement --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a rental agreement --}}
+        <form id="add-rental-agreement-form">
+            <legend><strong>Add Rental Agreement</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-unit-id">Unit ID: </label>
+                <select name="input-unit-id" id="input-unit-id">
+                    <option value="">Select a Unit</option>
+                    {{#each units}}
+                        <option value="{{this.unit_ID}}">{{this.unit_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="input-tenant-id">Tenant: </label>
+                <select name="input-tenant-id" id="input-tenant-id">
+                    <option value="">Select a Tenant</option>
+                        {{#each tenants}}
+                            <option value="{{this.tenant_ID}}">{{this.first_name}} {{this.last_name}}</option>
+                        {{/each}}
+                </select>
+                <label for="input-start-date">Start Date: </label>
+                <input type="date" name="input-start-date" id="input-start-date">
+                <label for="input-end-date">End Date: </label>
+                <input type="date" name="input-end-date" id="input-end-date">
+                <label for="input-total-rent-balance">Total Rent Balance: </label>
+                <input type="number" name="input-total-rent-balance" id="input-total-rent-balance">
+                <label for="input-security-deposit">Security Deposit: </label>
+                <input type="number" name="input-security-deposit" id="input-security-deposit">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addRentalAgreement" value="Add Rental Agreement">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+<script src="../js/add_rental_agreement.js"></script>
+<script src="../js/update_rental_agreement.js"></script>
+<script src="../js/delete_rental_agreement.js"></script>

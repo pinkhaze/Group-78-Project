@@ -1,0 +1,107 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container p-2">
+    <div class="content">
+        <h3>TENANTS</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="tenants-table" class="table is-bordered is-striped is-fullwidth">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- For each row, print the tenant_ID, first_name, last_name, phone_number, email, and rent_balance --}}
+            {{#each data}}
+            <tr data-value={{this.tenant_ID}}>
+                <td>{{this.tenant_ID}}</td>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.phone_number}}</td>
+                <td>{{this.email}}</td>
+                <td>${{this.rent_balance}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="updateTenant({{this.tenant_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="deleteTenant({{this.tenant_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new tenant --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a tenant --}}
+        <form id="add-tenant-form">
+            <legend><strong>Add Tenant</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-first-name">First Name: </label>
+                <input type="text" name="input-first-name" id="input-first-name">
+                <label for="input-last-name">Last Name: </label>
+                <input type="text" name="input-last-name" id="input-last-name">
+                <label for="input-phone-number">Phone Number: </label>
+                <input type="text" name="input-phone-number" id="input-phone-number">
+                <label for="input-email">Email: </label>
+                <input type="text" name="input-email" id="input-email">
+                <label for="input-rent-balance">Rent Balance: </label>
+                <input type="number" name="input-rent-balance" id="input-rent-balance">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addTenant" value="Add Tenant">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateTenantForm">
+            <legend><strong>Update Tenant</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="tenant-id">Tenant ID:</label>
+                <select class="select" name="tenant-id" id="tenant-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.tenant_ID}}">{{this.tenant_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="first-name">First Name:</label>
+                <input type="text" name="first-name" id="first-name" value="{{updatedData.first_name}}">
+                <label for="last-name">Last Name:</label>
+                <input type="text" name="last-name" id="last-name" value="{{updatedData.last_name}}">
+                <label for="phone-number">Phone Number:</label>
+                <input type="text" name="phone-number" id="phone-number" value="{{updatedData.phone_number}}">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" value="{{updatedData.email}}">
+                <label for="rent-balance">Rent Balance:</label>
+                <input type="number" name="rent-balance" id="rent-balance" value="{{updatedData.rent_balance}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-tenant" value="Update Tenant">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+
+<script src="../js/delete_tenant.js"></script>
+<script src="../js/update_tenant.js"></script>
+<script src="../js/add_tenant.js"></script>

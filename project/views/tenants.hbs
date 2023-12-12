@@ -1,0 +1,146 @@
+<div class="container">
+    <table class="table is-bordered is-striped is-fullwidth">
+      <h1><strong>TENANTS</strong></h1>
+      <thead>
+        <tr>
+          <th>tenant_id</th>
+          <th>first_name</th>
+          <th>last_name</th>
+          <th>phone_number</th>
+          <th>email</th>
+          <th>rent_balance</th>
+          <th class="table-col-button"></th>
+          <th class="table-col-button"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Victoria</td>
+          <td>Jones</td>
+          <td>123-456-7890</td>
+          <td>victoriajones@yahoo.com</td>
+          <td>$5000.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Emma</td>
+          <td>Mathis</td>
+          <td>555-555-5555</td>
+          <td>emmamathis@hotmail.com</td>
+          <td>$6000.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>John</td>
+          <td>Carey</td>
+          <td>31272377777</td>
+          <td>john.carey@gmail.com</td>
+          <td>$4500.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Eric</td>
+          <td>Williams</td>
+          <td>3128388548</td>
+          <td>eric222@gmail.com</td>
+          <td>$5200.00</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <p>&nbsp;</p>
+    <div class="container">
+      <div id="insert" style="display: block">
+        <form id="addTenant">
+          <legend><strong>Add Tenant</strong></legend>
+            <fieldset class="fields">
+              <label>first_name</label> <input type="text" name="firstname">
+              <label>last_name</label> <input type="text" name="lastname">
+              <label>phone_number</label> <input type="text" name="phonenumber">
+              <p>&nbsp;</p>
+              <label>email</label> <input type="text" name="email">
+              <label>rent_balance</label> <input type="text" name="rent_balance">
+            </fieldset>
+            <p>&nbsp;</p>
+            <input class="button is-black" type="submit" id="addTenant" value="Add Tenant">
+            <input class="button is-black" type="button" value="Cancel">
+        </form>
+      </div>
+      <p>&nbsp;</p>
+      <div id="update" style="display: block">
+        <form id="updateTenant">
+          <legend><strong>Update Tenant</strong></legend>
+            <fieldset class="fields">
+              <label>tenant_ID</label> <input type="number" name="tenantID">
+              <label>first_name</label> <input type="text" name="firstname">
+              <label>last_name</label> <input type="text" name="lastname">
+              <label>phone_number</label> <input type="text" name="phonenumber">
+              <p>&nbsp;</p>
+              <label>email</label> <input type="text" name="email">
+              <label>rent_balance</label> <input type="number" name="unitnum">
+            </fieldset>
+            <p>&nbsp;</p>
+            <input class="button is-black" type="submit" id="updateTenant" value="Update Tenant">
+            <input class="button is-black" type="button" value="Cancel">
+        </form>
+      </div>
+      <p>&nbsp;</p>
+    <div id="delete" style="display: block">
+      <form method="POST" id="deleteTenant">
+        <legend><strong>Delete Tenant</strong></legend>
+          <fieldset class="fields">
+          <p>Do you want to delete this tenant?</p>
+          <p>&nbsp;</p>
+          <input type="hidden" name="unitID" id="deleteunitID" value="1">
+          <label><strong>Tenant ID:</strong></label> 3
+          <label> <strong>Name:</strong> </label> John Carey
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="DeleteTenant" value="Delete Tenant">
+        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+      </form> 
+    </div>
+      
+  </div>
