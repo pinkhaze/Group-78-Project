@@ -5,7 +5,7 @@
 
 function deleteUnit(unitID) {
   console.log('Clicked delete button');
-  let link = '/delete-unit-ajax/';
+  let link = '/delete-unit-ajax';
   let data = {
     id: unitID
   };

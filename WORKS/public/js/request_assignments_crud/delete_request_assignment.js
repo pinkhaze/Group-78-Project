@@ -4,21 +4,23 @@
 // Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%207%20-%20Dynamically%20Deleting%20Data
 
 function deleteRequestAssignment(assignmentID) {
-    console.log('Clicked delete request assignment button');
-    let link = '/delete-request-assignment/' + assignmentID;
-
+    console.log('Clicked delete button');
+    let link = '/deleteRequestAjax';
+    let data = {
+      id: assignmentID
+    };
+  
     $.ajax({
-        url: link,
-        type: 'DELETE',
-        contentType: "application/json; charset=utf-8",
-        success: function () {
-            deleteRow(assignmentID);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("Error deleting assignment:", textStatus, errorThrown);
-        }
+      url: link,
+      type: 'DELETE',
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      success: function(result) {
+        deleteRow(assignmentID);
+      }
     });
-};
+  };
+  
 
 function deleteRow(assignmentID) {
     let table = document.getElementById("request-assignments-table");
@@ -28,4 +30,5 @@ function deleteRow(assignmentID) {
             break;
         }
     }
+    location.reload();
 };

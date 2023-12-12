@@ -1051,7 +1051,7 @@ app.put('/update-request-assignment', function(req, res) {
 });
 
 // DELETE route for deleting a request assignment
-app.delete('/delete-request-assignment', function (req, res) {
+app.delete('/deleteRequestAjax', function (req, res) {
     let data = req.body;
     let assignmentID = parseInt(data.id);
     console.log(assignmentID);
