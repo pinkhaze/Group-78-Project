@@ -1,12 +1,12 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 {{!-- Display data --}}
-<div class="container p-2">
+<div class="container">
     <div class="content">
-        <h3>UTILITY PROVIDERS</h3>
+        <h3 class="has-text-centered">Utility Providers</h3>
     </div>
     {{!-- Create table --}}
-    <table id="utility-providers-table" class="table is-bordered is-striped is-fullwidth">
+    <table id="utility-providers-table" class="table is-bordered is-striped is-fullwidth has-text-centered">
         {{!-- Table header --}}
         <thead>
             {{!-- Iterate over keys of the first row and print current key in header cell --}}
@@ -41,7 +41,7 @@
                     </button>
                 </td>
                 <td>
-                    <button onclick="deleteUtilityProvider({{this.provider_ID}})">
+                    <button class="editButton" onclick="deleteUtilityProvider({{this.provider_ID}})">
                          <i class="fa-sharp fa-regular fa-trash-can"></i>
                     </button>
                 </td>
@@ -61,7 +61,7 @@
                 <label for="input-provider-name">Provider Name: </label>
                 <input type="text" name="input-provider-name" id="input-provider-name">
                 <label for="input-service-type">Service Type: </label>
-                <select class="select" name="input-service-type" id="input-service-type" required>
+                <select name="input-service-type" id="input-service-type" required>
                     <option value="blank"></option>
                     <option value="Electricity">Electricity</option>
                     <option value="Natural Gas">Natural Gas</option>
@@ -97,7 +97,7 @@
                 <label for="name">Provider Name:</label>
                 <input type="text" name="name" id="name" value="{{updatedData.provider_name}}">
                 <label for="service-type">Service Type:</label>
-                <select class="select" name="service-type" id="service-type" required>
+                <select name="service-type" id="service-type" required>
                     <option value=""></option>
                     {{#each updatedData}}
                     <option value="{{this}}" {{#if (eq updatedData.service_type this)}} selected {{/if}}>
@@ -121,7 +121,6 @@
         </form>
     </div>
 </div>
-
-<script src="../js/delete_utility_provider.js"></script>
-<script src="../js/update_utility_provider.js"></script>
-<script src="../js/add_utility_provider.js"></script>
+<script src="../js/utility_provider_CRUD/add_utility_provider.js"></script>
+<script src="../js/utility_provider_CRUD/update_utility_provider.js"></script>
+<script src="../js/utility_provider_CRUD/delete_utility_provider.js"></script>
