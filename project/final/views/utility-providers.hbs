@@ -1,0 +1,126 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{{!-- Display data --}}
+<div class="container">
+    <div class="content">
+        <h3 class="has-text-centered">Utility Providers</h3>
+    </div>
+    {{!-- Create table --}}
+    <table id="utility-providers-table" class="table is-bordered is-striped is-fullwidth has-text-centered">
+        {{!-- Table header --}}
+        <thead>
+            {{!-- Iterate over keys of the first row and print current key in header cell --}}
+            <tr>
+                {{#each data.[0]}}
+                <th>
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        {{!-- Table body --}}
+        <tbody>
+            {{!-- Citation for the following table:
+                  Date: 11/15/23
+                  Based on: nodejs-starter-app
+                  Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main/Step%205%20-%20Adding%20New%20Data
+            --}}
+            {{!-- For each row, print the provider_ID, provider_name, service_type, and utility_cost --}}
+            {{#each data}}
+            <tr data-value={{this.provider_ID}}>
+                <td>{{this.provider_ID}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.service_type}}</td>
+                <td>${{this.utility_cost}}</td>
+                {{!-- Edit and delete buttons --}}
+                <td>
+                    <button onClick="update({{this.provider_ID}})">
+                        <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="editButton" onclick="deleteUtilityProvider({{this.provider_ID}})">
+                         <i class="fa-sharp fa-regular fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- Add new utility provider --}}
+<div class="container p-2">
+    <div id="insert" style="display: block"></div>
+        {{!-- Form to add a utility provider --}}
+        <form id="add-utility-provider-form">
+            <legend><strong>Add Utility Provider</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="input-provider-name">Provider Name: </label>
+                <input type="text" name="input-provider-name" id="input-provider-name">
+                <label for="input-service-type">Service Type: </label>
+                <select name="input-service-type" id="input-service-type" required>
+                    <option value="blank"></option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Natural Gas">Natural Gas</option>
+                    <option value="Water">Water</option>
+                    <option value="Cable">Cable TV</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Waste Disposal">Waste Disposal</option>
+                    <option value="Sewer">Sewer</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="input-utility-cost">Utility Cost: </label>
+                <input type="number" name="input-utility-cost" id="input-utility-cost">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="addUtilityProvider" value="Add Utility Provider">
+            <input class="button is-black is-small" type="button" value="Cancel" onClick="resetForm()">
+        </form>
+    </div>
+</div>
+
+{{!-- Update data  --}}
+<div class="container p-2">
+    <div id="update" style="display: block">
+        <form id="updateUtilityProviderForm">
+            <legend><strong>Update Utility Provider</strong></legend>
+            <fieldset class="fields p-2">
+                <label for="provider-id">Provider ID:</label>
+                <select class="select" name="provider-id" id="provider-id">
+                    <option value=""></option>
+                    {{#each data}}
+                    <option value="{{this.provider_ID}}">{{this.provider_ID}}</option>
+                    {{/each}}
+                </select>
+                <label for="name">Provider Name:</label>
+                <input type="text" name="name" id="name" value="{{updatedData.provider_name}}">
+                <label for="service-type">Service Type:</label>
+                <select name="service-type" id="service-type" required>
+                    <option value=""></option>
+                    {{#each updatedData}}
+                    <option value="{{this}}" {{#if (eq updatedData.service_type this)}} selected {{/if}}>
+                        {{this}}
+                    </option>
+                    {{/each}}
+                    <option value="Electricity">Electricity</option>
+                    <option value="Natural Gas">Natural Gas</option>
+                    <option value="Water">Water</option>
+                    <option value="Cable">Cable</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Waste Disposal">Waste Disposal</option>
+                    <option value="Sewer">Sewer</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="utility-cost">Utility Cost:</label>
+                <input type="number" name="utility-cost" id="utility-cost" value="{{updatedData.utility_cost}}">
+            </fieldset>
+            <input class="button is-black is-small" type="submit" id="update-utility-provider" value="Update Provider">
+            <input class="button is-black is-small" type="button" value="Cancel" onclick="resetForm()">
+        </form>
+    </div>
+</div>
+<script src="../js/utility_provider_CRUD/add_utility_provider.js"></script>
+<script src="../js/utility_provider_CRUD/update_utility_provider.js"></script>
+<script src="../js/utility_provider_CRUD/delete_utility_provider.js"></script>

@@ -1,0 +1,201 @@
+<div class="container p-2">
+  <div class="content">
+    <h3>MAINTENANCE REQUESTS</h3>
+  </div>
+  <table class="table is-bordered is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>maintenance_request_ID</th>
+            <th>unit_ID</th>
+            <th>tenant_ID</th>
+            <th>description</th>
+            <th>date_submitted</th>
+            <th>time_to_complete</th>
+            <th>repair_cost</th>
+            <th>is_closed</th>
+            <th class="table-col-button"></th>
+            <th class="table-col-button"></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Leaky faucet in bathroom</td>
+                <td>2023-06-10</td>
+                <td>2</td>
+                <td>50.00</td>
+                <td>0</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>Broken window in bathroom</td>
+              <td>2023-07-12</td>
+              <td>3</td>
+              <td>125.00</td>
+              <td>0</td>
+              <td>
+                <button>
+                  <i class="fa-sharp fa-regular fa-trash-can"></i>
+                </button>
+              </td>
+              <td>
+                <button>
+                  <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>3</td>
+            <td>3</td>
+            <td>Heating system blowing cold air</td>
+            <td>2024-10-12</td>
+            <td>6</td>
+            <td>200.00</td>
+            <td>1</td>
+            <td>
+              <button>
+                <i class="fa-sharp fa-regular fa-trash-can"></i>
+              </button>
+            </td>
+            <td>
+              <button>
+                <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+              </button>
+            </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>4</td>
+          <td>4</td>
+          <td>Garbage disposal backing up</td>
+          <td>2024-10-18</td>
+          <td>4</td>
+          <td>150.00</td>
+          <td>1</td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+          <td>
+            <button>
+              <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>&nbsp;</p>
+    <div class="container">
+      <div id="insert" style="display: block">
+        <form id="addMaintenanceRequest">
+          <legend><strong>Add MaintenanceRequest</strong></legend>
+          <fieldset class="fields">
+          <label for="unit_ID">unit_ID:</label>
+              <select name="unit_ID" id="unit_ID">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="1">3</option>
+                <option value="2">4</option>
+              </select>
+            <label for="tenant_ID">tenant_ID:</label>
+              <select name="unit_ID" id="unit_ID">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="1">3</option>
+                <option value="2">4</option>
+              </select>
+          <label for="description">description:</label>
+          <input type="text" id="description">
+          <label for="date_submitted">date_submitted:</label>
+          <input type="date" id="date_submitted">
+          <p>&nbsp;</p>
+          <label for="time_to_complete">time_to_complete:</label>
+          <input type="number" id="time_to_complete">
+          <label for="repair_cost">repair_cost:</label>
+          <input type="number" id="repair_cost">
+          <label for="is_closed">is_closed:</label>
+          <select id="is_closed">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+        </fieldset>
+        <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="addMaintenanceRequest" value="Add Maintenance Request">
+          <input class="button is-black" type="button" value="Cancel">
+        </form>
+      </div>
+      <p>&nbsp;</p>
+      <div id="update" style="display: block">
+        <form id="updateMaintenanceRequest">
+          <legend><strong>Update MaintenanceRequest</strong></legend>
+          <fieldset class="fields">
+          <label for="maintenance_request_ID">maintenance_request_ID:</label>
+          <input type="number" id="maintenance_request_ID">
+          <label for="unit_ID">unit_ID:</label>
+              <select name="unit_ID" id="unit_ID">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="1">3</option>
+                <option value="2">4</option>
+              </select>
+            <label for="tenant_ID">tenant_ID:</label>
+              <select name="unit_ID" id="unit_ID">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="1">3</option>
+                <option value="2">4</option>
+              </select>
+          <label for="description">description:</label>
+          <input type="text" id="description">
+          <label for="date_submitted">date_submitted:</label>
+          <input type="date" id="date_submitted">
+          <p>&nbsp;</p>
+          <label for="time_to_complete">time_to_complete:</label>
+          <input type="number" id="time_to_complete">
+          <label for="repair_cost">repair_cost:</label>
+          <input type="number" id="repair_cost">
+          <label for="is_closed">is_closed:</label>
+          <select id="is_closed">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+        </fieldset>
+        <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="updateMaintenanceRequest" value="Update Maintenance Request">
+          <input class="button is-black" type="button" value="Cancel">
+        </form>
+      </div>
+      <p>&nbsp;</p>
+      <div id="delete" style="display: block">
+        <form method="POST" id="deleteMaintenanceRequest">
+          <legend><strong>Delete Maintenance Request</strong></legend>
+            <fieldset class="fields">
+            <p>Do you want to delete this Maintenance Request?</p>
+            <p>&nbsp;</p>
+            <input type="hidden" name="maintenancerequestID" id="deletemaintenancerequestID" value="1">
+            <label><strong>Maintenance Request ID:</strong></label> 2
+            <label> <strong>Unit ID:</strong> </label> 2
+          </fieldset>
+          <p>&nbsp;</p>
+          <input class="button is-black" type="submit" id="DeleteMaintenanceRequest" value="Delete Maintenance Request">
+          <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+        </form> 
+      </div>
+    </div>

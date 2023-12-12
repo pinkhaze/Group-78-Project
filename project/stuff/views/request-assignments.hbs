@@ -1,0 +1,130 @@
+<div class="container p-2">
+  <div class="content">
+    <h3>REQUEST ASSIGNMENTS</h3>
+  </div>
+  <table class="table is-bordered is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>assignment_ID</th>
+            <th>worker_ID</th>
+            <th>maintenance_request_ID</th>
+            <th class="table-col-button"></th>
+            <th class="table-col-button"></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>4</td>
+                <td>4</td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-regular fa-trash-can"></i>
+                  </button>
+                </td>
+                <td>
+                  <button>
+                    <i class="fa-sharp fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>&nbsp;</p>
+    <div class="container">
+      <div class="container">
+        <div id="insert" style="display: block">
+      <form id="AddRequestAssignment">
+        <legend><strong>Add Request Assignment</strong></legend>
+          <fieldset class="fields">
+            <label for="worker_ID">worker_ID</label>
+            <input type="number" id="worker_ID">
+            <label for="maintenance_request_ID">maintenance_request_ID</label>
+            <input type="number" id="maintenance_request_ID">
+          </fieldset>
+          <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="AddRequestAssignments" value="Add Request Assignment">
+        <input class="button is-black" type="button" value="Cancel">
+      </form>
+    </div>
+    <p>&nbsp;</p>
+    <div id="update" style="display: block">
+      <form id="updateRequestAssignment">
+        <legend><strong>Update Request Assignment</strong></legend>
+          <fieldset class="fields">
+            <label for="assignment_ID">worker_ID</label>
+            <input type="number" id="worker_ID">
+            <label for="maintenance_request_ID">maintenance_request_ID</label>
+            <input type="number" id="maintenance_request_ID">
+            <label>worker_ID</label> 
+            <input type="number" name="worker_id">
+          </fieldset>
+          <p>&nbsp;</p>
+          </fieldset>
+          <input class="button is-black" type="submit" id="UpdateRequestAssignment" value="Update RequestAssignment">
+          <input class="button is-black" type="button" value="Cancel" >
+      </form> 
+    </div>
+    <p>&nbsp;</p>
+    <div id="delete" style="display: block">
+      <form method="POST" id="deleteRequestAssignment">
+        <legend><strong>Delete Unit</strong></legend>
+          <fieldset class="fields">
+          <p>Do you want to delete this Request Assignment?</p>
+          <input type="hidden" name="assignmentID" id="deleteassignmentID" value="1">
+          <p>&nbsp;</p>
+          <label><strong>Request Assignment ID:</strong></label> 2
+          <label> <strong>Worker ID:</strong> </label> 2
+        </fieldset>
+        <p>&nbsp;</p>
+        <input class="button is-black" type="submit" id="DeleteRequestAssignment" value="Delete Request Assignment">
+        <input class="button is-black" type="button" value="Cancel" onClick="browseUnit()">
+      </form> 
+    </div>
+  </div>
