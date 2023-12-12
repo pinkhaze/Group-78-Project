@@ -95,7 +95,7 @@ app.post('/add-unit-form', function(req, res) {
 
     let query = `INSERT INTO Units (is_available, num_bedroom, num_bathroom, square_feet, unit_number, rent_price, previous_year_income, year) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     
-    db.pool.query(query, [isAvailable, numBedroom, numBathroom, squareFeet, unitNumber, rentPrice,previousYearIncome, year], function(error, rows, fields) {
+    db.pool.query(query, [isAvailable, numBedroom, numBathroom, squareFeet, unitNumber, rentPrice, previousYearIncome, year], function(error, rows, fields) {
         if (error) {
             console.error(error);
             return res.sendStatus(500); // Internal Server Error
@@ -452,10 +452,10 @@ app.put('/update-maintenance-worker', function(req, res) {
     let lastName = data.last_name;
     let phone = data.phone;
     let payRate = parseFloat(data.pay_rate);
-    let qualifcation = data.qualifcation;
+    let qualifcation = data.qualification;
     let hoursWorked = parseFloat(data.hours_worked);
 
-    let selectedMaitnenanceWorker = 'SELECT * FROM MaintenanceWorker WHERE worker_ID = ?';
+    let selectedMaitnenanceWorker = 'SELECT first_name, last_name, phone, pay_rate, qualification, hours_worked FROM MaintenanceWorkers WHERE worker_ID = ?';
     let updateQuery = `UPDATE MaintenanceWorkers 
                    SET first_name = ?, 
                        last_name = ?,
@@ -465,7 +465,7 @@ app.put('/update-maintenance-worker', function(req, res) {
                        hours_worked = ?
                    WHERE worker_ID = ?`;
 
-    let updateValues = [firstName, lastName, phone, payRate, qualifcation, hoursWorked];
+    let updateValues = [firstName, lastName, phone, payRate, qualifcation, hoursWorked, workerID];
 
     db.pool.query(updateQuery, updateValues, function(error, rows, fields) {
         if (error) {
